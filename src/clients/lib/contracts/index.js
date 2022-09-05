@@ -1,7 +1,4 @@
-
-import _43114 from './43114.js'
+import _4002 from './4002.js'
 export default {
-  43114: _43114,
-  
+  4002: _4002,
 }
-  
