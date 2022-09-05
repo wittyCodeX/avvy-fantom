@@ -3,7 +3,7 @@
   "chainId": "4002",
   "contracts": {
     "Domain": {
-      "address": "0x797AC669A1908ca68CD9854994345f570495541A",
+      "address": "0x3A92Ad8A7aAe4dde1027FE70b60708715DF4211f",
       "abi": [{
           "inputs": [{
               "internalType": "string",
@@ -952,7 +952,7 @@
       ]
     },
     "EVMReverseResolverV1": {
-      "address": "0xF4A1328B2d3BFd7aca965B6CcB688F1BE54838D0",
+      "address": "0x2091Fd6B703bC948B2caAA467448C0F2C49Bf3e2",
       "abi": [{
           "inputs": [{
             "internalType": "contract ContractRegistryInterface",
@@ -1076,7 +1076,7 @@
       ]
     },
     "LeasingAgentV1": {
-      "address": "0x5c9140B835F5A74E62B49C7Ba30a7362aADbD4Ed",
+      "address": "0x6DBa8e01644B2f2Fd5768652D44B936eee75B3b5",
       "abi": [{
           "inputs": [{
               "internalType": "address",
@@ -1527,7 +1527,7 @@
       ]
     },
     "PublicResolverV1": {
-      "address": "0x55f452383C0F0150CD440d077cDEE67de11B005d",
+      "address": "0x2e884b7Bba3D737AD9a993F5BBff18406832cD35",
       "abi": [{
           "inputs": [{
             "internalType": "address",
@@ -1718,7 +1718,7 @@
       ]
     },
     "RainbowTableV1": {
-      "address": "0x3b17bAcEDF86f4d36563d2920771ed105D8B6636",
+      "address": "0x00218bBE553c2BDB177AfF9622704F64aE52169E",
       "abi": [{
           "inputs": [{
             "internalType": "address",
@@ -1821,7 +1821,7 @@
       ]
     },
     "ResolverRegistryV1": {
-      "address": "0x3947d4c62C108A8A7bA3ED53AbaDcFF5D8998637",
+      "address": "0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5",
       "abi": [{
           "inputs": [{
             "internalType": "address",
@@ -1924,7 +1924,7 @@
       ]
     },
     "ReverseResolverRegistryV1": {
-      "address": "0x87388F6EAAfA4bB970EEefd97D29e487949fBbBd",
+      "address": "0xC569D541B8c908DEC24bd02baDA74078C6A58ec1",
       "abi": [{
           "inputs": [{
             "internalType": "contract ContractRegistryInterface",

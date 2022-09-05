@@ -37,7 +37,9 @@ async function main() {
   const EVMReverseResolverV1 = await hre.ethers.getContractFactory(
     'EVMReverseResolverV1',
   )
-  const _EVMReverseResolverV1 = await Domain.deploy(contractRegistryV1.address)
+  const _EVMReverseResolverV1 = await EVMReverseResolverV1.deploy(
+    contractRegistryV1.address,
+  )
 
   await _EVMReverseResolverV1.deployed()
 
@@ -46,7 +48,10 @@ async function main() {
   )
   // LeasingAgentV1 Contract Deployment
   const LeasingAgentV1 = await hre.ethers.getContractFactory('LeasingAgentV1')
-  const leasingAgentV1 = await Domain.deploy(contractRegistryV1.address)
+  const leasingAgentV1 = await LeasingAgentV1.deploy(
+    contractRegistryV1.address,
+    0,
+  )
 
   await leasingAgentV1.deployed()
 
@@ -56,7 +61,9 @@ async function main() {
   const PublicResolverV1 = await hre.ethers.getContractFactory(
     'PublicResolverV1',
   )
-  const publicResolverV1 = await Domain.deploy(contractRegistryV1.address)
+  const publicResolverV1 = await PublicResolverV1.deploy(
+    contractRegistryV1.address,
+  )
 
   await publicResolverV1.deployed()
 
@@ -64,7 +71,7 @@ async function main() {
 
   // RainbowTableV1 Contract Deployment
   const RainbowTableV1 = await hre.ethers.getContractFactory('RainbowTableV1')
-  const rainbowTableV1 = await Domain.deploy(contractRegistryV1.address)
+  const rainbowTableV1 = await RainbowTableV1.deploy(contractRegistryV1.address)
 
   await rainbowTableV1.deployed()
 
@@ -74,7 +81,9 @@ async function main() {
   const ResolverRegistryV1 = await hre.ethers.getContractFactory(
     'ResolverRegistryV1',
   )
-  const resolverRegistryV1 = await Domain.deploy(contractRegistryV1.address)
+  const resolverRegistryV1 = await ResolverRegistryV1.deploy(
+    contractRegistryV1.address,
+  )
 
   await resolverRegistryV1.deployed()
 
@@ -84,7 +93,7 @@ async function main() {
   const ReverseResolverRegistryV1 = await hre.ethers.getContractFactory(
     'ResolverRegistryV1',
   )
-  const reverseResolverRegistryV1 = await Domain.deploy(
+  const reverseResolverRegistryV1 = await ReverseResolverRegistryV1.deploy(
     contractRegistryV1.address,
   )
 
