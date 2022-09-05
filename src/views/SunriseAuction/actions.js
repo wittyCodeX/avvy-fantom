@@ -2,18 +2,18 @@ import constants from './constants'
 import selectors from './selectors'
 import services from 'services'
 
-import client from '@avvy/client'
+import client from 'clients'
 import { ethers } from 'ethers'
 
 const actions = {
   setAuctionPhases: (auctionPhases) => {
     return {
       type: constants.SET_AUCTION_PHASES,
-      auctionPhases
+      auctionPhases,
     }
   },
 
-  loadAuctionPhases: () => { 
+  loadAuctionPhases: () => {
     return async (dispatch, getState) => {
       const api = services.provider.buildAPI()
       const auctionPhases = await api.getAuctionPhases()
@@ -24,28 +24,28 @@ const actions = {
   setProofProgress: (proofProgress) => {
     return {
       type: constants.SET_PROOF_PROGRESS,
-      proofProgress
+      proofProgress,
     }
   },
 
   setHasBidError: (hasError) => {
     return {
       type: constants.SET_HAS_BID_ERROR,
-      hasError
+      hasError,
     }
   },
 
   setBiddingIsComplete: (isComplete) => {
     return {
       type: constants.SET_BIDDING_IS_COMPLETE,
-      isComplete
+      isComplete,
     }
   },
 
   setBiddingInProgress: (value) => {
     return {
       type: constants.SET_BIDDING_IN_PROGRESS,
-      value
+      value,
     }
   },
 
@@ -60,26 +60,37 @@ const actions = {
       try {
         const state = getState()
         const names = services.sunrise.selectors.unsubmittedBidNames(state)
-        const constraintsProofs = services.proofs.selectors.constraintsProofs(state)
+        const constraintsProofs = services.proofs.selectors.constraintsProofs(
+          state,
+        )
         const api = services.provider.buildAPI()
-        let j = 0;
+        let j = 0
         const numSteps = names.length
         for (let i = 0; i < names.length; i += 1) {
           let name = names[i]
-          dispatch(actions.setProofProgress({
-            message: `Generating constraints proof for ${name} (${j}/${numSteps})`,
-            percent: parseInt((j / numSteps) * 100),
-          }))
+          dispatch(
+            actions.setProofProgress({
+              message: `Generating constraints proof for ${name} (${j}/${numSteps})`,
+              percent: parseInt((j / numSteps) * 100),
+            }),
+          )
           if (!constraintsProofs[name]) {
             let constraintsRes = await api.generateConstraintsProof(name)
-            dispatch(services.proofs.actions.setConstraintsProof(name, constraintsRes.calldata))
+            dispatch(
+              services.proofs.actions.setConstraintsProof(
+                name,
+                constraintsRes.calldata,
+              ),
+            )
           }
           j += 1
         }
-        dispatch(actions.setProofProgress({
-          message: `Done`,
-          percent: 100,
-        }))
+        dispatch(
+          actions.setProofProgress({
+            message: `Done`,
+            percent: 100,
+          }),
+        )
       } catch (err) {
         services.logger.error(err)
         console.log(err)
@@ -97,7 +108,7 @@ const actions = {
       // this maps bids to "bundles" which get submitted to the chain
       const bids = services.sunrise.selectors.bids(state)
       const names = services.sunrise.selectors.unsubmittedBidNames(state)
-      
+
       const bundles = []
       let bundle
       let bidBundles = {}
@@ -105,13 +116,13 @@ const actions = {
       let counter
 
       for (let i = 0; i < names.length; i += 1) {
-        if (i % MAX_BIDS_PER_BUNDLE  === 0) {
+        if (i % MAX_BIDS_PER_BUNDLE === 0) {
           bundle = {
             payload: {
               names: [],
               amounts: [],
-              salt: services.random.salt()
-            }
+              salt: services.random.salt(),
+            },
           }
           bundles.push(bundle)
           counter = 0
@@ -123,7 +134,7 @@ const actions = {
         bundle.payload.amounts[counter] = bids[name]
         bundle[name] = {
           amount: bids[name],
-          hash: hash.toString()
+          hash: hash.toString(),
         }
         bidBundles[name] = bundles.length - 1
         counter += 1
@@ -134,26 +145,31 @@ const actions = {
         bundle.payload.hash = ethers.utils.keccak256(
           ethers.utils.defaultAbiCoder.encode(
             ['int[]', 'int[]', 'string'],
-            [bundle.payload.names, bundle.payload.amounts, bundle.payload.salt]
-          )
+            [bundle.payload.names, bundle.payload.amounts, bundle.payload.salt],
+          ),
         )
       }
-      
+
       try {
-        await api.bid(bundles.map(bundle => bundle.payload.hash))
+        await api.bid(bundles.map((bundle) => bundle.payload.hash))
       } catch (err) {
         console.log(err)
         return dispatch(actions.setHasBidError(true))
       }
 
-      for (let name in bidBundles) { 
+      for (let name in bidBundles) {
         let bundleIndex = bidBundles[name]
         let hash = bundles[bundleIndex].payload.hash
         dispatch(services.sunrise.actions.setBidBundle(name, hash))
       }
 
       for (let i = 0; i < bundles.length; i += 1) {
-        dispatch(services.sunrise.actions.addBundle(bundles[i].payload.hash, bundles[i]))
+        dispatch(
+          services.sunrise.actions.addBundle(
+            bundles[i].payload.hash,
+            bundles[i],
+          ),
+        )
       }
 
       dispatch(actions.setBiddingInProgress(false))
@@ -165,14 +181,14 @@ const actions = {
     return {
       type: constants.SET_REVEALING_BUNDLE,
       bundleKey,
-      value
+      value,
     }
   },
 
   setHasRevealError: (value) => {
     return {
       type: constants.SET_HAS_REVEAL_ERROR,
-      value
+      value,
     }
   },
 
@@ -186,13 +202,22 @@ const actions = {
       const enhancedPrivacy = selectors.enhancedPrivacy(state)
       const reverseLookups = services.names.selectors.reverseLookups(state)
 
-      try { 
+      try {
         if (enhancedPrivacy) {
-          await api.reveal(bundle.payload.names, bundle.payload.amounts, bundle.payload.salt)
+          await api.reveal(
+            bundle.payload.names,
+            bundle.payload.amounts,
+            bundle.payload.salt,
+          )
         } else {
-          const names = bundle.payload.names.map(n => reverseLookups[n])
+          const names = bundle.payload.names.map((n) => reverseLookups[n])
           const preimages = await api.buildPreimages(names)
-          await api.revealWithPreimage(bundle.payload.names, bundle.payload.amounts, bundle.payload.salt, preimages)
+          await api.revealWithPreimage(
+            bundle.payload.names,
+            bundle.payload.amounts,
+            bundle.payload.salt,
+            preimages,
+          )
         }
         dispatch(services.sunrise.actions.revealBundle(bundleKey))
       } catch (err) {
@@ -206,8 +231,8 @@ const actions = {
 
   enableEnhancedPrivacy: (value) => {
     return {
-      type: constants.ENABLE_ENHANCED_PRIVACY, 
-      value
+      type: constants.ENABLE_ENHANCED_PRIVACY,
+      value,
     }
   },
 
@@ -215,35 +240,35 @@ const actions = {
     return {
       type: constants.SET_AUCTION_RESULT,
       domain,
-      result
+      result,
     }
   },
 
   setLoadingWinningBids: (isLoading) => {
     return {
       type: constants.SET_LOADING_WINNING_BIDS,
-      isLoading
+      isLoading,
     }
   },
 
   winningBidsLoaded: (loaded) => {
     return {
       type: constants.WINNING_BIDS_LOADED,
-      loaded
+      loaded,
     }
   },
 
   setRevealedBids: (bids) => {
     return {
       type: constants.SET_REVEALED_BIDS,
-      bids
+      bids,
     }
   },
 
   setLoadedBidProgress: (progress) => {
     return {
       type: constants.SET_LOADED_BID_PROGRESS,
-      progress
+      progress,
     }
   },
 
@@ -271,15 +296,21 @@ const actions = {
       let revealedBids = []
 
       for (let i = 0; i < revealedBidCount; i += 1) {
-        promises.push(new Promise(async (resolve, reject) => {
-          const bid = await api.getRevealedBidForSenderAtIndex(i)
-          return resolve(bid)
-        }))
+        promises.push(
+          new Promise(async (resolve, reject) => {
+            const bid = await api.getRevealedBidForSenderAtIndex(i)
+            return resolve(bid)
+          }),
+        )
         if (promises.length >= 50 || i === revealedBidCount - 1) {
           let output = await Promise.all(promises)
           revealedBids = revealedBids.concat(output)
           loadedBidCount += promises.length
-          dispatch(actions.setLoadedBidProgress(parseInt((loadedBidCount / totalProgressCount) * 100)))
+          dispatch(
+            actions.setLoadedBidProgress(
+              parseInt((loadedBidCount / totalProgressCount) * 100),
+            ),
+          )
           promises = []
         }
       }
@@ -299,7 +330,11 @@ const actions = {
           dispatch(actions.setAuctionResult(domain, result))
         }
         loadedBidCount += 1
-        dispatch(actions.setLoadedBidProgress(parseInt((loadedBidCount / totalProgressCount) * 100)))
+        dispatch(
+          actions.setLoadedBidProgress(
+            parseInt((loadedBidCount / totalProgressCount) * 100),
+          ),
+        )
       }
       dispatch(actions.winningBidsLoaded(true))
     }
@@ -308,14 +343,14 @@ const actions = {
   setAvailableWavax: (amount) => {
     return {
       type: constants.SET_AVAILABLE_WAVAX,
-      amount
+      amount,
     }
   },
 
   setApprovedWavax: (amount) => {
     return {
       type: constants.SET_APPROVED_WAVAX,
-      amount
+      amount,
     }
   },
 
@@ -332,7 +367,7 @@ const actions = {
   gettingWAVAX: (getting) => {
     return {
       type: constants.SET_GETTING_WAVAX,
-      getting
+      getting,
     }
   },
 
@@ -343,8 +378,7 @@ const actions = {
         const api = services.provider.buildAPI()
         await api.wrapAvax(amount)
         dispatch(actions.checkAvailableWAVAX())
-      } catch (err) {
-      }
+      } catch (err) {}
       dispatch(actions.loadWinningBids(true))
       dispatch(actions.gettingWAVAX(false))
     }
@@ -353,7 +387,7 @@ const actions = {
   isApprovingWavax: (value) => {
     return {
       type: constants.SET_IS_APPROVING_WAVAX,
-      value
+      value,
     }
   },
 
@@ -363,8 +397,7 @@ const actions = {
       const api = services.provider.buildAPI()
       try {
         await api.approveWavaxForAuction(total)
-      } catch (err) {
-      }
+      } catch (err) {}
       dispatch(actions.checkAvailableWAVAX())
       dispatch(actions.loadWinningBids(true))
       dispatch(actions.isApprovingWavax(false))
@@ -374,7 +407,7 @@ const actions = {
   isClaimingDomains: (value) => {
     return {
       type: constants.SET_IS_CLAIMING_DOMAINS,
-      value
+      value,
     }
   },
 
@@ -382,14 +415,14 @@ const actions = {
     return {
       type: constants.SET_IS_CLAIMING_DOMAIN,
       key,
-      value
+      value,
     }
   },
 
   setClaimGenerateProofs: (value) => {
     return {
       type: constants.SET_CLAIM_GENERATE_PROOFS,
-      value
+      value,
     }
   },
 
@@ -399,16 +432,22 @@ const actions = {
       const api = services.provider.buildAPI()
       const state = getState()
       const auctionResults = selectors.auctionResults(state)
-      const constraintsProofs = services.proofs.selectors.constraintsProofs(state)
+      const constraintsProofs = services.proofs.selectors.constraintsProofs(
+        state,
+      )
       const names = []
       const constraintsData = []
       const missingProofs = []
       for (let name in auctionResults) {
-        if (auctionResults[name].isWinner && auctionResults[name].type !== 'IS_CLAIMED' && name === key) {
+        if (
+          auctionResults[name].isWinner &&
+          auctionResults[name].type !== 'IS_CLAIMED' &&
+          name === key
+        ) {
           names.push(name)
           if (constraintsProofs[name]) {
             constraintsData.push(constraintsProofs[name])
-          }  else {
+          } else {
             missingProofs.push(name)
           }
         }
@@ -423,11 +462,16 @@ const actions = {
       }
       try {
         await api.sunriseClaim(names, constraintsData)
-        names.forEach(name => {
+        names.forEach((name) => {
           dispatch(services.sunrise.actions.setClaimed(name))
-          dispatch(actions.setAuctionResult(name, Object.assign(auctionResults[name], {
-            type: 'IS_CLAIMED'
-          })))
+          dispatch(
+            actions.setAuctionResult(
+              name,
+              Object.assign(auctionResults[name], {
+                type: 'IS_CLAIMED',
+              }),
+            ),
+          )
         })
       } catch (err) {
         console.log(err)
@@ -444,12 +488,17 @@ const actions = {
       const api = services.provider.buildAPI()
       const state = getState()
       const auctionResults = selectors.auctionResults(state)
-      const constraintsProofs = services.proofs.selectors.constraintsProofs(state)
+      const constraintsProofs = services.proofs.selectors.constraintsProofs(
+        state,
+      )
       const names = []
       const constraintsData = []
       const missingProofs = []
       for (let name in auctionResults) {
-        if (auctionResults[name].isWinner && auctionResults[name].type !== 'IS_CLAIMED') {
+        if (
+          auctionResults[name].isWinner &&
+          auctionResults[name].type !== 'IS_CLAIMED'
+        ) {
           names.push(name)
           if (constraintsProofs[name]) {
             constraintsData.push(constraintsProofs[name])
@@ -469,11 +518,16 @@ const actions = {
       }
       try {
         await api.sunriseClaim(names, constraintsData)
-        names.forEach(name => {
+        names.forEach((name) => {
           dispatch(services.sunrise.actions.setClaimed(name))
-          dispatch(actions.setAuctionResult(name, Object.assign(auctionResults[name], {
-            type: 'IS_CLAIMED'
-          })))
+          dispatch(
+            actions.setAuctionResult(
+              name,
+              Object.assign(auctionResults[name], {
+                type: 'IS_CLAIMED',
+              }),
+            ),
+          )
         })
       } catch (err) {
         console.log(err)
@@ -500,8 +554,7 @@ const actions = {
             domains.push(domain)
             hashes.push(hash.toString())
             amounts.push(bids[domain])
-          } catch (err) {
-          }
+          } catch (err) {}
         } else {
         }
       }
@@ -515,22 +568,31 @@ const actions = {
       try {
         const state = getState()
         const api = services.provider.buildAPI()
-        let j = 0;
+        let j = 0
         const numSteps = names.length
         for (let i = 0; i < names.length; i += 1) {
           let name = names[i]
-          dispatch(actions.setProofProgress({
-            message: `Generating constraints proof for ${name} (${j}/${numSteps})`,
-            percent: parseInt((j / numSteps) * 100),
-          }))
+          dispatch(
+            actions.setProofProgress({
+              message: `Generating constraints proof for ${name} (${j}/${numSteps})`,
+              percent: parseInt((j / numSteps) * 100),
+            }),
+          )
           let constraintsRes = await api.generateConstraintsProof(name)
-          dispatch(services.proofs.actions.setConstraintsProof(name, constraintsRes.calldata))
+          dispatch(
+            services.proofs.actions.setConstraintsProof(
+              name,
+              constraintsRes.calldata,
+            ),
+          )
           j += 1
         }
-        dispatch(actions.setProofProgress({
-          message: `Done`,
-          percent: 100,
-        }))
+        dispatch(
+          actions.setProofProgress({
+            message: `Done`,
+            percent: 100,
+          }),
+        )
       } catch (err) {
         services.logger.error(err)
         console.log(err)

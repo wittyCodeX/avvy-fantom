@@ -1,12 +1,12 @@
 //
 // This service is responsible for
 // interacting with the chain.
-// Portions of this service will be 
+// Portions of this service will be
 // extracted later for the public
 // API clients.
 //
 import { ethers } from 'ethers'
-import client from '@avvy/client'
+import client from 'clients'
 
 import services from 'services'
 
@@ -14,7 +14,7 @@ class AvvyClient {
   constructor(chainId, account, signerOrProvider) {
     this.chainId = parseInt(chainId)
     this.avvy = new client(signerOrProvider, {
-      chainId
+      chainId,
     })
     this.contracts = this.avvy.contracts
 
@@ -37,7 +37,7 @@ class AvvyClient {
     const exists = await this.contracts.Domain.exists(hash)
     return exists
   }
-  
+
   async ownerOf(hash) {
     const owner = await this.contracts.Domain.ownerOf(hash)
     return owner
@@ -52,14 +52,20 @@ class AvvyClient {
     const domainCount = await this.getDomainCountForOwner(account)
     let domains = []
     for (let i = 0; i < domainCount; i += 1) {
-      let id = await this.contracts.Domain.tokenOfOwnerByIndex(account, i.toString())
+      let id = await this.contracts.Domain.tokenOfOwnerByIndex(
+        account,
+        i.toString(),
+      )
       domains.push(id)
     }
     return domains
   }
 
   async getTokenOfOwnerByIndex(account, index) {
-    let id = await this.contracts.Domain.tokenOfOwnerByIndex(account, index.toString())
+    let id = await this.contracts.Domain.tokenOfOwnerByIndex(
+      account,
+      index.toString(),
+    )
     return id
   }
 
@@ -74,7 +80,7 @@ class AvvyClient {
     const biddingStartsAt = parseInt(auctionPhases[0]) * 1000
     const revealStartsAt = parseInt(auctionPhases[1]) * 1000
     const now = parseInt(Date.now())
-    return now >= biddingStartsAt && now < revealStartsAt 
+    return now >= biddingStartsAt && now < revealStartsAt
   }
 
   async isRegistrationPeriod() {
@@ -121,12 +127,17 @@ class AvvyClient {
     if (split[0].length < 3) return false
     if (split[0].length > 62) return false
     if (!split[0].match(/^[a-z0-9][a-z0-9-]+[a-z0-9]$/)) return false
-    if (split[0].length >= 4 && split[0][2] === '-' && split[0][3] === '-') return false
+    if (split[0].length >= 4 && split[0][2] === '-' && split[0][3] === '-')
+      return false
     return true
   }
 
   async getAVAXConversionRateFromChainlink(address) {
-    let oracle = new ethers.Contract(address, services.abi.chainlink, this.signer)
+    let oracle = new ethers.Contract(
+      address,
+      services.abi.chainlink,
+      this.signer,
+    )
     let roundData = await oracle.latestRoundData()
     let rate = roundData[1].toString()
 
@@ -142,9 +153,13 @@ class AvvyClient {
     if (this.chainId === 31337) {
       rate = ethers.BigNumber.from('10000000000')
     } else if (this.chainId === 43113) {
-      rate = await this.getAVAXConversionRateFromChainlink('0x5498BB86BC934c8D34FDA08E81D444153d0D06aD')
+      rate = await this.getAVAXConversionRateFromChainlink(
+        '0x5498BB86BC934c8D34FDA08E81D444153d0D06aD',
+      )
     } else if (this.chainId === 43114) {
-      rate = await this.getAVAXConversionRateFromChainlink('0x0A77230d17318075983913bC2145DB16C7366156')
+      rate = await this.getAVAXConversionRateFromChainlink(
+        '0x0A77230d17318075983913bC2145DB16C7366156',
+      )
     }
     return ethers.BigNumber.from('10').pow('24').div(rate)
   }
@@ -157,7 +172,6 @@ class AvvyClient {
   }
 
   async loadDomain(domain) {
-    
     // hash the name
     const hash = await client.utils.nameHash(domain)
     const tokenExists = await this.tokenExists(hash)
@@ -166,7 +180,12 @@ class AvvyClient {
 
     if (tokenExists) {
       owner = await this.ownerOf(hash)
-      if (owner && this.account && owner.toLowerCase() === this.account.toLowerCase()) domainStatus = this.DOMAIN_STATUSES.REGISTERED_SELF
+      if (
+        owner &&
+        this.account &&
+        owner.toLowerCase() === this.account.toLowerCase()
+      )
+        domainStatus = this.DOMAIN_STATUSES.REGISTERED_SELF
       else domainStatus = this.DOMAIN_STATUSES.REGISTERED_OTHER
     } else {
       domainStatus = this.DOMAIN_STATUSES.AVAILABLE
@@ -174,9 +193,10 @@ class AvvyClient {
 
     let priceUSDCents = await this.getNamePrice(domain)
     let avaxConversionRate = await this.getAVAXConversionRate()
-    let priceAVAXEstimate = avaxConversionRate.mul(ethers.BigNumber.from(priceUSDCents)).toString()
+    let priceAVAXEstimate = avaxConversionRate
+      .mul(ethers.BigNumber.from(priceUSDCents))
+      .toString()
     let expiresAt = await this.getNameExpiry(hash)
-
 
     return {
       constants: {
@@ -207,7 +227,7 @@ class AvvyClient {
       namespaceId: namespaceHash.toString(),
       name: nameArr,
       hash: hash.toString(),
-      minLength
+      minLength,
     }
     const proveRes = await services.circuits.prove('PriceCheck', inputs)
     const verify = await services.circuits.verify('PriceCheck', proveRes)
@@ -215,7 +235,7 @@ class AvvyClient {
     const calldata = await services.circuits.calldata(proveRes)
     return {
       proveRes,
-      calldata
+      calldata,
     }
   }
 
@@ -237,7 +257,7 @@ class AvvyClient {
     const calldata = await services.circuits.calldata(proveRes)
     return {
       proveRes,
-      calldata
+      calldata,
     }
   }
 
@@ -247,7 +267,13 @@ class AvvyClient {
       let hash = await client.utils.nameHash(domains[i])
       hashes.push(hash.toString())
     }
-    const hash = await client.utils.registrationCommitHash(hashes, quantities, constraintsProofs, pricingProofs, salt)
+    const hash = await client.utils.registrationCommitHash(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      salt,
+    )
     const tx = await this.contracts.LeasingAgentV1.commit(hash)
     await tx.wait()
     return hash
@@ -263,14 +289,12 @@ class AvvyClient {
       hashes.push(hash.toString())
       let namePrice = await this.getNamePriceAVAX(domains[i], conversionRate)
       total = total.add(
-        ethers.BigNumber.from(quantities[i].toString()).mul(
-          namePrice
-        )
+        ethers.BigNumber.from(quantities[i].toString()).mul(namePrice),
       )
     }
     return {
-      total, 
-      hashes
+      total,
+      hashes,
     }
   }
 
@@ -279,41 +303,84 @@ class AvvyClient {
   }
 
   async register(domains, quantities, constraintsProofs, pricingProofs) {
-    const { total, hashes } = await this._getRegistrationArgs(domains, quantities)
+    const { total, hashes } = await this._getRegistrationArgs(
+      domains,
+      quantities,
+    )
     const premium = await this.getRegistrationPremium()
     const value = total.add(premium.mul(hashes.length))
-    const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.register(hashes, quantities, constraintsProofs, pricingProofs, {
-      value
-    })
-    const gasLimit = gasEstimate.add(this._getTreasuryGasSurplus().mul(hashes.length))
-    const registerTx = await this.contracts.LeasingAgentV1.register(hashes, quantities, constraintsProofs, pricingProofs, {
-      gasLimit,
-      value
-    })
+    const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.register(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      {
+        value,
+      },
+    )
+    const gasLimit = gasEstimate.add(
+      this._getTreasuryGasSurplus().mul(hashes.length),
+    )
+    const registerTx = await this.contracts.LeasingAgentV1.register(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      {
+        gasLimit,
+        value,
+      },
+    )
     await registerTx.wait()
   }
 
-  async registerWithPreimage(domains, quantities, constraintsProofs, pricingProofs, preimages) {
-    const { total, hashes } = await this._getRegistrationArgs(domains, quantities)
+  async registerWithPreimage(
+    domains,
+    quantities,
+    constraintsProofs,
+    pricingProofs,
+    preimages,
+  ) {
+    const { total, hashes } = await this._getRegistrationArgs(
+      domains,
+      quantities,
+    )
     const premium = await this.getRegistrationPremium()
     const value = total.add(premium.mul(hashes.length))
-    const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.registerWithPreimage(hashes, quantities, constraintsProofs, pricingProofs, preimages, {
-      value,
-    })
+    const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.registerWithPreimage(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      preimages,
+      {
+        value,
+      },
+    )
 
-    const gasLimit = gasEstimate.add(this._getTreasuryGasSurplus().mul(hashes.length))
-    const registerTx = await this.contracts.LeasingAgentV1.registerWithPreimage(hashes, quantities, constraintsProofs, pricingProofs, preimages, {
-      gasLimit,
-      value
-    })
+    const gasLimit = gasEstimate.add(
+      this._getTreasuryGasSurplus().mul(hashes.length),
+    )
+    const registerTx = await this.contracts.LeasingAgentV1.registerWithPreimage(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      preimages,
+      {
+        gasLimit,
+        value,
+      },
+    )
     await registerTx.wait()
   }
 
   async getAuctionPhases() {
     const now = parseInt(Date.now() / 1000)
-    if (this._auctionPhasesCache && now - this._auctionPhasesCachedAt < 60 * 5) return this._auctionPhasesCache
+    if (this._auctionPhasesCache && now - this._auctionPhasesCachedAt < 60 * 5)
+      return this._auctionPhasesCache
     const params = await this.contracts.SunriseAuctionV1.getAuctionParams()
-    const phases = params.map(p => parseInt(p.toString()))
+    const phases = params.map((p) => parseInt(p.toString()))
     this._auctionPhasesCache = phases
     this._auctionPhasesCachedAt = now
     return phases
@@ -325,12 +392,21 @@ class AvvyClient {
   }
 
   async reveal(names, amounts, salt) {
-    const tx = await this.contracts.SunriseAuctionV1.reveal(names, amounts, salt)
+    const tx = await this.contracts.SunriseAuctionV1.reveal(
+      names,
+      amounts,
+      salt,
+    )
     await tx.wait()
   }
 
   async revealWithPreimage(names, amounts, salt, preimages) {
-    const tx = await this.contracts.SunriseAuctionV1.revealWithPreimage(names, amounts, salt, preimages)
+    const tx = await this.contracts.SunriseAuctionV1.revealWithPreimage(
+      names,
+      amounts,
+      salt,
+      preimages,
+    )
     await tx.wait()
   }
 
@@ -338,7 +414,9 @@ class AvvyClient {
     const hash = await client.utils.nameHash(name)
     let result
     try {
-      const output = await this.contracts.SunriseAuctionV1.getWinningBid(hash.toString())
+      const output = await this.contracts.SunriseAuctionV1.getWinningBid(
+        hash.toString(),
+      )
       try {
         const owner = await this.ownerOf(hash.toString())
         result = {
@@ -346,19 +424,19 @@ class AvvyClient {
           owner,
           winner: output.winner,
           auctionPrice: output.auctionPrice.toString(),
-          isWinner: output.winner.toLowerCase() === this.account
+          isWinner: output.winner.toLowerCase() === this.account,
         }
       } catch (err) {
         result = {
           type: 'HAS_WINNER',
           winner: output.winner,
           auctionPrice: output.auctionPrice.toString(),
-          isWinner: output.winner.toLowerCase() === this.account
+          isWinner: output.winner.toLowerCase() === this.account,
         }
       }
     } catch (err) {
       result = {
-        type: 'NO_WINNER'
+        type: 'NO_WINNER',
       }
       console.log(err)
     }
@@ -370,9 +448,17 @@ class AvvyClient {
     if (this.chainId === 31337) {
       contract = this.contracts.MockWavax
     } else if (this.chainId === 43113) {
-      contract = new ethers.Contract('0xd00ae08403B9bbb9124bB305C09058E32C39A48c', services.abi.wavax, this.signer)
+      contract = new ethers.Contract(
+        '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
+        services.abi.wavax,
+        this.signer,
+      )
     } else if (this.chainId === 43114) {
-      contract = new ethers.Contract('0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', services.abi.wavax, this.signer)
+      contract = new ethers.Contract(
+        '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+        services.abi.wavax,
+        this.signer,
+      )
     }
     return contract
   }
@@ -385,21 +471,27 @@ class AvvyClient {
 
   async getAuctionWavax() {
     const contract = this.getWavaxContract()
-    const allowance = await contract.allowance(this.account, this.contracts.SunriseAuctionV1.address)
+    const allowance = await contract.allowance(
+      this.account,
+      this.contracts.SunriseAuctionV1.address,
+    )
     return allowance.toString()
   }
 
   async wrapAvax(amount) {
     const contract = this.getWavaxContract()
     const tx = await contract.deposit({
-      value: amount
+      value: amount,
     })
     await tx.wait()
   }
 
   async approveWavaxForAuction(amount) {
     const contract = this.getWavaxContract()
-    const tx = await contract.approve(this.contracts.SunriseAuctionV1.address, amount) 
+    const tx = await contract.approve(
+      this.contracts.SunriseAuctionV1.address,
+      amount,
+    )
     await tx.wait()
   }
 
@@ -409,7 +501,9 @@ class AvvyClient {
   }
 
   async getRevealedBidForSenderAtIndex(index) {
-    const bid = await this.contracts.SunriseAuctionV1.getRevealedBidForSenderAtIndex(index)
+    const bid = await this.contracts.SunriseAuctionV1.getRevealedBidForSenderAtIndex(
+      index,
+    )
     let nameSignal, preimage
     try {
       nameSignal = await this.contracts.RainbowTableV1.lookup(bid.name)
@@ -421,7 +515,7 @@ class AvvyClient {
       name: bid.name,
       amount: bid.amount,
       timestamp: bid.timestamp,
-      preimage: preimage
+      preimage: preimage,
     }
   }
 
@@ -431,24 +525,34 @@ class AvvyClient {
       let hash = await client.utils.nameHash(names[i])
       hashes.push(hash.toString())
     }
-    const tx = await this.contracts.SunriseAuctionV1.claim(hashes, constraintsData)
+    const tx = await this.contracts.SunriseAuctionV1.claim(
+      hashes,
+      constraintsData,
+    )
     await tx.wait()
   }
 
   async checkHasAccount() {
     // check if there is an account on-chain
-    const hasAccount = await this.contracts.AccountGuardV1.addressHasAccount(this.account)
+    const hasAccount = await this.contracts.AccountGuardV1.addressHasAccount(
+      this.account,
+    )
     return hasAccount
   }
 
   async submitAccountVerification(signature) {
-    const tx = await this.contracts.AccountGuardV1.verify(ethers.utils.getAddress(this.account), signature)
+    const tx = await this.contracts.AccountGuardV1.verify(
+      ethers.utils.getAddress(this.account),
+      signature,
+    )
     await tx.wait()
   }
 
   async getRegistrationPremium() {
     const now = parseInt(Date.now() / 1000)
-    const registrationPremium = await this.contracts.LeasingAgentV1.getRegistrationPremium(now)
+    const registrationPremium = await this.contracts.LeasingAgentV1.getRegistrationPremium(
+      now,
+    )
     return registrationPremium
   }
 
@@ -499,31 +603,43 @@ class AvvyClient {
 
   async setStandardRecord(domain, type, value) {
     const hash = await client.utils.nameHash(domain)
-    const tx = await this.contracts.PublicResolverV1.setStandard(hash, [], type, value)
+    const tx = await this.contracts.PublicResolverV1.setStandard(
+      hash,
+      [],
+      type,
+      value,
+    )
     await tx.wait()
   }
 
   async getStandardRecords(domain) {
     // this won't work for subdomains yet.
     const hash = await client.utils.nameHash(domain)
-    const promises = this.avvy.RECORDS._LIST.map(r => this.contracts.PublicResolverV1.resolveStandard(hash, hash, r.key))
+    const promises = this.avvy.RECORDS._LIST.map((r) =>
+      this.contracts.PublicResolverV1.resolveStandard(hash, hash, r.key),
+    )
     const results = await Promise.all(promises)
-    return results.map((res, index) => {
-      return {
-        type: index + 1,
-        value: res
-      }
-    }).filter(res => res.value !== '')
+    return results
+      .map((res, index) => {
+        return {
+          type: index + 1,
+          value: res,
+        }
+      })
+      .filter((res) => res.value !== '')
   }
 
   async getReverseRecords(domain) {
     const hash = await client.utils.nameHash(domain)
     const promises = [
-      this.avvy.contracts.EVMReverseResolverV1.getEntry(hash, hash)
+      this.avvy.contracts.EVMReverseResolverV1.getEntry(hash, hash),
     ]
     const results = await Promise.all(promises)
     return {
-      [this.avvy.RECORDS.EVM]: results[0] === '0x0000000000000000000000000000000000000000' ? null : results[0]
+      [this.avvy.RECORDS.EVM]:
+        results[0] === '0x0000000000000000000000000000000000000000'
+          ? null
+          : results[0],
     }
   }
 
@@ -540,7 +656,9 @@ class AvvyClient {
 
   async transferDomain(domain, address) {
     const tokenId = await client.utils.nameHash(domain)
-    const tx = await this.contracts.Domain['safeTransferFrom(address,address,uint256)'](this.account, address, tokenId)
+    const tx = await this.contracts.Domain[
+      'safeTransferFrom(address,address,uint256)'
+    ](this.account, address, tokenId)
     await tx.wait()
   }
 }
