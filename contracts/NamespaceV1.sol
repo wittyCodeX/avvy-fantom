@@ -453,7 +453,7 @@ pragma solidity ^0.8.0;
 /*
 Casing is not enforced here. Users must be careful not to
 implement duplicates by casing errors, e.g. by adding
-AVAX and aVaX and avax as namespaces.
+FTM and fTm and ftm as namespaces.
 
 Casing rules are to be enforced by the MANAGER role.
 */

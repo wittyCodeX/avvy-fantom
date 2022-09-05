@@ -21,14 +21,14 @@ const money = {
     return `$${dollars}.${cents} USD`
   },
 
-  renderWAVAX: (amount) => {
+  renderWFTM: (amount) => {
     const amt = ethers.utils.formatEther(amount)
-    return (+amt).toFixed(4) + ' WAVAX'
+    return (+amt).toFixed(4) + ' WFTM'
   },
 
-  renderAVAX: (amount) => {
+  renderFTM: (amount) => {
     const amt = ethers.utils.formatEther(amount)
-    return (+amt).toFixed(4) + ' AVAX'
+    return (+amt).toFixed(4) + ' FTM'
   },
 
   // multiplies two strings together

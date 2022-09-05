@@ -27,34 +27,34 @@ describe('Records', () => {
 
     describe('X_CHAIN', () => {
       it('should succeed for address', async () => {
-        const address ='x-avax1gzfycn4upewnlwf3tcrpjkuc46gnmvxkuuknh8'
+        const address = 'x-ftm1gzfycn4upewnlwf3tcrpjkuc46gnmvxkuuknh8'
         expect(test('X_CHAIN', address)).to.be.true
       })
 
       it('should succeed for address', async () => {
-        const address ='X-avax1vce4lsee3nysqnavj5g4mvul4daqljqr2537y7'
+        const address = 'X-ftm1vce4lsee3nysqnavj5g4mvul4daqljqr2537y7'
         expect(test('X_CHAIN', address)).to.be.true
       })
 
       it('should succeed for address', async () => {
-        const address ='x-AVAX19csz9e0su7u6ll439exw4907h0806564zf4pn7'
+        const address = 'x-FTM19csz9e0su7u6ll439exw4907h0806564zf4pn7'
         expect(test('X_CHAIN', address)).to.be.true
       })
     })
 
     describe('P_CHAIN', () => {
       it('should succeed for address', async () => {
-        const address = 'P-avax1qju5a80xf58yu8gkdddk5jnhvt32hu779gl6tm' 
+        const address = 'P-ftm1qju5a80xf58yu8gkdddk5jnhvt32hu779gl6tm'
         expect(test('P_CHAIN', address)).to.be.true
       })
 
       it('should succeed for address', async () => {
-        const address = 'P-AVAX1mspwmexngjj3ya0n0lgkzzpn4365dzkjm5gle6'
+        const address = 'P-FTM1mspwmexngjj3ya0n0lgkzzpn4365dzkjm5gle6'
         expect(test('P_CHAIN', address)).to.be.true
       })
 
       it('should succeed for address', async () => {
-        const address = 'p-avax1qq8m42m0pmqx97dqqdptfrh2ak4f8u0dg9lck2'
+        const address = 'p-ftm1qq8m42m0pmqx97dqqdptfrh2ak4f8u0dg9lck2'
         expect(test('P_CHAIN', address)).to.be.true
       })
 
@@ -66,7 +66,7 @@ describe('Records', () => {
 
     describe('EVM', () => {
       it('should work for lowercase EVM address', async () => {
-        const address = '0xab5801a7d398351b8be11c439e05c5b3259aec9b' 
+        const address = '0xab5801a7d398351b8be11c439e05c5b3259aec9b'
         expect(test('EVM', address)).to.be.true
       })
 
@@ -157,7 +157,7 @@ describe('Records', () => {
     })
 
     describe('PHONE', () => {
-      // too many different 
+      // too many different
     })
   })
 })

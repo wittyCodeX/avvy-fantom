@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { CheckCircleIcon, PlusCircleIcon, ExternalLinkIcon } from '@heroicons/react/solid'
-import { InformationCircleIcon, PlusIcon } from '@heroicons/react/outline' 
+import {
+  CheckCircleIcon,
+  PlusCircleIcon,
+  ExternalLinkIcon,
+} from '@heroicons/react/solid'
+import { InformationCircleIcon, PlusIcon } from '@heroicons/react/outline'
 import { ethers } from 'ethers'
 
 import services from 'services'
@@ -16,7 +20,6 @@ import actions from './actions'
 import constants from './constants'
 import reducer from './reducer'
 import selectors from './selectors'
-
 
 class Domain extends React.PureComponent {
   constructor(props) {
@@ -34,29 +37,32 @@ class Domain extends React.PureComponent {
     }
     this.searchPlaceholder = 'Search for another name'
     this.loadDomain(domain)
-    this.getAvvy()
+    this.getFTMVY()
   }
 
-  async getAvvy() {
+  async getFTMVY() {
     const api = await services.provider.buildAPI()
     this.avvy = api.avvy
   }
 
-  async setDefaultResolver() { 
+  async setDefaultResolver() {
     const api = await services.provider.buildAPI()
     this.setState({
-      defaultResolver: api.getDefaultResolverAddress()
+      defaultResolver: api.getDefaultResolverAddress(),
     })
   }
 
   updateParams = () => {
     const params = services.linking.getParams('Domain')
     const domain = params.domain ? params.domain.toLowerCase() : null
-    this.setState({
-      domain: domain
-    }, () => {
-      this.loadDomain(domain)
-    })
+    this.setState(
+      {
+        domain: domain,
+      },
+      () => {
+        this.loadDomain(domain)
+      },
+    )
   }
 
   loadDomain() {
@@ -68,7 +74,7 @@ class Domain extends React.PureComponent {
 
   onConnect() {
     this.setState({
-      connected: true
+      connected: true,
     })
     if (this.connectModal) this.connectModal.hide()
     this.loadDomain()
@@ -87,14 +93,20 @@ class Domain extends React.PureComponent {
 
   componentDidMount() {
     services.linking.addEventListener('Domain', this.updateParams)
-    services.provider.addEventListener(services.provider.EVENTS.CONNECTED, this.onConnect.bind(this))
+    services.provider.addEventListener(
+      services.provider.EVENTS.CONNECTED,
+      this.onConnect.bind(this),
+    )
     this.setDefaultResolver()
     this.setApi()
   }
 
   componentWillUnmount() {
     services.linking.removeEventListener('Domain', this.updateParams)
-    services.provider.addEventListener(services.provider.EVENTS.CONNECTED, this.onConnect.bind(this))
+    services.provider.addEventListener(
+      services.provider.EVENTS.CONNECTED,
+      this.onConnect.bind(this),
+    )
   }
 
   addToCart(navigator) {
@@ -121,7 +133,7 @@ class Domain extends React.PureComponent {
   }
 
   showSetRecord = (key, value) => {
-    this.setState(currState => ({
+    this.setState((currState) => ({
       editRecordKey: key,
       deleteRecordKey: null,
     }))
@@ -131,7 +143,7 @@ class Domain extends React.PureComponent {
   }
 
   showDeleteRecord = (key, value) => {
-    this.setState(currState => ({
+    this.setState((currState) => ({
       editRecordKey: null,
       deleteRecordKey: key,
     }))
@@ -142,34 +154,43 @@ class Domain extends React.PureComponent {
 
   renderAvailableBody() {
     return (
-      <div className='max-w-md m-auto'>
-        <div className='max-w-sm m-auto mt-4 flex items-center justify-center'>
-          <CheckCircleIcon className='w-6 text-alert-blue mr-2' />
-          <div className='text-alert-blue'>{'Available for registration'}</div>
+      <div className="max-w-md m-auto">
+        <div className="max-w-sm m-auto mt-4 flex items-center justify-center">
+          <CheckCircleIcon className="w-6 text-alert-blue mr-2" />
+          <div className="text-alert-blue">{'Available for registration'}</div>
         </div>
         {this.props.registrationPremium.gt(ethers.BigNumber.from('0')) ? (
-          <div className='mt-4 border-2 rounded-lg border-gray-100 dark:border-gray-700 p-4'>
-            <div className='font-bold'>Registration Premium</div>
+          <div className="mt-4 border-2 rounded-lg border-gray-100 dark:border-gray-700 p-4">
+            <div className="font-bold">Registration Premium</div>
             <div>
-              {'The .avax namespace is currently launching. Names can be acquired, but a one-time Registration Premium must be paid in AVAX. This Registration Premium decreases as time passes, eventually reaching 0.'}
+              {
+                'The .ftm namespace is currently launching. Names can be acquired, but a one-time Registration Premium must be paid in FTM. This Registration Premium decreases as time passes, eventually reaching 0.'
+              }
             </div>
-            <div className='mt-4 underline'>
-              <a href="https://avvy.domains/auction-guide/" target="_blank">Read more about Registration Premiums</a>
+            <div className="mt-4 underline">
+              <a href="https://avvy.domains/auction-guide/" target="_blank">
+                Read more about Registration Premiums
+              </a>
             </div>
-            <div className='mt-4'>Current Premium: <span className='font-bold'>{services.money.renderAVAX(this.props.registrationPremium)}</span></div>
+            <div className="mt-4">
+              Current Premium:{' '}
+              <span className="font-bold">
+                {services.money.renderFTM(this.props.registrationPremium)}
+              </span>
+            </div>
           </div>
         ) : (
-          <div className='p-4'></div>
+          <div className="p-4"></div>
         )}
         {services.environment.REGISTRATIONS_ENABLED ? (
-          <div className='mt-4'>
-            <components.buttons.Button 
-              text={'Register this name'} 
-              onClick={(navigator) => this.addToCart(navigator)} 
+          <div className="mt-4">
+            <components.buttons.Button
+              text={'Register this name'}
+              onClick={(navigator) => this.addToCart(navigator)}
             />
           </div>
         ) : null}
-        <div className='mt-4'>
+        <div className="mt-4">
           <components.DomainSearch placeholder={this.searchPlaceholder} />
         </div>
       </div>
@@ -179,23 +200,31 @@ class Domain extends React.PureComponent {
   renderAuctionAvailableBody() {
     const hasBid = this.props.bids && this.props.bids[this.state.domain]
     return (
-      <div className='max-w-md m-auto'>
+      <div className="max-w-md m-auto">
         {hasBid ? (
           <>
-            <components.labels.Success text='You have placed a bid on this name' />
-            <div className='mt-8'>
-              <components.buttons.Button text={'View my bids'} onClick={(navigator) => services.linking.navigate(navigator, 'SunriseAuctionMyBids')} />
+            <components.labels.Success text="You have placed a bid on this name" />
+            <div className="mt-8">
+              <components.buttons.Button
+                text={'View my bids'}
+                onClick={(navigator) =>
+                  services.linking.navigate(navigator, 'SunriseAuctionMyBids')
+                }
+              />
             </div>
           </>
         ) : (
           <>
-            <components.labels.Success text='Available for auction' />
-            <div className='mt-8'>
-              <components.buttons.Button text={'Bid on this name'} onClick={this.bidOnName.bind(this)} />
+            <components.labels.Success text="Available for auction" />
+            <div className="mt-8">
+              <components.buttons.Button
+                text={'Bid on this name'}
+                onClick={this.bidOnName.bind(this)}
+              />
             </div>
           </>
         )}
-        <div className='mt-4'>
+        <div className="mt-4">
           <components.DomainSearch placeholder={this.searchPlaceholder} />
         </div>
       </div>
@@ -204,17 +233,19 @@ class Domain extends React.PureComponent {
 
   renderAuctionBiddingClosedBody() {
     return (
-      <div className='max-w-md m-auto'>
-        <div className='max-w-sm m-auto mt-4'>
+      <div className="max-w-md m-auto">
+        <div className="max-w-sm m-auto mt-4">
           <components.labels.Information text={'This name is up for auction'} />
         </div>
-        <div className='mt-4 bg-gray-100 rounded-xl w-full relative p-8 dark:bg-gray-700'>
-          <div className='font-bold'>{'Bidding period is over'}</div>
+        <div className="mt-4 bg-gray-100 rounded-xl w-full relative p-8 dark:bg-gray-700">
+          <div className="font-bold">{'Bidding period is over'}</div>
           <div>
-            {'This name is undergoing the Sunrise Auction process, however bidding is closed. If there are no winning bids, this name will be available for registration after the auction completes.'}
+            {
+              'This name is undergoing the Sunrise Auction process, however bidding is closed. If there are no winning bids, this name will be available for registration after the auction completes.'
+            }
           </div>
         </div>
-        <div className='mt-4'>
+        <div className="mt-4">
           <components.DomainSearch placeholder={this.searchPlaceholder} />
         </div>
       </div>
@@ -223,11 +254,11 @@ class Domain extends React.PureComponent {
 
   renderUnsupported() {
     return (
-      <div className='max-w-md m-auto'>
-        <div className='max-w-sm m-auto mt-4 flex items-center justify-center'>
+      <div className="max-w-md m-auto">
+        <div className="max-w-sm m-auto mt-4 flex items-center justify-center">
           <components.labels.Error text={'This name cannot be registered'} />
         </div>
-        <div className='mt-4'>
+        <div className="mt-4">
           <components.DomainSearch placeholder={this.searchPlaceholder} />
         </div>
       </div>
@@ -236,255 +267,412 @@ class Domain extends React.PureComponent {
 
   renderRegistered() {
     let account = services.provider.getAccount()
-    const isOwned = account ? account.toLowerCase() === this.props.domain.owner.toLowerCase() : false
-    const isExpired = Date.now() >= this.props.domain.expiresAt * 1000 
-    const hasLoadedPrivacy = !!this.props.isRevealed && (this.props.isRevealed[this.props.domain.hash] != undefined)
+    const isOwned = account
+      ? account.toLowerCase() === this.props.domain.owner.toLowerCase()
+      : false
+    const isExpired = Date.now() >= this.props.domain.expiresAt * 1000
+    const hasLoadedPrivacy =
+      !!this.props.isRevealed &&
+      this.props.isRevealed[this.props.domain.hash] != undefined
     if (!this.avvy) return
-    
+
     return (
-      <div className='max-w-screen-md m-auto flex w-full md:flex-row md:items-start'>
-        <components.Modal ref={(ref) => this.dataExplorerModal = ref}>
+      <div className="max-w-screen-md m-auto flex w-full md:flex-row md:items-start">
+        <components.Modal ref={(ref) => (this.dataExplorerModal = ref)}>
           <components.DataExplorer data={this.state.dataExplorer} />
         </components.Modal>
-        <components.Modal title={'Set C-Chain / EVM Reverse Record'} ref={(ref) => this.setEVMReverseRecordModal = ref}>
-          <SetEVMReverseRecord domain={this.state.domain} onComplete={() => {
-            this.setEVMReverseRecordModal.toggle()
-          }} />
+        <components.Modal
+          title={'Set C-Chain / EVM Reverse Record'}
+          ref={(ref) => (this.setEVMReverseRecordModal = ref)}
+        >
+          <SetEVMReverseRecord
+            domain={this.state.domain}
+            onComplete={() => {
+              this.setEVMReverseRecordModal.toggle()
+            }}
+          />
         </components.Modal>
-        <components.Modal title={'Transfer Domain'} ref={(ref) => this.transferDomainModal = ref}>
-          <TransferDomain onComplete={() => {
-            this.loadDomain()
-            this.transferDomainModal.toggle()
-          }} domain={this.state.domain} />
+        <components.Modal
+          title={'Transfer Domain'}
+          ref={(ref) => (this.transferDomainModal = ref)}
+        >
+          <TransferDomain
+            onComplete={() => {
+              this.loadDomain()
+              this.transferDomainModal.toggle()
+            }}
+            domain={this.state.domain}
+          />
         </components.Modal>
-        <components.Modal title={this.state.deleteRecordKey ? 'Delete Record' : this.state.editRecordKey ? 'Edit Record' :  'Add Record'} ref={(ref) => this.setRecordModal = ref}>
-          <SetRecord deleteRecord={this.state.deleteRecordKey} editRecord={this.state.editRecordKey} handleSubmit={this._handleSetRecord} loading={this.props.isSettingRecord} api={this.api} ref={(ref) => this.setRecord = ref} />
+        <components.Modal
+          title={
+            this.state.deleteRecordKey
+              ? 'Delete Record'
+              : this.state.editRecordKey
+              ? 'Edit Record'
+              : 'Add Record'
+          }
+          ref={(ref) => (this.setRecordModal = ref)}
+        >
+          <SetRecord
+            deleteRecord={this.state.deleteRecordKey}
+            editRecord={this.state.editRecordKey}
+            handleSubmit={this._handleSetRecord}
+            loading={this.props.isSettingRecord}
+            api={this.api}
+            ref={(ref) => (this.setRecord = ref)}
+          />
         </components.Modal>
-        <components.Modal title={'Set Resolver'} ref={(ref) =>  this.setResolverModal = ref}>
-          <SetResolver onComplete={() => this.setResolverModal.toggle()} domain={this.state.domain} resolver={this.props.resolver} />
+        <components.Modal
+          title={'Set Resolver'}
+          ref={(ref) => (this.setResolverModal = ref)}
+        >
+          <SetResolver
+            onComplete={() => this.setResolverModal.toggle()}
+            domain={this.state.domain}
+            resolver={this.props.resolver}
+          />
         </components.Modal>
-        <components.Modal title={'Switch to Standard Privacy'} ref={(ref) => this.revealDomainModal = ref}>
+        <components.Modal
+          title={'Switch to Standard Privacy'}
+          ref={(ref) => (this.revealDomainModal = ref)}
+        >
           {this.props.isRevealComplete ? (
-            <div className='max-w-md m-auto'>
-              <div className='my-8'>
-                <components.labels.Success text={'Your domain has been switched to Standard Privacy'} />
+            <div className="max-w-md m-auto">
+              <div className="my-8">
+                <components.labels.Success
+                  text={'Your domain has been switched to Standard Privacy'}
+                />
               </div>
-              <div className=''>
-                <components.buttons.Button text={'Close'} onClick={() => this.revealDomainModal.toggle()} />
+              <div className="">
+                <components.buttons.Button
+                  text={'Close'}
+                  onClick={() => this.revealDomainModal.toggle()}
+                />
               </div>
             </div>
           ) : (
-            <div className='max-w-md m-auto text-gray-700'>
-              <components.labels.Warning text={'Switching to Standard Privacy reveals your domain name on-chain. This action cannot be reversed.'} />
-              <a className='flex items-center justify-center my-4 bg-gray-100 dark:bg-gray-800 dark:text-white p-4 rounded-lg text-center' href="https://avvy.domains/docs/privacy-features-registrations/" target="_blank">Read about privacy features <ExternalLinkIcon className='ml-4 text-gray-400 dark:text-gray-100 w-6' /></a>
-              <components.buttons.Button text="Switch to Standard Privacy" onClick={() => this.props.revealDomain(this.state.domain)} loading={this.props.isRevealingDomain} />
+            <div className="max-w-md m-auto text-gray-700">
+              <components.labels.Warning
+                text={
+                  'Switching to Standard Privacy reveals your domain name on-chain. This action cannot be reversed.'
+                }
+              />
+              <a
+                className="flex items-center justify-center my-4 bg-gray-100 dark:bg-gray-800 dark:text-white p-4 rounded-lg text-center"
+                href="https://avvy.domains/docs/privacy-features-registrations/"
+                target="_blank"
+              >
+                Read about privacy features{' '}
+                <ExternalLinkIcon className="ml-4 text-gray-400 dark:text-gray-100 w-6" />
+              </a>
+              <components.buttons.Button
+                text="Switch to Standard Privacy"
+                onClick={() => this.props.revealDomain(this.state.domain)}
+                loading={this.props.isRevealingDomain}
+              />
             </div>
           )}
         </components.Modal>
-        <components.Modal title={'Connect Wallet'} ref={(ref) => this.connectModal = ref}>
+        <components.Modal
+          title={'Connect Wallet'}
+          ref={(ref) => (this.connectModal = ref)}
+        >
           <components.ConnectWallet />
         </components.Modal>
-        <div className='w-full'>
-          <div className='mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full'>
-            <div className='flex justify-between items-center'>
-              <div className='font-bold'>{'Basic Information'}</div>
+        <div className="w-full">
+          <div className="mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full">
+            <div className="flex justify-between items-center">
+              <div className="font-bold">{'Basic Information'}</div>
               {!this.state.connected ? (
-                <components.buttons.Button sm={true} text='Connect' onClick={() => this.connectModal.toggle()} />
-              ) : null} 
+                <components.buttons.Button
+                  sm={true}
+                  text="Connect"
+                  onClick={() => this.connectModal.toggle()}
+                />
+              ) : null}
             </div>
-            <div className='w-full bg-gray-300 dark:bg-gray-700 mt-4' style={{height: '1px'}}></div>
-            <div className='mt-4 text-sm'>
-              <div className='font-bold'>{'Registrant'}</div>
-              <div className='truncate flex items-center flex-wrap'>
-                <div className='flex items-center cursor-pointer w-full sm:w-auto' onClick={() => {
-                  this.setState({
-                    dataExplorer: {
-                      title: 'View on Block Explorer',
-                      data: this.props.domain.owner,
-                      dataType: this.avvy.RECORDS.EVM,
-                    }
-                  })
-                  this.dataExplorerModal.toggle()
-                }}>
-                  <div className='truncate'>{this.props.domain.owner}</div>
-                  <ExternalLinkIcon className='w-4 ml-2 flex-shrink-0' />
+            <div
+              className="w-full bg-gray-300 dark:bg-gray-700 mt-4"
+              style={{ height: '1px' }}
+            ></div>
+            <div className="mt-4 text-sm">
+              <div className="font-bold">{'Registrant'}</div>
+              <div className="truncate flex items-center flex-wrap">
+                <div
+                  className="flex items-center cursor-pointer w-full sm:w-auto"
+                  onClick={() => {
+                    this.setState({
+                      dataExplorer: {
+                        title: 'View on Block Explorer',
+                        data: this.props.domain.owner,
+                        dataType: this.avvy.RECORDS.EVM,
+                      },
+                    })
+                    this.dataExplorerModal.toggle()
+                  }}
+                >
+                  <div className="truncate">{this.props.domain.owner}</div>
+                  <ExternalLinkIcon className="w-4 ml-2 flex-shrink-0" />
                 </div>
                 {this.state.connected && isOwned && !isExpired ? (
-                  <components.buttons.Transparent onClick={() => {
-                    this.props.resetTransferDomain()
-                    this.transferDomainModal.toggle()
-                  }}><div className='sm:ml-2 inline-block cursor-pointer text-alert-blue underline'>Transfer</div></components.buttons.Transparent>
+                  <components.buttons.Transparent
+                    onClick={() => {
+                      this.props.resetTransferDomain()
+                      this.transferDomainModal.toggle()
+                    }}
+                  >
+                    <div className="sm:ml-2 inline-block cursor-pointer text-alert-blue underline">
+                      Transfer
+                    </div>
+                  </components.buttons.Transparent>
                 ) : null}
               </div>
             </div>
-            <div className='mt-4 text-sm flex items-center justify-between'>
+            <div className="mt-4 text-sm flex items-center justify-between">
               <div>
-                <div className='font-bold'>{'Expiry'}</div>
-                <div className='flex items-center'>
+                <div className="font-bold">{'Expiry'}</div>
+                <div className="flex items-center">
                   {isExpired ? (
-                    <div>
-                      Expired
-                    </div>
+                    <div>Expired</div>
                   ) : (
                     <div>
-                      {new Intl.DateTimeFormat(
-                        navigator.language,
-                        { month: 'short', day: 'numeric', year: 'numeric' }
-                      ).format(this.props.domain.expiresAt * 1000)}
+                      {new Intl.DateTimeFormat(navigator.language, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      }).format(this.props.domain.expiresAt * 1000)}
                       {' at '}
-                      {new Intl.DateTimeFormat(
-                        navigator.langauge,
-                        { hour: 'numeric', minute: 'numeric' }
-                      ).format(this.props.domain.expiresAt * 1000)}
+                      {new Intl.DateTimeFormat(navigator.langauge, {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                      }).format(this.props.domain.expiresAt * 1000)}
                     </div>
                   )}
-                  {this.state.connected && isOwned && this.props.domain.canRenew && services.environment.REGISTRATIONS_ENABLED ? (
-                    <components.buttons.Transparent onClick={(navigator) => {
-                      this.props.renewDomain(this.props.domain.domain)
-                      services.linking.navigate(navigator, 'Register')
-                    }}><div className='ml-2 inline-block cursor-pointer text-alert-blue underline'>Renew</div></components.buttons.Transparent>
+                  {this.state.connected &&
+                  isOwned &&
+                  this.props.domain.canRenew &&
+                  services.environment.REGISTRATIONS_ENABLED ? (
+                    <components.buttons.Transparent
+                      onClick={(navigator) => {
+                        this.props.renewDomain(this.props.domain.domain)
+                        services.linking.navigate(navigator, 'Register')
+                      }}
+                    >
+                      <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
+                        Renew
+                      </div>
+                    </components.buttons.Transparent>
                   ) : null}
                 </div>
               </div>
             </div>
             {hasLoadedPrivacy ? (
-              <div className='mt-4 text-sm'>
-                <div className='font-bold'>{'Privacy'}</div>
-                <div className='truncate flex items-center'>
+              <div className="mt-4 text-sm">
+                <div className="font-bold">{'Privacy'}</div>
+                <div className="truncate flex items-center">
                   {this.props.isRevealed[this.props.domain.hash] ? (
                     <div>Standard Privacy</div>
                   ) : (
                     <div>Enhanced Privacy</div>
                   )}
-                  {this.state.connected && isOwned && !isExpired && !this.props.isRevealed[this.props.domain.hash] ? (
-                    <components.buttons.Transparent onClick={() => {
-                      this.props.resetRevealDomain()
-                      this.revealDomainModal.toggle()
-                    }}><div className='ml-2 inline-block cursor-pointer text-alert-blue underline'>Switch to Standard Privacy</div></components.buttons.Transparent>
+                  {this.state.connected &&
+                  isOwned &&
+                  !isExpired &&
+                  !this.props.isRevealed[this.props.domain.hash] ? (
+                    <components.buttons.Transparent
+                      onClick={() => {
+                        this.props.resetRevealDomain()
+                        this.revealDomainModal.toggle()
+                      }}
+                    >
+                      <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
+                        Switch to Standard Privacy
+                      </div>
+                    </components.buttons.Transparent>
                   ) : null}
                 </div>
               </div>
             ) : null}
-            <div className='mt-4 text-sm'>
-              <div className='font-bold'>{'Resolver'}</div>
-              <div className='truncate flex items-center'>
+            <div className="mt-4 text-sm">
+              <div className="font-bold">{'Resolver'}</div>
+              <div className="truncate flex items-center">
                 {this.props.resolver ? (
-                  <div>{this.props.resolver.resolver === this.state.defaultResolver ? 'Default Resolver' : 'Unknown Resolver'}</div>
+                  <div>
+                    {this.props.resolver.resolver === this.state.defaultResolver
+                      ? 'Default Resolver'
+                      : 'Unknown Resolver'}
+                  </div>
                 ) : (
                   <div>Not set</div>
                 )}
                 {this.state.connected && isOwned && !isExpired ? (
-                  <components.buttons.Transparent onClick={this.setResolver}><div className='ml-2 inline-block cursor-pointer text-alert-blue underline'>Set Resolver</div></components.buttons.Transparent>
+                  <components.buttons.Transparent onClick={this.setResolver}>
+                    <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
+                      Set Resolver
+                    </div>
+                  </components.buttons.Transparent>
                 ) : null}
               </div>
             </div>
           </div>
-          <div className='mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full'>
-            <div className='flex justify-between items-center'>
-              <div className='font-bold'>{'Records'}</div>
+          <div className="mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full">
+            <div className="flex justify-between items-center">
+              <div className="font-bold">{'Records'}</div>
               {!this.state.connected ? (
-                <components.buttons.Button sm={true} text='Connect' onClick={() => this.connectModal.toggle()} />
+                <components.buttons.Button
+                  sm={true}
+                  text="Connect"
+                  onClick={() => this.connectModal.toggle()}
+                />
               ) : null}
             </div>
-            <div className='w-full bg-gray-300 dark:bg-gray-700 mt-4' style={{height: '1px'}}></div>
+            <div
+              className="w-full bg-gray-300 dark:bg-gray-700 mt-4"
+              style={{ height: '1px' }}
+            ></div>
             {this.props.isLoadingRecords ? (
-              <div className='mt-4 w-full text-center'>
+              <div className="mt-4 w-full text-center">
                 <components.Spinner />
               </div>
             ) : this.props.records.length === 0 ? (
-              <div className='mt-4 text-sm flex items-center'>
+              <div className="mt-4 text-sm flex items-center">
                 <div>{'No records have been set.'}</div>
-                {this.state.connected && isOwned && !isExpired ? (this.props.resolver ? (
-                  <div onClick={() => this.showSetRecord()} className='ml-2 text-alert-blue underline cursor-pointer'>{'Add a record'}</div>
-                ) : (
-                  <div className='flex items-center'>
-                    <div onClick={this.setResolver} className='ml-2 text-alert-blue underline cursor-pointer'>{'Set a resolver'}</div>
-                    <div>&nbsp;{'to set records.'}</div>
-                  </div>
-                )) : null}
+                {this.state.connected && isOwned && !isExpired ? (
+                  this.props.resolver ? (
+                    <div
+                      onClick={() => this.showSetRecord()}
+                      className="ml-2 text-alert-blue underline cursor-pointer"
+                    >
+                      {'Add a record'}
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <div
+                        onClick={this.setResolver}
+                        className="ml-2 text-alert-blue underline cursor-pointer"
+                      >
+                        {'Set a resolver'}
+                      </div>
+                      <div>&nbsp;{'to set records.'}</div>
+                    </div>
+                  )
+                ) : null}
               </div>
             ) : (
               <div>
                 {this.props.records.map((record, index) => (
-                  <div className='mt-4' key={index}>
-                    <div className='text-sm font-bold'>
-                      {record.label}
-                    </div>
-                    <div className='text-sm flex items-center cursor-pointer w-full' onClick={() => {
-                      this.setState({
-                        dataExplorer: {
-                          data: record.value,
-                          dataType: record.key,
-                        }
-                      })
-                      this.dataExplorerModal.toggle()
-                    }}>
-                      <div className='truncate'>{record.value}</div>
-                      <ExternalLinkIcon className='w-4 ml-2 pb-1 flex-shrink-0' />
+                  <div className="mt-4" key={index}>
+                    <div className="text-sm font-bold">{record.label}</div>
+                    <div
+                      className="text-sm flex items-center cursor-pointer w-full"
+                      onClick={() => {
+                        this.setState({
+                          dataExplorer: {
+                            data: record.value,
+                            dataType: record.key,
+                          },
+                        })
+                        this.dataExplorerModal.toggle()
+                      }}
+                    >
+                      <div className="truncate">{record.value}</div>
+                      <ExternalLinkIcon className="w-4 ml-2 pb-1 flex-shrink-0" />
                       {this.state.connected && isOwned && !isExpired ? (
-                        <div className='flex items-center'>
-                          <div onClick={(e) => {
-                            e.stopPropagation()
-                            this.showSetRecord(record.key, record.value)
-                          }} className='ml-2 text-alert-blue underline cursor-pointer'>{'Edit'}</div>
-                          <div onClick={(e) => {
-                            e.stopPropagation()
-                            this.showDeleteRecord(record.key, record.value)
-                          }} className='ml-2 text-alert-blue underline cursor-pointer'>{'Delete'}</div>
+                        <div className="flex items-center">
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              this.showSetRecord(record.key, record.value)
+                            }}
+                            className="ml-2 text-alert-blue underline cursor-pointer"
+                          >
+                            {'Edit'}
+                          </div>
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              this.showDeleteRecord(record.key, record.value)
+                            }}
+                            className="ml-2 text-alert-blue underline cursor-pointer"
+                          >
+                            {'Delete'}
+                          </div>
                         </div>
                       ) : null}
                     </div>
                   </div>
                 ))}
-                {this.state.connected && this.props.resolver && isOwned && !isExpired ? (
-                  <div className='mt-4 flex'>
-                    <components.buttons.Button sm={true} onClick={() => this.showSetRecord()} text='Add a record' />
+                {this.state.connected &&
+                this.props.resolver &&
+                isOwned &&
+                !isExpired ? (
+                  <div className="mt-4 flex">
+                    <components.buttons.Button
+                      sm={true}
+                      onClick={() => this.showSetRecord()}
+                      text="Add a record"
+                    />
                   </div>
                 ) : null}
               </div>
             )}
           </div>
-          <div className='mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full'>
-            <div className='flex justify-between items-center'>
-              <div className='font-bold'>{'Reverse Records'}</div>
+          <div className="mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full">
+            <div className="flex justify-between items-center">
+              <div className="font-bold">{'Reverse Records'}</div>
               {!this.state.connected ? (
-                <components.buttons.Button sm={true} text='Connect' onClick={() => this.connectModal.toggle()} />
+                <components.buttons.Button
+                  sm={true}
+                  text="Connect"
+                  onClick={() => this.connectModal.toggle()}
+                />
               ) : null}
             </div>
 
-            <div className='w-full bg-gray-300 dark:bg-gray-700 mt-4' style={{height: '1px'}}></div>
+            <div
+              className="w-full bg-gray-300 dark:bg-gray-700 mt-4"
+              style={{ height: '1px' }}
+            ></div>
 
             {this.props.isLoadingReverseRecords ? (
-              <div className='mt-4 w-full text-center'>
+              <div className="mt-4 w-full text-center">
                 <components.Spinner />
               </div>
             ) : (
-              <div className='mt-4 text-sm'>
-                <div className='font-bold'>{'C-Chain / EVM Address'}</div>
-                <div className='truncate flex items-center flex-wrap'>
+              <div className="mt-4 text-sm">
+                <div className="font-bold">{'C-Chain / EVM Address'}</div>
+                <div className="truncate flex items-center flex-wrap">
                   {this.props.reverseRecords[this.avvy.RECORDS.EVM] ? (
-                    <div className='flex items-center cursor-pointer w-full sm:w-auto' onClick={() => {
-                      this.setState({
-                        dataExplorer: {
-                          title: 'View on Block Explorer',
-                          data: this.props.domain.owner,
-                          dataType: this.avvy.RECORDS.EVM,
-                        }
-                      })
-                      this.dataExplorerModal.toggle()
-                    }}>
-                      <div className='truncate'>{this.props.domain.owner}</div>
-                      <ExternalLinkIcon className='w-4 ml-2 flex-shrink-0' />
+                    <div
+                      className="flex items-center cursor-pointer w-full sm:w-auto"
+                      onClick={() => {
+                        this.setState({
+                          dataExplorer: {
+                            title: 'View on Block Explorer',
+                            data: this.props.domain.owner,
+                            dataType: this.avvy.RECORDS.EVM,
+                          },
+                        })
+                        this.dataExplorerModal.toggle()
+                      }}
+                    >
+                      <div className="truncate">{this.props.domain.owner}</div>
+                      <ExternalLinkIcon className="w-4 ml-2 flex-shrink-0" />
                     </div>
                   ) : (
-                    <div>
-                      Not set
-                    </div>
+                    <div>Not set</div>
                   )}
                   {this.state.connected && isOwned && !isExpired ? (
-                    <components.buttons.Transparent onClick={() => {
-                      this.setEVMReverseRecordModal.toggle()
-                    }}><div className='ml-2 inline-block cursor-pointer text-alert-blue underline'>Set Reverse</div></components.buttons.Transparent>
+                    <components.buttons.Transparent
+                      onClick={() => {
+                        this.setEVMReverseRecordModal.toggle()
+                      }}
+                    >
+                      <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
+                        Set Reverse
+                      </div>
+                    </components.buttons.Transparent>
                   ) : null}
                 </div>
               </div>
@@ -497,8 +685,8 @@ class Domain extends React.PureComponent {
 
   renderLoader() {
     return (
-      <div className='m-auto max-w-sm text-center'>
-        <components.Spinner className='w-6' size='md' dark={true} />
+      <div className="m-auto max-w-sm text-center">
+        <components.Spinner className="w-6" size="md" dark={true} />
       </div>
     )
   }
@@ -525,7 +713,7 @@ class Domain extends React.PureComponent {
 
       case statuses.REGISTERED_SELF:
         return this.renderRegistered()
-      
+
       default:
         return null
     }
@@ -534,18 +722,24 @@ class Domain extends React.PureComponent {
   render() {
     return (
       <div>
-        <components.Modal ref={(ref) => this.bidModal = ref} title={'Add a bid'}> 
+        <components.Modal
+          ref={(ref) => (this.bidModal = ref)}
+          title={'Add a bid'}
+        >
           {this.state.connected ? (
-            <AddBid 
+            <AddBid
               hasSeenBidDisclaimer={this.props.hasSeenBidDisclaimer}
               setHasSeenBidDisclaimer={this.props.setHasSeenBidDisclaimer}
-              domain={this.state.domain} 
-              handleSubmit={(navigate, val) => this.handleAddBid(navigate, val)} />
+              domain={this.state.domain}
+              handleSubmit={(navigate, val) => this.handleAddBid(navigate, val)}
+            />
           ) : (
             <components.ConnectWallet />
           )}
         </components.Modal>
-        <div className='mt-4 mb-4 text-lg text-center font-bold'>{this.state.domain}</div>
+        <div className="mt-4 mb-4 text-lg text-center font-bold">
+          {this.state.domain}
+        </div>
         {this.renderBody()}
       </div>
     )
@@ -577,12 +771,15 @@ const mapDispatchToProps = (dispatch) => ({
   loadRegistrationPremium: () => dispatch(actions.loadRegistrationPremium()),
   loadDomain: (domain) => dispatch(actions.loadDomain(domain)),
   addToCart: (domain) => dispatch(services.cart.actions.addToCart(domain)),
-  addBid: (domain, amount) => dispatch(services.sunrise.actions.addBid(domain, amount)),
-  setStandardRecord: (domain, type, value) => dispatch(actions.setStandardRecord(domain, type, value)),
+  addBid: (domain, amount) =>
+    dispatch(services.sunrise.actions.addBid(domain, amount)),
+  setStandardRecord: (domain, type, value) =>
+    dispatch(actions.setStandardRecord(domain, type, value)),
   resetSetRecord: () => dispatch(actions.setRecordComplete(false)),
   renewDomain: (domain) => dispatch(services.cart.actions.addToCart(domain)),
   resetSetResolver: () => dispatch(actions.setResolverComplete(false)),
-  setHasSeenBidDisclaimer: (value) => dispatch(services.sunrise.actions.setHasSeenBidDisclaimer(value)),
+  setHasSeenBidDisclaimer: (value) =>
+    dispatch(services.sunrise.actions.setHasSeenBidDisclaimer(value)),
   revealDomain: (domain) => dispatch(actions.revealDomain(domain)),
   resetRevealDomain: () => dispatch(actions.resetRevealDomain()),
   resetTransferDomain: () => dispatch(actions.resetTransferDomain()),

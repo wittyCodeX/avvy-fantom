@@ -1,6 +1,6 @@
 {
   "name": "Avvy Domains",
-  "description": "Manage your .avax domains.",
+  "description": "Manage your .ftm domains.",
   "iconPath": "images/logo.png",
   "start_url": ".",
   "display": "standalone",

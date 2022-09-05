@@ -52,8 +52,8 @@ const ethersProvider = function (provider, chainId) {
 
 // represents a Name in the system
 const Name = function (name, provider) {
-  // lowercase the name. if someone passes in NAME.avax
-  // that is equivalent to name.avax
+  // lowercase the name. if someone passes in NAME.ftm
+  // that is equivalent to name.ftm
   name = name.toLowerCase()
 
   // the namespace is the first label of a name
@@ -104,7 +104,7 @@ const Name = function (name, provider) {
 
       let split = name.split('.')
       let resolver
-      let domain = await getDomain() // this is the domain with 2 labels, e.g. name.avax
+      let domain = await getDomain() // this is the domain with 2 labels, e.g. name.ftm
       let expiresAt = await provider.getExpiry(domain.hash)
       if (expiresAt === 0) {
         throw 'Domain has not been registered'
@@ -153,7 +153,7 @@ const Hash = function (hash, provider) {
   }
 }
 
-const AVVY = function (_provider, _opts) {
+const FTMVY = function (_provider, _opts) {
   // optionally pass chainId
   const opts = _opts || {}
   const chainId = opts.chainId || 43114
@@ -200,8 +200,8 @@ const AVVY = function (_provider, _opts) {
   }
 }
 
-AVVY.blocklist = blocklist
-AVVY.RECORDS = records
-AVVY.utils = utils
+FTMVY.blocklist = blocklist
+FTMVY.RECORDS = records
+FTMVY.utils = utils
 
-export default AVVY
+export default FTMVY

@@ -10,87 +10,20 @@ async function main() {
   const [owner] = await ethers.getSigners()
 
   // ContractRegistryV1 Contract Deployment
-  const ContractRegistryV1 = await hre.ethers.getContractFactory(
-    'ContractRegistryV1',
-  )
-  const contractRegistryV1 = await ContractRegistryV1.deploy(owner.address)
+  const NamespaceV1 = await hre.ethers.getContractFactory('NamespaceV1')
+  const namespaceV1 = await NamespaceV1.deploy(owner.address)
 
-  await contractRegistryV1.deployed()
+  await namespaceV1.deployed()
 
-  console.log(`ContractRegistryV1 deployed to ${contractRegistryV1.address}`)
+  console.log(`NamespaceV1 deployed to ${namespaceV1.address}`)
 
-  // Domain Contract Deployment
-  const Domain = await hre.ethers.getContractFactory('Domain')
-  const domain = await Domain.deploy(
-    'FTMvy Domains',
-    'FTMVY',
-    contractRegistryV1.address,
-  )
+  // PricingOracleV1 Contract Deployment
+  const PricingOracleV1 = await hre.ethers.getContractFactory('PricingOracleV1')
+  const pricingOracleV1 = await PricingOracleV1.deploy(owner.address)
 
-  await domain.deployed()
+  await pricingOracleV1.deployed()
 
-  console.log(`Domain deployed to ${domain.address}`)
-
-  // EVMReverseResolverV1 Contract Deployment
-  const EVMReverseResolverV1 = await hre.ethers.getContractFactory(
-    'EVMReverseResolverV1',
-  )
-  const _EVMReverseResolverV1 = await Domain.deploy(contractRegistryV1.address)
-
-  await _EVMReverseResolverV1.deployed()
-
-  console.log(
-    `EVMReverseResolverV1 deployed to ${_EVMReverseResolverV1.address}`,
-  )
-  // LeasingAgentV1 Contract Deployment
-  const LeasingAgentV1 = await hre.ethers.getContractFactory('LeasingAgentV1')
-  const leasingAgentV1 = await Domain.deploy(contractRegistryV1.address)
-
-  await leasingAgentV1.deployed()
-
-  console.log(`LeasingAgentV1 deployed to ${leasingAgentV1.address}`)
-
-  // PublicResolverV1 Contract Deployment
-  const PublicResolverV1 = await hre.ethers.getContractFactory(
-    'PublicResolverV1',
-  )
-  const publicResolverV1 = await Domain.deploy(contractRegistryV1.address)
-
-  await publicResolverV1.deployed()
-
-  console.log(`PublicResolverV1 deployed to ${publicResolverV1.address}`)
-
-  // RainbowTableV1 Contract Deployment
-  const RainbowTableV1 = await hre.ethers.getContractFactory('RainbowTableV1')
-  const rainbowTableV1 = await Domain.deploy(contractRegistryV1.address)
-
-  await rainbowTableV1.deployed()
-
-  console.log(`RainbowTableV1 deployed to ${rainbowTableV1.address}`)
-
-  // ResolverRegistryV1 Contract Deployment
-  const ResolverRegistryV1 = await hre.ethers.getContractFactory(
-    'ResolverRegistryV1',
-  )
-  const resolverRegistryV1 = await Domain.deploy(contractRegistryV1.address)
-
-  await resolverRegistryV1.deployed()
-
-  console.log(`ResolverRegistryV1 deployed to ${resolverRegistryV1.address}`)
-
-  // ReverseResolverRegistryV1 Contract Deployment
-  const ReverseResolverRegistryV1 = await hre.ethers.getContractFactory(
-    'ResolverRegistryV1',
-  )
-  const reverseResolverRegistryV1 = await Domain.deploy(
-    contractRegistryV1.address,
-  )
-
-  await reverseResolverRegistryV1.deployed()
-
-  console.log(
-    `ReverseResolverRegistryV1 deployed to ${reverseResolverRegistryV1.address}`,
-  )
+  console.log(`PricingOracleV1 deployed to ${pricingOracleV1.address}`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

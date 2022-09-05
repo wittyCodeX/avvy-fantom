@@ -9,7 +9,6 @@ import selectors from './selectors'
 import components from 'components'
 import services from 'services'
 
-
 class SetResolver extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -22,7 +21,7 @@ class SetResolver extends React.PureComponent {
   setWalletAddress = async () => {
     const api = await services.provider.buildAPI()
     this.setState({
-      walletAddress: api.account
+      walletAddress: api.account,
     })
   }
 
@@ -31,34 +30,48 @@ class SetResolver extends React.PureComponent {
   }
 
   render() {
-    if (this.props.complete) return (
-      <>
-        <div className='max-w-md m-auto'>
-          <components.labels.Success text={'Reverse Record for C-Chain / EVM has been set'} />
-        </div>
-        <div className='max-w-md m-auto mt-4'>
-          <components.buttons.Button text={'Close'} onClick={() => {
-            this.props.reset()
-            this.props.onComplete()
-          }} />
-        </div>
-      </>
-    )
+    if (this.props.complete)
+      return (
+        <>
+          <div className="max-w-md m-auto">
+            <components.labels.Success
+              text={'Reverse Record for C-Chain / EVM has been set'}
+            />
+          </div>
+          <div className="max-w-md m-auto mt-4">
+            <components.buttons.Button
+              text={'Close'}
+              onClick={() => {
+                this.props.reset()
+                this.props.onComplete()
+              }}
+            />
+          </div>
+        </>
+      )
 
     return (
       <>
-        <div className='max-w-md m-auto'>
-          <div className='font-bold mt-8'>
-            {'What is this?'}
+        <div className="max-w-md m-auto">
+          <div className="font-bold mt-8">{'What is this?'}</div>
+          <div className="mb-2">
+            {'This feature sets '} {this.props.domain}{' '}
+            {'as the name associated with your connected wallet (' +
+              this.state.walletAddress +
+              ')'}
           </div>
-          <div className='mb-2'>
-            {'This feature sets '} {this.props.domain} {'as the name associated with your connected wallet (' + this.state.walletAddress + ')'}
+          <div className="mb-2">
+            {
+              'Applications can then find your .ftm name if they know your wallet address.'
+            }
           </div>
-          <div className='mb-2'>
-            {'Applications can then find your .avax name if they know your wallet address.'}
-          </div>
-          <div className='mt-8'>
-            <components.buttons.Button sm={true} text={'Set Reverse Record'} onClick={() => this.submit()} loading={this.props.loading} />
+          <div className="mt-8">
+            <components.buttons.Button
+              sm={true}
+              text={'Set Reverse Record'}
+              onClick={() => this.submit()}
+              loading={this.props.loading}
+            />
           </div>
         </div>
       </>
@@ -72,7 +85,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setEVMReverseRecord: (domain) => dispatch(actions.setEVMReverseRecord(domain)),
+  setEVMReverseRecord: (domain) =>
+    dispatch(actions.setEVMReverseRecord(domain)),
   reset: () => dispatch(actions.resetSetEVMReverseRecord()),
 })
 

@@ -340,67 +340,67 @@ const actions = {
     }
   },
 
-  setAvailableWavax: (amount) => {
+  setAvailableWftm: (amount) => {
     return {
-      type: constants.SET_AVAILABLE_WAVAX,
+      type: constants.SET_AVAILABLE_WFTM,
       amount,
     }
   },
 
-  setApprovedWavax: (amount) => {
+  setApprovedWftm: (amount) => {
     return {
-      type: constants.SET_APPROVED_WAVAX,
+      type: constants.SET_APPROVED_WFTM,
       amount,
     }
   },
 
-  checkAvailableWAVAX: () => {
+  checkAvailableWFTM: () => {
     return async (dispatch, getState) => {
       const api = services.provider.buildAPI()
-      const wavax = await api.getAuctionWavax()
-      const balance = await api.getWavaxBalance()
-      dispatch(actions.setAvailableWavax(balance))
-      dispatch(actions.setApprovedWavax(wavax))
+      const wftm = await api.getAuctionWftm()
+      const balance = await api.getWftmBalance()
+      dispatch(actions.setAvailableWftm(balance))
+      dispatch(actions.setApprovedWftm(wftm))
     }
   },
 
-  gettingWAVAX: (getting) => {
+  gettingWFTM: (getting) => {
     return {
-      type: constants.SET_GETTING_WAVAX,
+      type: constants.SET_GETTING_WFTM,
       getting,
     }
   },
 
-  getWAVAX: (amount) => {
+  getWFTM: (amount) => {
     return async (dispatch, getState) => {
-      dispatch(actions.gettingWAVAX(true))
+      dispatch(actions.gettingWFTM(true))
       try {
         const api = services.provider.buildAPI()
         await api.wrapAvax(amount)
-        dispatch(actions.checkAvailableWAVAX())
+        dispatch(actions.checkAvailableWFTM())
       } catch (err) {}
       dispatch(actions.loadWinningBids(true))
-      dispatch(actions.gettingWAVAX(false))
+      dispatch(actions.gettingWFTM(false))
     }
   },
 
-  isApprovingWavax: (value) => {
+  isApprovingWftm: (value) => {
     return {
-      type: constants.SET_IS_APPROVING_WAVAX,
+      type: constants.SET_IS_APPROVING_WFTM,
       value,
     }
   },
 
-  approveWavax: (total) => {
+  approveWftm: (total) => {
     return async (dispatch, getState) => {
-      dispatch(actions.isApprovingWavax(true))
+      dispatch(actions.isApprovingWftm(true))
       const api = services.provider.buildAPI()
       try {
-        await api.approveWavaxForAuction(total)
+        await api.approveWftmForAuction(total)
       } catch (err) {}
-      dispatch(actions.checkAvailableWAVAX())
+      dispatch(actions.checkAvailableWFTM())
       dispatch(actions.loadWinningBids(true))
-      dispatch(actions.isApprovingWavax(false))
+      dispatch(actions.isApprovingWftm(false))
     }
   },
 

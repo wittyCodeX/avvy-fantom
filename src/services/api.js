@@ -10,7 +10,7 @@ import client from 'clients'
 
 import services from 'services'
 
-class AvvyClient {
+class FTMVYClient {
   constructor(chainId, account, signerOrProvider) {
     this.chainId = parseInt(chainId)
     this.avvy = new client(signerOrProvider, {
@@ -104,11 +104,11 @@ class AvvyClient {
     return parseInt(expiresAt.toString())
   }
 
-  async getNamePriceAVAX(domain, conversionRate) {
+  async getNamePriceFTM(domain, conversionRate) {
     const _priceUSD = await this.getNamePrice(domain)
     const priceUSD = ethers.BigNumber.from(_priceUSD)
-    const priceAVAX = priceUSD.mul(conversionRate)
-    return priceAVAX
+    const priceFTM = priceUSD.mul(conversionRate)
+    return priceFTM
   }
 
   async nameHash(name) {
@@ -123,7 +123,7 @@ class AvvyClient {
     if (client.blocklist.isBlocked(hash)) return false
     const split = name.split('.')
     if (split.length !== 2) return false
-    if (split[1] !== 'avax') return false
+    if (split[1] !== 'ftm') return false
     if (split[0].length < 3) return false
     if (split[0].length > 62) return false
     if (!split[0].match(/^[a-z0-9][a-z0-9-]+[a-z0-9]$/)) return false
@@ -132,7 +132,7 @@ class AvvyClient {
     return true
   }
 
-  async getAVAXConversionRateFromChainlink(address) {
+  async getFTMConversionRateFromChainlink(address) {
     let oracle = new ethers.Contract(
       address,
       services.abi.chainlink,
@@ -141,26 +141,27 @@ class AvvyClient {
     let roundData = await oracle.latestRoundData()
     let rate = roundData[1].toString()
 
-    // add a buffer to the rate, so that we can have less chance of getting a revert due to not enough AVAX
+    // add a buffer to the rate, so that we can have less chance of getting a revert due to not enough FTM
     rate = ethers.BigNumber.from(rate).div('10').mul('9').toString()
 
     return rate
   }
 
-  async getAVAXConversionRate() {
+  async getFTMConversionRate() {
     // this is just fixed price for now based on latestRound from oracle
     let rate
-    if (this.chainId === 31337) {
+    if (this.chainId === 4002) {
       rate = ethers.BigNumber.from('10000000000')
-    } else if (this.chainId === 43113) {
-      rate = await this.getAVAXConversionRateFromChainlink(
-        '0x5498BB86BC934c8D34FDA08E81D444153d0D06aD',
-      )
-    } else if (this.chainId === 43114) {
-      rate = await this.getAVAXConversionRateFromChainlink(
-        '0x0A77230d17318075983913bC2145DB16C7366156',
+    } else if (this.chainId === 250) {
+      rate = await this.getFTMConversionRateFromChainlink(
+        '0xf4766552D15AE4d256Ad41B6cf2933482B0680dc',
       )
     }
+    // else if (this.chainId === 4002) {
+    //   rate = await this.getFTMConversionRateFromChainlink(
+    //     '0xf4766552D15AE4d256Ad41B6cf2933482B0680dc',
+    //   )
+    // }
     return ethers.BigNumber.from('10').pow('24').div(rate)
   }
 
@@ -192,8 +193,8 @@ class AvvyClient {
     }
 
     let priceUSDCents = await this.getNamePrice(domain)
-    let avaxConversionRate = await this.getAVAXConversionRate()
-    let priceAVAXEstimate = avaxConversionRate
+    let ftmConversionRate = await this.getFTMConversionRate()
+    let priceFTMEstimate = ftmConversionRate
       .mul(ethers.BigNumber.from(priceUSDCents))
       .toString()
     let expiresAt = await this.getNameExpiry(hash)
@@ -209,7 +210,7 @@ class AvvyClient {
       expiresAt,
       status: domainStatus,
       priceUSDCents,
-      priceAVAXEstimate,
+      priceFTMEstimate,
       timestamp: parseInt(Date.now() / 1000),
     }
   }
@@ -282,12 +283,12 @@ class AvvyClient {
   async _getRegistrationArgs(domains, quantities) {
     let hashes = []
     let total = ethers.BigNumber.from('0')
-    const conversionRate = await this.getAVAXConversionRate()
+    const conversionRate = await this.getFTMConversionRate()
 
     for (let i = 0; i < domains.length; i += 1) {
       let hash = await client.utils.nameHash(domains[i])
       hashes.push(hash.toString())
-      let namePrice = await this.getNamePriceAVAX(domains[i], conversionRate)
+      let namePrice = await this.getNamePriceFTM(domains[i], conversionRate)
       total = total.add(
         ethers.BigNumber.from(quantities[i].toString()).mul(namePrice),
       )
@@ -443,34 +444,34 @@ class AvvyClient {
     return result
   }
 
-  getWavaxContract() {
+  getWftmContract() {
     let contract
     if (this.chainId === 31337) {
-      contract = this.contracts.MockWavax
+      contract = this.contracts.MockWftm
     } else if (this.chainId === 43113) {
       contract = new ethers.Contract(
         '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
-        services.abi.wavax,
+        services.abi.wftm,
         this.signer,
       )
     } else if (this.chainId === 43114) {
       contract = new ethers.Contract(
         '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-        services.abi.wavax,
+        services.abi.wftm,
         this.signer,
       )
     }
     return contract
   }
 
-  async getWavaxBalance() {
-    const contract = this.getWavaxContract()
+  async getWftmBalance() {
+    const contract = this.getWftmContract()
     const balance = await contract.balanceOf(this.account)
     return balance.toString()
   }
 
-  async getAuctionWavax() {
-    const contract = this.getWavaxContract()
+  async getAuctionWftm() {
+    const contract = this.getWftmContract()
     const allowance = await contract.allowance(
       this.account,
       this.contracts.SunriseAuctionV1.address,
@@ -479,15 +480,15 @@ class AvvyClient {
   }
 
   async wrapAvax(amount) {
-    const contract = this.getWavaxContract()
+    const contract = this.getWftmContract()
     const tx = await contract.deposit({
       value: amount,
     })
     await tx.wait()
   }
 
-  async approveWavaxForAuction(amount) {
-    const contract = this.getWavaxContract()
+  async approveWftmForAuction(amount) {
+    const contract = this.getWftmContract()
     const tx = await contract.approve(
       this.contracts.SunriseAuctionV1.address,
       amount,
@@ -663,4 +664,4 @@ class AvvyClient {
   }
 }
 
-export default AvvyClient
+export default FTMVYClient

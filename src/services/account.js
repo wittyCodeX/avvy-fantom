@@ -9,8 +9,8 @@ const exports = {
       },
       body: JSON.stringify({
         username,
-        password
-      })
+        password,
+      }),
     })
     return (await res.json()).token
   },
@@ -23,10 +23,10 @@ const exports = {
       },
       body: JSON.stringify({
         email,
-      })
+      }),
     })
     return res.status === 200
-  }, 
+  },
 
   setPassword: async (token, password, passwordConfirm) => {
     const res = await fetch(linkingService.backend('SetPassword'), {
@@ -37,10 +37,10 @@ const exports = {
       body: JSON.stringify({
         token,
         password,
-        password_confirm: passwordConfirm
-      })
+        password_confirm: passwordConfirm,
+      }),
     })
-    return (await res.json())
+    return await res.json()
   },
 
   createAccount: async (name, email) => {
@@ -51,10 +51,10 @@ const exports = {
       },
       body: JSON.stringify({
         name,
-        email
-      })
+        email,
+      }),
     })
-    return (await res.json())
+    return await res.json()
   },
 
   getVerifyChallenge: async (token) => {
@@ -62,7 +62,7 @@ const exports = {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Token ${token}`
+        Authorization: `Token ${token}`,
       },
     })
     return (await res.json()).challenge
@@ -73,14 +73,14 @@ const exports = {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Token ${token}`
+        Authorization: `Token ${token}`,
       },
       body: JSON.stringify({
         wallet,
-        signature
-      })
+        signature,
+      }),
     })
-    if (res.status !== 200) throw Error("Failed to verify signature")
+    if (res.status !== 200) throw Error('Failed to verify signature')
     return (await res.json()).success
   },
 
@@ -89,15 +89,15 @@ const exports = {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Token ${token}`
+        Authorization: `Token ${token}`,
       },
       body: JSON.stringify({
         address,
-      })
+      }),
     })
-    if (res.status !== 200) throw Error("Failed to retrieve signature")
+    if (res.status !== 200) throw Error('Failed to retrieve signature')
     return (await res.json()).signature
-  }
+  },
 }
 
 export default exports

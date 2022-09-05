@@ -1,27 +1,25 @@
 import React from 'react'
 import services from 'services'
 
-
 class DataExplorer extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.getAvvy()
+    this.getFTMVY()
 
     this.vendors = {
-      
       // block explorers
-      avascan: { 
+      avascan: {
         name: 'Avascan',
         logo: services.linking.static('images/vendor/avascan.jpg'),
         class: 'h-12 w-12',
       },
       snowtrace: {
-        name: 'Snowtrace', 
+        name: 'Snowtrace',
         logo: services.linking.static('images/vendor/snowtrace.png'),
         class: 'h-12 w-12',
       },
       vscout: {
-        name: 'VScout', 
+        name: 'VScout',
         logo: services.linking.static('images/vendor/vscout.svg'),
         class: 'h-12 w-12',
       },
@@ -52,7 +50,7 @@ class DataExplorer extends React.PureComponent {
     }
   }
 
-  async getAvvy() {
+  async getFTMVY() {
     const api = await services.provider.buildAPI()
     this.avvy = api.avvy
   }
@@ -61,29 +59,37 @@ class DataExplorer extends React.PureComponent {
     const vendor = this.vendors[key]
     const link = getLink(this.props.data.data)
     return (
-      <a target="_blank" href={link} className={`cursor-pointer flex flex-col items-center justify-center rounded-xl m-auto bg-gray-100 dark:bg-gray-800 w-full h-32`}>
+      <a
+        target="_blank"
+        href={link}
+        className={`cursor-pointer flex flex-col items-center justify-center rounded-xl m-auto bg-gray-100 dark:bg-gray-800 w-full h-32`}
+      >
         <div className={`${vendor.class} flex items-center justify-center`}>
-          <img src={vendor.logo} alt={vendor.name} className='w-full' />
+          <img src={vendor.logo} alt={vendor.name} className="w-full" />
         </div>
-        <div className='mt-2'>
-          {vendor.name}
-        </div>
+        <div className="mt-2">{vendor.name}</div>
       </a>
     )
   }
 
   renderXChain() {
     return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
-        {this.renderVendor('avascan', (d) => `https://avascan.info/blockchain/x/address/${d}`)}
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor(
+          'avascan',
+          (d) => `https://avascan.info/blockchain/x/address/${d}`,
+        )}
       </div>
     )
   }
 
   renderPChain() {
     return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
-        {this.renderVendor('avascan', (d) => `https://avascan.info/blockchain/p/address/${d}`)}
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor(
+          'avascan',
+          (d) => `https://avascan.info/blockchain/p/address/${d}`,
+        )}
         {this.renderVendor('vscout', (d) => `https://vscout.io/address/${d}`)}
       </div>
     )
@@ -91,17 +97,26 @@ class DataExplorer extends React.PureComponent {
 
   renderEVM() {
     return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
-        {this.renderVendor('snowtrace', (d) => `https://snowtrace.io/address/${d}`)}
-        {this.renderVendor('avascan', (d) => `https://avascan.info/blockchain/c/address/${d}`)}
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor(
+          'snowtrace',
+          (d) => `https://snowtrace.io/address/${d}`,
+        )}
+        {this.renderVendor(
+          'avascan',
+          (d) => `https://avascan.info/blockchain/c/address/${d}`,
+        )}
       </div>
     )
   }
 
   renderValidator() {
     return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
-        {this.renderVendor('avascan', (d) => `https://avascan.info/staking/validator/${d}`)}
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor(
+          'avascan',
+          (d) => `https://avascan.info/staking/validator/${d}`,
+        )}
         {this.renderVendor('vscout', (d) => `https://vscout.io/validator/${d}`)}
       </div>
     )
@@ -109,7 +124,7 @@ class DataExplorer extends React.PureComponent {
 
   renderDNS_A() {
     return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
         {this.renderVendor('ipinfo', (d) => `https://ipinfo.io/${d}`)}
       </div>
     )
@@ -117,7 +132,7 @@ class DataExplorer extends React.PureComponent {
 
   renderDNS_CNAME() {
     return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
         {this.renderVendor('dnslookup', (d) => `https://dns-lookup.com/${d}`)}
       </div>
     )
@@ -126,11 +141,13 @@ class DataExplorer extends React.PureComponent {
   renderAvatar() {
     return (
       <div>
-        <a href={this.props.data.data} target="_blank" className='text-center block'>
-          <img src={this.props.data.data} className='w-40 m-auto' />
-          <div className='mt-4'>
-            View image
-          </div>
+        <a
+          href={this.props.data.data}
+          target="_blank"
+          className="text-center block"
+        >
+          <img src={this.props.data.data} className="w-40 m-auto" />
+          <div className="mt-4">View image</div>
         </a>
       </div>
     )
@@ -141,18 +158,21 @@ class DataExplorer extends React.PureComponent {
     const proto = data.split('://')[0]
     const getIPFSHash = (d) => d.split('://')[1]
 
-    if (proto === 'ipfs') return (
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-4'>
-        {this.renderVendor('ipfs', (d) => `https://ipfs.io/ipfs/${getIPFSHash(d)}`)}
-        {this.renderVendor('cloudflare', (d) => `https://cloudflare-ipfs.com/ipfs/${getIPFSHash(d)}`)}
-      </div>
-    )
+    if (proto === 'ipfs')
+      return (
+        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+          {this.renderVendor(
+            'ipfs',
+            (d) => `https://ipfs.io/ipfs/${getIPFSHash(d)}`,
+          )}
+          {this.renderVendor(
+            'cloudflare',
+            (d) => `https://cloudflare-ipfs.com/ipfs/${getIPFSHash(d)}`,
+          )}
+        </div>
+      )
 
-    return (
-      <div className='text-center py-4'>
-        Unknown content protocol
-      </div>
-    )
+    return <div className="text-center py-4">Unknown content protocol</div>
   }
 
   renderLinks() {
@@ -208,7 +228,9 @@ class DataExplorer extends React.PureComponent {
 
     return (
       <div>
-        <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{title}</div>
+        <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+          {title}
+        </div>
         {this.renderLinks()}
       </div>
     )

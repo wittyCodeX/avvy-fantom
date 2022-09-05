@@ -1,7 +1,7 @@
 {
   "name": "client-common",
   "version": "1.0.0",
-  "description": "This project contains static files required by Avvy clients.",
+  "description": "This project contains static files required by FTMVY clients.",
   "main": "index.js",
   "directories": {
     "test": "test"

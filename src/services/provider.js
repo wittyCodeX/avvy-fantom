@@ -79,8 +79,8 @@ const provider = {
       _provider = new WalletConnectProvider({
         rpc: {
           31337: 'http://localhost:8545',
-          43113: 'https://api.avax-test.network/ext/bc/C/rpc',
-          43114: 'https://api.avax.network/ext/bc/C/rpc',
+          43113: 'https://api.ftm-test.network/ext/bc/C/rpc',
+          43114: 'https://api.ftm.network/ext/bc/C/rpc',
         },
       })
       await _provider.enable().catch(reject)
@@ -177,8 +177,8 @@ const provider = {
                   chainId: '0x' + expectedChainId.toString(16),
                   chainName: services.environment.DEFAULT_CHAIN_NAME,
                   nativeCurrency: {
-                    name: 'AVAX',
-                    symbol: 'AVAX',
+                    name: 'FTM',
+                    symbol: 'FTM',
                     decimals: 18,
                   },
                   rpcUrls: [services.environment.DEFAULT_PROVIDER_URL],
@@ -237,11 +237,11 @@ const provider = {
     return new Promise(async (resolve, reject) => {
       const handleChanged = () => {
         window.ethereum.off('accountsChanged', handleChanged)
-        provider.connectMetamask((provider) => provider.isAvalanche)
+        provider.connectMetamask((provider) => provider.isFantom)
         resolve()
       }
       window.ethereum.on('accountsChanged', handleChanged)
-      provider.connectMetamask((provider) => provider.isAvalanche)
+      provider.connectMetamask((provider) => provider.isFantom)
     })
   },
 
