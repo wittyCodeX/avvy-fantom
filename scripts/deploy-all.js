@@ -20,7 +20,9 @@ async function main() {
   console.log(`ContractRegistryV1 deployed to ${contractRegistryV1.address}`)
 
   // Domain Contract Deployment
-  const Domain = await hre.ethers.getContractFactory('Domain')
+  const Domain = await hre.ethers.getContractFactory(
+    'contracts/Domain.sol:Domain',
+  )
   const domain = await Domain.deploy(
     'FTMvy Domains',
     'FTMVY',

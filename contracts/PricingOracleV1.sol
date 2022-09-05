@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.8.3 https://hardhat.org
+//SPDX-License-Identifier: Unlicense
 
 // File @chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol@v0.2.2
 

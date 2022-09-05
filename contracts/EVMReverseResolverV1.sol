@@ -1,5 +1,5 @@
 
-// Sources flattened with hardhat v2.8.3 https://hardhat.org
+//SPDX-License-Identifier: Unlicense
 
 // File @openzeppelin/contracts/access/IAccessControl.sol@v4.3.2
 

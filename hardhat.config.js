@@ -2,9 +2,6 @@
 require('@nomiclabs/hardhat-waffle')
 require('dotenv').config()
 
-const accounts = {
-  mnemonic: process.env.MNEMONIC,
-}
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: '0.8.0',
@@ -17,7 +14,7 @@ module.exports = {
     },
     fantomtest: {
       url: 'https://rpc.testnet.fantom.network',
-      accounts,
+      accounts: [process.env.PRIVATE_KEY],
       chainId: 4002,
       live: false,
       saveDeployments: true,
