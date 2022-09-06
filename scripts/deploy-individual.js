@@ -7,19 +7,29 @@
 const hre = require('hardhat')
 
 async function main() {
-  const [owner] = await ethers.getSigners()
-
   // ContractRegistryV1 Contract Deployment
   const NamespaceV1 = await hre.ethers.getContractFactory('NamespaceV1')
-  const namespaceV1 = await NamespaceV1.deploy(owner.address)
+  const namespaceV1 = await NamespaceV1.deploy()
 
   await namespaceV1.deployed()
 
   console.log(`NamespaceV1 deployed to ${namespaceV1.address}`)
 
+  // ConstraintsVerifier Contract Deployment
+  const ConstraintsVerifier = await hre.ethers.getContractFactory(
+    'ConstraintsVerifier',
+  )
+  const constraintsVerifier = await ConstraintsVerifier.deploy()
+
+  await constraintsVerifier.deployed()
+
+  console.log(`ConstraintsVerifier deployed to ${constraintsVerifier.address}`)
+
   // PricingOracleV1 Contract Deployment
   const PricingOracleV1 = await hre.ethers.getContractFactory('PricingOracleV1')
-  const pricingOracleV1 = await PricingOracleV1.deploy(owner.address)
+  const pricingOracleV1 = await PricingOracleV1.deploy(
+    constraintsVerifier.address,
+  )
 
   await pricingOracleV1.deployed()
 

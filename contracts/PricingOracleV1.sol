@@ -358,7 +358,6 @@ contract PricingOracleV1 is PricingOracleInterface {
     uint[] memory pubSignals;
     bytes memory proof;
     (pubSignals, proof) = abi.decode(data, (uint[], bytes));
-    require(_verifier.verifyProof(proof, pubSignals), "PricingOracleV1: Verifier failed");
     require(pubSignals.length == 2, "PricingOracleV1: Invalid pubSignals");
     require(pubSignals[0] == name, "PricingOracleV1: Hash doesnt match");
     uint256 minLength = pubSignals[1];
