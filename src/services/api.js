@@ -448,15 +448,15 @@ class FTMVYClient {
     let contract
     if (this.chainId === 31337) {
       contract = this.contracts.MockWftm
-    } else if (this.chainId === 43113) {
+    } else if (this.chainId === 4002) {
       contract = new ethers.Contract(
-        '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
+        '0x07B9c47452C41e8E00f98aC4c075F5c443281d2A',
         services.abi.wftm,
         this.signer,
       )
-    } else if (this.chainId === 43114) {
+    } else if (this.chainId === 250) {
       contract = new ethers.Contract(
-        '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+        '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
         services.abi.wftm,
         this.signer,
       )
@@ -646,7 +646,12 @@ class FTMVYClient {
 
   async setEVMReverseRecord(domain) {
     const hash = await client.utils.nameHash(domain)
-    const tx = await this.avvy.contracts.EVMReverseResolverV1.set(hash, [])
+    console.log('evm reverse domain: ', domain)
+    console.log('evm reverse hash: ', hash)
+    const tx = await this.avvy.contracts.EVMReverseResolverV1.set(
+      '3831551468565272533207492648373345634269920659407147817310279435281576705919',
+      [0, 0],
+    )
     await tx.wait()
   }
 

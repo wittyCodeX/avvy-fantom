@@ -84,7 +84,7 @@ class ConnectWallet extends React.PureComponent {
     )
   }
 
-  toggleDisclaimer = (stateKey) => {
+  toggleDisclaimer(stateKey) {
     this.setState((currState) => {
       return {
         [stateKey]: !currState[stateKey],

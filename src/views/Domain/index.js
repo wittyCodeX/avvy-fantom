@@ -159,7 +159,7 @@ class Domain extends React.PureComponent {
           <CheckCircleIcon className="w-6 text-alert-blue mr-2" />
           <div className="text-alert-blue">{'Available for registration'}</div>
         </div>
-        {this.props.registrationPremium.gt(ethers.BigNumber.from('0')) ? (
+        {this.props.registrationPremium?.gt(ethers.BigNumber.from('0')) ? (
           <div className="mt-4 border-2 rounded-lg border-gray-100 dark:border-gray-700 p-4">
             <div className="font-bold">Registration Premium</div>
             <div>

@@ -72,7 +72,7 @@ class Register extends React.PureComponent {
     this.props.removeFromCart(name)
   }
 
-  cancelRegistration = () => {
+  cancelRegistration() {
     if (window.confirm('Are you sure?')) {
       this.props.clear()
     }
@@ -242,7 +242,7 @@ class Register extends React.PureComponent {
     )
   }
 
-  initBulkRegistrations = () => {
+  initBulkRegistrations() {
     this.setState(
       {
         importingRegistrations: false,

@@ -12,7 +12,7 @@ const actions = {
   setDomain: (domain) => {
     return {
       type: constants.SET_DOMAIN,
-      domain
+      domain,
     }
   },
 
@@ -26,21 +26,29 @@ const actions = {
         domain = await api.loadDomain(_domain)
         dispatch(services.names.actions.addRecord(_domain, domain.hash))
         dispatch(services.names.actions.checkIsRevealed(domain.hash))
-        if (domain.status === domain.constants.DOMAIN_STATUSES.REGISTERED_SELF || domain.status === domain.constants.DOMAIN_STATUSES.REGISTERED_OTHER) {
+        if (
+          domain.status === domain.constants.DOMAIN_STATUSES.REGISTERED_SELF ||
+          domain.status === domain.constants.DOMAIN_STATUSES.REGISTERED_OTHER
+        ) {
           dispatch(actions.loadRecords(_domain))
           dispatch(actions.loadReverseRecords(_domain))
         }
-        if (domain.status === domain.constants.DOMAIN_STATUSES.REGISTERED_SELF) {
+        if (
+          domain.status === domain.constants.DOMAIN_STATUSES.REGISTERED_SELF
+        ) {
           const currExpiry = domain.expiresAt
           const now = parseInt(Date.now() / 1000)
           const oneYear = 365 * 24 * 60 * 60 // this value is directly from the LeasingAgent
           const registeredExpiry = currExpiry + 2 * oneYear
-          domain.canRenew = !(registeredExpiry >= now + oneYear * services.environment.MAX_REGISTRATION_QUANTITY)
+          domain.canRenew = !(
+            registeredExpiry >=
+            now + oneYear * services.environment.MAX_REGISTRATION_QUANTITY
+          )
         }
       } else {
         domain = {
           supported: false,
-          domain: _domain
+          domain: _domain,
         }
       }
       dispatch(actions.setDomain(domain))
@@ -51,14 +59,14 @@ const actions = {
   setRevealingDomain: (isRevealing) => {
     return {
       type: constants.IS_REVEALING_DOMAIN,
-      isRevealing
+      isRevealing,
     }
   },
 
   setRevealComplete: (isRevealed) => {
     return {
       type: constants.SET_REVEAL_COMPLETE,
-      isRevealed
+      isRevealed,
     }
   },
 
@@ -91,7 +99,7 @@ const actions = {
   setAuctionPhases: (auctionPhases) => {
     return {
       type: constants.SET_AUCTION_PHASES,
-      auctionPhases
+      auctionPhases,
     }
   },
 
@@ -106,7 +114,7 @@ const actions = {
   setRegistrationPremium: (premium) => {
     return {
       type: constants.SET_REGISTRATION_PREMIUM,
-      premium
+      premium,
     }
   },
 
@@ -123,14 +131,14 @@ const actions = {
   isSettingRecord: (value) => {
     return {
       type: constants.IS_SETTING_RECORD,
-      value 
+      value,
     }
   },
-  
+
   setRecordComplete: (value) => {
     return {
       type: constants.SET_RECORD_COMPLETE,
-      value
+      value,
     }
   },
 
@@ -153,35 +161,35 @@ const actions = {
   isLoadingRecords: (value) => {
     return {
       type: constants.IS_LOADING_RECORDS,
-      value
+      value,
     }
   },
-  
+
   recordsLoaded: (records) => {
     return {
       type: constants.RECORDS_LOADED,
-      records
+      records,
     }
   },
 
   _setResolver: (resolver) => {
     return {
       type: constants.SET_RESOLVER,
-      resolver
+      resolver,
     }
   },
 
   setResolverLoading: (loading) => {
     return {
       type: constants.SET_RESOLVER_LOADING,
-      loading
+      loading,
     }
   },
 
   setResolverComplete: (complete) => {
     return {
       type: constants.SET_RESOLVER_COMPLETE,
-      complete
+      complete,
     }
   },
 
@@ -219,10 +227,14 @@ const actions = {
       dispatch(actions._setResolver(resolver))
       if (resolver) {
         const records = await api.getStandardRecords(domain)
-        dispatch(actions.recordsLoaded(records.map(record => {
-          const obj = Object.assign(record, recordsByKey[record.type])
-          return obj
-        })))
+        dispatch(
+          actions.recordsLoaded(
+            records.map((record) => {
+              const obj = Object.assign(record, recordsByKey[record.type])
+              return obj
+            }),
+          ),
+        )
       } else {
         dispatch(actions.recordsLoaded([]))
       }
@@ -233,28 +245,28 @@ const actions = {
   isLoadingReverseRecords: (isLoading) => {
     return {
       type: constants.IS_LOADING_REVERSE_RECORDS,
-      isLoading
+      isLoading,
     }
   },
 
   setReverseRecords: (reverseRecords) => {
     return {
       type: constants.SET_REVERSE_RECORDS,
-      reverseRecords
+      reverseRecords,
     }
   },
 
   isSettingEVMReverseRecord: (isLoading) => {
     return {
       type: constants.IS_SETTING_EVM_REVERSE_RECORD,
-      isLoading
+      isLoading,
     }
   },
 
   isSettingEVMReverseRecordComplete: (isComplete) => {
     return {
       type: constants.IS_SETTING_EVM_REVERSE_RECORD_COMPLETE,
-      isComplete
+      isComplete,
     }
   },
 
@@ -264,11 +276,14 @@ const actions = {
       try {
         const api = services.provider.buildAPI()
         await api.setEVMReverseRecord(domain)
-        dispatch(actions.setReverseRecords({
-          [api.avvy.RECORDS.EVM]: api.account
-        }))
+        dispatch(
+          actions.setReverseRecords({
+            [api.avvy.RECORDS.EVM]: api.account,
+          }),
+        )
         dispatch(actions.isSettingEVMReverseRecordComplete(true))
-      } catch {
+      } catch (e) {
+        console.log(e)
         alert('Failed to set reverse record')
       }
       dispatch(actions.isSettingEVMReverseRecord(false))
@@ -298,7 +313,7 @@ const actions = {
       success,
     }
   },
-  
+
   isTransferringDomain: (transferring) => {
     return {
       type: constants.IS_TRANSFERRING_DOMAIN,

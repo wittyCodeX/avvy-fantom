@@ -5,7 +5,15 @@ require('dotenv').config()
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: '0.8.0',
+  solidity: {
+    compilers: [
+      { version: '0.8.3' },
+      { version: '0.8.0' },
+      { version: '0.7.6' },
+      { version: '0.6.12' },
+      { version: '0.5.17' },
+    ],
+  },
   paths: {
     artifacts: './src/artifacts',
   },
@@ -14,7 +22,7 @@ module.exports = {
       chainId: 1337,
     },
     fantomtest: {
-      url: 'https://rpc.testnet.fantom.network',
+      url: 'https://rpc.testnet.fantom.network/',
       accounts: [process.env.PRIVATE_KEY],
       chainId: 4002,
       live: false,

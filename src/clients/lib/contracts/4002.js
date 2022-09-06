@@ -1200,7 +1200,7 @@ export default {
       ],
     },
     LeasingAgentV1: {
-      address: '0x6DBa8e01644B2f2Fd5768652D44B936eee75B3b5',
+      address: '0xC1a79c4042133aA9E68ded943681D4D432c629D1',
       abi: [
         {
           inputs: [
