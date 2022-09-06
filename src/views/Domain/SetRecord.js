@@ -23,13 +23,13 @@ class AddRecord extends React.PureComponent {
     }
   }
 
-  setValue(value) {
+  setValue = (value) => {
     this.inputRef.value = value
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     let type, value
-
+    console.log(this.props)
     if (this.props.deleteRecord) {
       type = this.props.deleteRecord
       value = ''
@@ -43,7 +43,7 @@ class AddRecord extends React.PureComponent {
     this.props.handleSubmit(type, value)
   }
 
-  getEditRecordType() {
+  getEditRecordType = () => {
     const opts = this.state.options.filter(
       (opt) =>
         opt.value === this.props.editRecord ||
@@ -62,9 +62,9 @@ class AddRecord extends React.PureComponent {
             <div>{this.getEditRecordType()}</div>
           ) : (
             <components.Select
-              key={this.state?.initKey}
-              value={this.state?.recordType}
-              options={this.state?.options}
+              key={this.state.initKey}
+              value={this.state.recordType}
+              options={this.state.options}
               ref={(ref) => (this.selectRef = ref)}
             />
           )}

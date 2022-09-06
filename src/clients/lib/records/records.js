@@ -1,7 +1,7 @@
 export default {
   records: [
     {
-      key: 3,
+      key: 1,
       name: 'EVM',
       regex: {
         address: '0x[a-fA-F0-9]{40}',
@@ -10,7 +10,7 @@ export default {
       description: 'Address on EVM-type network',
     },
     {
-      key: 4,
+      key: 2,
       name: 'VALIDATOR',
       regex: {
         node_id: 'NodeID-[A-Za-z0-9]{33}',
@@ -19,7 +19,7 @@ export default {
       description: 'Validator NodeID on the Fantom Network',
     },
     {
-      key: 5,
+      key: 3,
       name: 'DNS_CNAME',
       regex: {
         hostname: '([A-Za-z0-9\\-]+\\.)+[A-Za-z0-9\\-]+',
@@ -28,7 +28,7 @@ export default {
       description: 'DNS CNAME Record',
     },
     {
-      key: 6,
+      key: 4,
       name: 'DNS_A',
       regex: {
         ipv4:
@@ -40,7 +40,7 @@ export default {
       description: 'DNS A Record',
     },
     {
-      key: 7,
+      key: 5,
       name: 'AVATAR',
       regex: {
         http:
@@ -51,7 +51,7 @@ export default {
         'An image which the user wishes to use as their avatar. Value should be a URL which references the image.',
     },
     {
-      key: 8,
+      key: 6,
       name: 'CONTENT',
       regex: {
         http:
@@ -63,7 +63,7 @@ export default {
         'A downloadable file. Value should be a URL (e.g. IPFS, HTTPS, ..) which references the image.',
     },
     {
-      key: 9,
+      key: 7,
       name: 'PHONE',
       regex: {},
       label: 'Phone Number',

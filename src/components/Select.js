@@ -29,7 +29,7 @@ class Select extends React.PureComponent {
           this.selectRef = ref
           this.setInitial(ref)
         }}
-        value={this.props?.value}
+        value={this.props.value}
       >
         {this.props.options.map((option, index) => {
           return (

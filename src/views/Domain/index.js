@@ -52,7 +52,7 @@ class Domain extends React.PureComponent {
     })
   }
 
-  updateParams = () => {
+  updateParams() {
     const params = services.linking.getParams('Domain')
     const domain = params.domain ? params.domain.toLowerCase() : null
     this.setState(
@@ -109,12 +109,12 @@ class Domain extends React.PureComponent {
     )
   }
 
-  addToCart(navigator) {
+  addToCart = (navigator) => {
     this.props.addToCart(this.state.domain)
     services.linking.navigate(navigator, 'Register', {})
   }
 
-  bidOnName() {
+  bidOnName = () => {
     this.bidModal.toggle()
   }
 
@@ -123,7 +123,7 @@ class Domain extends React.PureComponent {
     this.setResolverModal.toggle()
   }
 
-  handleAddBid(navigate, value) {
+  handleAddBid = (navigate, value) => {
     this.props.addBid(this.state.domain, value)
     services.linking.navigate(navigate, 'SunriseAuctionMyBids')
   }
@@ -139,7 +139,7 @@ class Domain extends React.PureComponent {
     }))
     if (!value) value = ''
     this.setRecord.setValue(value)
-    this.setRecordModal.toggle()
+    this.toogleRecordModal()
   }
 
   showDeleteRecord = (key, value) => {
@@ -148,7 +148,11 @@ class Domain extends React.PureComponent {
       deleteRecordKey: key,
     }))
     if (!value) value = ''
-    this.setRecord.setValue(value)
+    this.toogleRecordModal()
+  }
+
+  toogleRecordModal = () => {
+    console.log(this.state)
     this.setRecordModal.toggle()
   }
 

@@ -8,14 +8,9 @@ class DataExplorer extends React.PureComponent {
 
     this.vendors = {
       // block explorers
-      avascan: {
-        name: 'Avascan',
-        logo: services.linking.static('images/vendor/avascan.jpg'),
-        class: 'h-12 w-12',
-      },
-      snowtrace: {
-        name: 'Snowtrace',
-        logo: services.linking.static('images/vendor/snowtrace.png'),
+      ftmscan: {
+        name: 'Fantom Scan',
+        logo: services.linking.static('images/vendor/ftmscan.png'),
         class: 'h-12 w-12',
       },
       vscout: {
@@ -72,39 +67,12 @@ class DataExplorer extends React.PureComponent {
     )
   }
 
-  renderXChain() {
-    return (
-      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-        {this.renderVendor(
-          'avascan',
-          (d) => `https://avascan.info/blockchain/x/address/${d}`,
-        )}
-      </div>
-    )
-  }
-
-  renderPChain() {
-    return (
-      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-        {this.renderVendor(
-          'avascan',
-          (d) => `https://avascan.info/blockchain/p/address/${d}`,
-        )}
-        {this.renderVendor('vscout', (d) => `https://vscout.io/address/${d}`)}
-      </div>
-    )
-  }
-
   renderEVM() {
     return (
       <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
         {this.renderVendor(
-          'snowtrace',
-          (d) => `https://snowtrace.io/address/${d}`,
-        )}
-        {this.renderVendor(
-          'avascan',
-          (d) => `https://avascan.info/blockchain/c/address/${d}`,
+          'ftmscan',
+          (d) => `https://testnet.ftmscan.com/address/${d}`,
         )}
       </div>
     )
@@ -114,8 +82,8 @@ class DataExplorer extends React.PureComponent {
     return (
       <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
         {this.renderVendor(
-          'avascan',
-          (d) => `https://avascan.info/staking/validator/${d}`,
+          'ftmscan',
+          (d) => `https://fantom.foundation/staking/validator/${d}`,
         )}
         {this.renderVendor('vscout', (d) => `https://vscout.io/validator/${d}`)}
       </div>
@@ -178,12 +146,6 @@ class DataExplorer extends React.PureComponent {
   renderLinks() {
     const records = this.avvy.RECORDS
     switch (this.props.data.dataType) {
-      case records.X_CHAIN:
-        return this.renderXChain()
-
-      case records.P_CHAIN:
-        return this.renderPChain()
-
       case records.EVM:
         return this.renderEVM()
 
