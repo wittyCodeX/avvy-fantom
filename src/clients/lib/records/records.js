@@ -1,31 +1,13 @@
 export default {
   records: [
     {
-      key: 1,
-      name: 'X_CHAIN',
-      regex: {
-        address: '[xX]-(FTM|ftm)[A-Za-z0-9]{39}',
-      },
-      label: 'X-Chain Address',
-      description: 'Address on Fantom X-Chain',
-    },
-    {
-      key: 2,
-      name: 'P_CHAIN',
-      regex: {
-        address: '[pP]-(FTM|ftm)[A-Za-z0-9]{39}',
-      },
-      label: 'P-Chain Address',
-      description: 'Address on Fantom P-Chain',
-    },
-    {
       key: 3,
       name: 'EVM',
       regex: {
         address: '0x[a-fA-F0-9]{40}',
       },
-      label: 'C-Chain / EVM Address',
-      description: 'Address on EVM-type network, including Fantom C-Chain',
+      label: 'EVM Address',
+      description: 'Address on EVM-type network',
     },
     {
       key: 4,
