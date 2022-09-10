@@ -7,35 +7,35 @@ const actions = {
   setHash: (hash) => {
     return {
       type: constants.SET_HASH,
-      hash
+      hash,
     }
   },
 
   setProgress: (progress) => {
     return {
       type: constants.SET_PROGRESS,
-      progress
+      progress,
     }
   },
 
-  setIsFinalizing:(value) => {
+  setIsFinalizing: (value) => {
     return {
       type: constants.SET_IS_FINALIZING,
-      value
+      value,
     }
   },
 
   setHasError: (value) => {
     return {
       type: constants.SET_HAS_ERROR,
-      value
+      value,
     }
   },
 
   setIsComplete: (value) => {
     return {
       type: constants.SET_IS_COMPLETE,
-      value
+      value,
     }
   },
 
@@ -50,7 +50,7 @@ const actions = {
   setRegistrationPremium: (premium) => {
     return {
       type: constants.SET_REGISTRATION_PREMIUM,
-      premium
+      premium,
     }
   },
 
@@ -63,10 +63,9 @@ const actions = {
   },
 
   setBalance: (balance) => {
-    
     return {
       type: constants.SET_BALANCE,
-      balance
+      balance,
     }
   },
 
@@ -83,35 +82,57 @@ const actions = {
       try {
         const api = services.provider.buildAPI()
         const state = getState()
-        const constraintsProofs = services.proofs.selectors.constraintsProofs(state)
+        const constraintsProofs = services.proofs.selectors.constraintsProofs(
+          state,
+        )
         const pricingProofs = services.proofs.selectors.pricingProofs(state)
-        let j = 0;
+        let j = 0
         const numSteps = names.length * 2
         for (let i = 0; i < names.length; i += 1) {
           let name = names[i]
           if (!pricingProofs[name]) {
-            dispatch(actions.setProgress({
-              message: `Generating pricing proof for ${name} (${j+1}/${numSteps})`,
-              percent: parseInt((j / numSteps) * 100)
-            }))
+            dispatch(
+              actions.setProgress({
+                message: `Generating pricing proof for ${name} (${
+                  j + 1
+                }/${numSteps})`,
+                percent: parseInt((j / numSteps) * 100),
+              }),
+            )
             let pricingRes = await api.generateDomainPriceProof(name)
-            dispatch(services.proofs.actions.setPricingProof(name, pricingRes.calldata))
+            dispatch(
+              services.proofs.actions.setPricingProof(
+                name,
+                pricingRes.calldata,
+              ),
+            )
           }
           j += 1
           if (!constraintsProofs[name]) {
-            dispatch(actions.setProgress({
-              message: `Generating constraints proof for ${name} (${j+1}/${numSteps})`,
-              percent: parseInt((j / numSteps) * 100),
-            }))
+            dispatch(
+              actions.setProgress({
+                message: `Generating constraints proof for ${name} (${
+                  j + 1
+                }/${numSteps})`,
+                percent: parseInt((j / numSteps) * 100),
+              }),
+            )
             let constraintsRes = await api.generateConstraintsProof(name)
-            dispatch(services.proofs.actions.setConstraintsProof(name, constraintsRes.calldata))
+            dispatch(
+              services.proofs.actions.setConstraintsProof(
+                name,
+                constraintsRes.calldata,
+              ),
+            )
           }
           j += 1
         }
-        dispatch(actions.setProgress({
-          message: `Done`,
-          percent: 100,
-        }))
+        dispatch(
+          actions.setProgress({
+            message: `Done`,
+            percent: 100,
+          }),
+        )
       } catch (err) {
         console.log(err)
         dispatch(actions.setHasError(true))
@@ -127,7 +148,9 @@ const actions = {
         const api = services.provider.buildAPI()
         let names = services.cart.selectors.names(state)
         const _quantities = services.cart.selectors.quantities(state)
-        const _constraintsProofs = services.proofs.selectors.constraintsProofs(state)
+        const _constraintsProofs = services.proofs.selectors.constraintsProofs(
+          state,
+        )
         const _pricingProofs = services.proofs.selectors.pricingProofs(state)
         let quantities = []
         let pricingProofs = []
@@ -137,7 +160,7 @@ const actions = {
           hasMore = true
           names = names.slice(0, services.environment.MAX_REGISTRATION_NAMES)
         }
-        names.forEach(name => {
+        names.forEach((name) => {
           quantities.push(_quantities[name])
           pricingProofs.push(_pricingProofs[name])
           constraintsProofs.push(_constraintsProofs[name])
@@ -154,16 +177,17 @@ const actions = {
             pricingProofs,
           )
         } else {
-          const _names = names.map(n => reverseLookups[n])
+          const _names = names.map((n) => reverseLookups[n])
           const preimages = await api.buildPreimages(names)
           await api.registerWithPreimage(
             names,
             quantities,
             constraintsProofs,
             pricingProofs,
-            preimages
+            preimages,
           )
         }
+        await api.generateNFTImage(names)
 
         dispatch(actions.setIsComplete(true))
         dispatch(services.cart.actions.clearNames(names))
@@ -180,8 +204,8 @@ const actions = {
 
   enableEnhancedPrivacy: (value) => {
     return {
-      type: constants.ENABLE_ENHANCED_PRIVACY, 
-      value
+      type: constants.ENABLE_ENHANCED_PRIVACY,
+      value,
     }
   },
 }

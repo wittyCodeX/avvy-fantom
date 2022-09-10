@@ -21,6 +21,7 @@ import redux from './redux'
 import sunrise from './sunrise'
 import time from './time'
 import user from './user'
+import nft from './nft'
 
 const services = {
   account,
@@ -46,6 +47,7 @@ const services = {
   sunrise,
   time,
   user,
+  nft,
 }
 
 export default services

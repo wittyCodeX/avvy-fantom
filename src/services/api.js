@@ -376,6 +376,19 @@ class FTMVYClient {
     await registerTx.wait()
   }
 
+  async generateNFTImage(names) {
+    console.log('domain name: ', names)
+    if (this.account) {
+      const domainIDs = await this.getDomainIDsByOwner(
+        this.account.toLowerCase(),
+      )
+      console.log('domain ID: ', domainIDs[domainIDs.length - 1].toString())
+      const result = await services.nft.generateNFT(
+        names[0].split('.')[0],
+        domainIDs[domainIDs.length - 1],
+      )
+    }
+  }
   async getAuctionPhases() {
     const now = parseInt(Date.now() / 1000)
     if (this._auctionPhasesCache && now - this._auctionPhasesCachedAt < 60 * 5)
