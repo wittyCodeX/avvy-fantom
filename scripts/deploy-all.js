@@ -24,8 +24,8 @@ async function main() {
   //   'contracts/Domain.sol:Domain',
   // )
   // const domain = await Domain.deploy(
-  //   'FTMvy Domains',
-  //   'FTMVY',
+  //   'Fantom Name Service',
+  //   'FNS',
   //   contractRegistryV1.address,
   // )
 

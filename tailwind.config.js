@@ -1,8 +1,6 @@
 module.exports = {
   darkMode: 'class',
-  content: [
-    "./src/**/*.{html,js}"
-  ],
+  content: ['./src/**/*.{html,js}'],
   theme: {
     extend: {
       colors: {
@@ -13,10 +11,12 @@ module.exports = {
         'alert-orange': '#ff9966',
       },
       fontFamily: {
-        'poppins': ["'Poppins'", 'sans-serif'],
-        'zen': ["'Zen Dots'", 'cursive'],
-      }
+        poppins: ["'Poppins'", 'sans-serif'],
+        zen: ["'Zen Dots'", 'cursive'],
+        arial: ["'Arial Black'", 'sans-serif'],
+      },
     },
   },
   plugins: [],
 }
+// #001f68!important

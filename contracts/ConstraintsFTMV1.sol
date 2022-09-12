@@ -464,12 +464,12 @@ interface VerifierInterface {
 }
 
 
-// File contracts/ConstraintsFTMV1.sol
+// File contracts/ConstraintsFNSV1.sol
 
 pragma solidity ^0.8.0;
 
 
-contract ConstraintsFTMV1 is ConstraintsInterface, AccessControl {
+contract ConstraintsFNSV1 is ConstraintsInterface, AccessControl {
   VerifierInterface public _verifier;
   bytes32 public constant MANAGER_ROLE = keccak256("MANAGER");
   mapping(uint256 => bool) _blockedNames;
@@ -484,11 +484,11 @@ contract ConstraintsFTMV1 is ConstraintsInterface, AccessControl {
     uint[] memory pubSignals;
     bytes memory proof;
     (pubSignals, proof) = abi.decode(data, (uint[], bytes));
-    require(pubSignals.length == 2, "ConstraintsFTMV1: Invalid pubSignals length");
-    require(namespace == pubSignals[0], "ConstraintsFTMV1: Proof doesn't match namespace");
-    require(name == pubSignals[1], "ConstraintsFTMV1: Proof doesn't match provided name");
-    require(!_blockedNames[name], "ConstraintsFTMV1: Name blocked");
-    require(_verifier.verifyProof(proof, pubSignals), "ConstraintsFTMV1: Verifier failed");
+    require(pubSignals.length == 2, "ConstraintsFNSV1: Invalid pubSignals length");
+    require(namespace == pubSignals[0], "ConstraintsFNSV1: Proof doesn't match namespace");
+    require(name == pubSignals[1], "ConstraintsFNSV1: Proof doesn't match provided name");
+    require(!_blockedNames[name], "ConstraintsFNSV1: Name blocked");
+    require(_verifier.verifyProof(proof, pubSignals), "ConstraintsFNSV1: Verifier failed");
   }
 
   function blockNames(

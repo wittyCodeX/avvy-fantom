@@ -39,7 +39,7 @@ NamespaceV1 deployed to 0xF1fDaC2702bF7C7a11Bba80798Ead3F89c113632
 ConstraintsVerifier deployed to 0x2116B4FfD4048208a7e1b094582f8e32e090a888
 PricingOracleV1 deployed to 0x92FEfEf8583A72b9f05DDA072e0bCC738a76E92E
 
-ConstraintsFTMV1 deployed to 0xef3226e3fb356e47c777a978e3da2ea69e16c07c
+ConstraintsFNSV1 deployed to 0xef3226e3fb356e47c777a978e3da2ea69e16c07c
 
 
 

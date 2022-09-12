@@ -123,7 +123,7 @@ class ConnectWallet extends React.PureComponent {
               target="_blank"
               href="https://avvy.domains/blog/name-squatting-dispute-resolution/"
             >
-              FTMVY Domains supports name disputes
+              FNS Domains supports name disputes
             </a>
             .
           </p>
@@ -146,7 +146,7 @@ class ConnectWallet extends React.PureComponent {
         </div>
         <div className="mt-2">
           <components.checkbox.Checkbox
-            text={'I understand that FTMVY supports name disputes'}
+            text={'I understand that FNS supports name disputes'}
             singleLine={true}
             checked={this.state.disputes}
             onCheck={() => this.toggleDisclaimer('disputes')}

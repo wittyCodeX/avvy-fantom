@@ -153,7 +153,7 @@ const Hash = function (hash, provider) {
   }
 }
 
-const FTMVY = function (_provider, _opts) {
+const FNS = function (_provider, _opts) {
   // optionally pass chainId
   const opts = _opts || {}
   const chainId = opts.chainId || 43114
@@ -200,8 +200,8 @@ const FTMVY = function (_provider, _opts) {
   }
 }
 
-FTMVY.blocklist = blocklist
-FTMVY.RECORDS = records
-FTMVY.utils = utils
+FNS.blocklist = blocklist
+FNS.RECORDS = records
+FNS.utils = utils
 
-export default FTMVY
+export default FNS

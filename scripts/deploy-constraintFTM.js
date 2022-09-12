@@ -9,16 +9,16 @@ const hre = require('hardhat')
 async function main() {
   const [owner] = await ethers.getSigners()
 
-  // ConstraintsFTMV1 Contract Deployment
-  const ConstraintsFTMV1 = await hre.ethers.getContractFactory(
-    'ConstraintsFTMV1',
+  // ConstraintsFNSV1 Contract Deployment
+  const ConstraintsFNSV1 = await hre.ethers.getContractFactory(
+    'ConstraintsFNSV1',
   )
-  const constraintsFTMV1 = await ConstraintsFTMV1.deploy(
+  const constraintsFNSV1 = await ConstraintsFNSV1.deploy(
     '0x2116B4FfD4048208a7e1b094582f8e32e090a888',
   )
 
-  await constraintsFTMV1
-  console.log(`ConstraintsFTMV1 deployed to ${constraintsFTMV1.address}`)
+  await constraintsFNSV1
+  console.log(`ConstraintsFNSV1 deployed to ${constraintsFNSV1.address}`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

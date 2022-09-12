@@ -37,10 +37,10 @@ class Domain extends React.PureComponent {
     }
     this.searchPlaceholder = 'Search for another name'
     this.loadDomain(domain)
-    this.getFTMVY()
+    this.getFNS()
   }
 
-  async getFTMVY() {
+  async getFNS() {
     const api = await services.provider.buildAPI()
     this.avvy = api.avvy
   }

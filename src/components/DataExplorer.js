@@ -4,7 +4,7 @@ import services from 'services'
 class DataExplorer extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.getFTMVY()
+    this.getFNS()
 
     this.vendors = {
       // block explorers
@@ -45,7 +45,7 @@ class DataExplorer extends React.PureComponent {
     }
   }
 
-  async getFTMVY() {
+  async getFNS() {
     const api = await services.provider.buildAPI()
     this.avvy = api.avvy
   }

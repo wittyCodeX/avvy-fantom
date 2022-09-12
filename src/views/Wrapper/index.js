@@ -76,7 +76,7 @@ class Wrapper extends React.PureComponent {
                 <img
                   src={services.linking.static('images/logo.png')}
                   className="w-12 md:w-14 m-auto dark:w-12 dark:md:w-12"
-                  alt="FTMVY Domains"
+                  alt="FNS Domains"
                 />
               </div>
             </Link>
@@ -121,7 +121,7 @@ class Wrapper extends React.PureComponent {
           </div>
           <div className="absolute bottom-0 mb-8 text-center w-full">
             <div className="w-32 m-auto">
-              <a href="https://ftm.network">
+              <a href="https://fantom.foundation">
                 <img
                   src={services.linking.static('images/ftm.png')}
                   alt="Powered by Fantom."
@@ -143,12 +143,12 @@ class Wrapper extends React.PureComponent {
                   <img
                     src={services.linking.static('images/logo.png')}
                     className="w-12 md:w-14 m-auto dark:w-8 dark:md:w-12"
-                    alt="FTMVY Domains"
+                    alt="FNS Domains"
                   />
                 </div>
                 <div className="text-left ml-1 md:ml-3 dark:text-white">
-                  <div className="font-zen uppercase text-md md:text-xl">
-                    FTMVY
+                  <div className="font-arial uppercase text-md md:text-xl">
+                    FNS
                   </div>
                   <div
                     className="font-poppins text-xs md:text-sm"
@@ -190,26 +190,6 @@ class Wrapper extends React.PureComponent {
                   <SearchIcon className="w-6" />
                 </div>
               </div>
-              <div className="font-poppins mr-4 text-md">
-                <div
-                  className="py-8 px-4 cursor-pointer"
-                  onClick={() => this.props.setDarkmode(!this.props.isDarkmode)}
-                >
-                  {this.props.isDarkmode ? (
-                    <SunIcon className="w-6" />
-                  ) : (
-                    <MoonIcon className="w-6" />
-                  )}
-                </div>
-              </div>
-              <div className="font-poppins text-md">
-                <Link
-                  className="py-8 px-4 cursor-pointer"
-                  to={services.linking.path('Settings')}
-                >
-                  <CogIcon className="w-6" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -217,10 +197,105 @@ class Wrapper extends React.PureComponent {
         {/* Content */}
         <div className="h-16 md:h-24"></div>
         <components.ContinueRegistration />
-        <div className="max-w-screen-xl m-auto p-4">{this.props.children}</div>
+        <div className="max-w-screen-2xl m-auto p-16">
+          {this.props.children}
+        </div>
 
         {/* Cart */}
         <div className="absolute bottom-0 w-full"></div>
+        {/* Footer */}
+        <footer className="fixed bottom-0 w-full">
+          <div className="w-full mx-auto px-4 sm:px-6">
+            {/* Bottom area */}
+            <div className="md:flex md:items-center md:justify-between py-2 border-t border-gray-200">
+              {/* Social links */}
+              <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-center">
+                <li>
+                  <Link
+                    to="#"
+                    className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                    aria-label="Twitter"
+                  >
+                    <svg
+                      className="w-8 h-8 fill-current"
+                      viewBox="0 0 32 32"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M24 11.5c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4 0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H8c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4c.7-.5 1.3-1.1 1.7-1.8z" />
+                    </svg>
+                  </Link>
+                </li>
+                <li className="ml-4">
+                  <Link
+                    to="#"
+                    className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                    aria-label="Github"
+                  >
+                    <svg
+                      className="w-8 h-8 fill-current"
+                      viewBox="0 0 32 32"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z" />
+                    </svg>
+                  </Link>
+                </li>
+                <li className="ml-4">
+                  <Link
+                    to="#"
+                    className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                    aria-label="Facebook"
+                  >
+                    <svg
+                      className="w-8 h-8 fill-current"
+                      viewBox="0 0 32 32"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M14.023 24L14 17h-3v-3h3v-2c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V14H21l-1 3h-2.72v7h-3.257z" />
+                    </svg>
+                  </Link>
+                </li>
+              </ul>
+              {/* Social links */}
+              <div className="flex mb-4 md:order-2 md:ml-4 md:mb-0 justify-end items-center">
+                <div className="font-poppins mr-4 text-md">
+                  <div
+                    className="px-4 cursor-pointer"
+                    onClick={() =>
+                      this.props.setDarkmode(!this.props.isDarkmode)
+                    }
+                  >
+                    {this.props.isDarkmode ? (
+                      <SunIcon className="w-6" />
+                    ) : (
+                      <MoonIcon className="w-6" />
+                    )}
+                  </div>
+                </div>
+                <div className="font-poppins text-md">
+                  <Link
+                    className="px-4 cursor-pointer"
+                    to={services.linking.path('Settings')}
+                  >
+                    <CogIcon className="w-6" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Copyrights note */}
+              <div className="text-sm text-gray-600 mr-4">
+                <div className="w-32 m-auto">
+                  <a href="https://fantom.foundation">
+                    <img
+                      src={services.linking.static('images/ftm.png')}
+                      alt="Powered by Fantom."
+                    />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     )
   }

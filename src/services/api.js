@@ -10,7 +10,7 @@ import client from 'clients'
 
 import services from 'services'
 
-class FTMVYClient {
+class FNSClient {
   constructor(chainId, account, signerOrProvider) {
     this.chainId = parseInt(chainId)
     this.avvy = new client(signerOrProvider, {
@@ -682,4 +682,4 @@ class FTMVYClient {
   }
 }
 
-export default FTMVYClient
+export default FNSClient
