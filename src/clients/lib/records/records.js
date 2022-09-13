@@ -52,7 +52,7 @@ export default {
     },
     {
       key: 6,
-      name: 'CONTENT',
+      name: 'Description',
       regex: {
         http:
           'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)',
@@ -64,11 +64,24 @@ export default {
     },
     {
       key: 7,
-      name: 'PHONE',
+      name: 'TELEGRAM',
       regex: {},
-      label: 'Phone Number',
-      description:
-        'A telephone number. Should conform to the "tel" URL scheme defined in RFC2806.',
+      label: 'Telegram',
+      description: 'A telegram id.',
+    },
+    {
+      key: 8,
+      name: 'TWITTER',
+      regex: {},
+      label: 'Twitter',
+      description: 'Twitter account url',
+    },
+    {
+      key: 9,
+      name: 'EMAIL',
+      regex: {},
+      label: 'Email',
+      description: 'A Email Address. Should be valid email format',
     },
   ],
 }
