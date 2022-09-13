@@ -20,6 +20,10 @@ function DomainSearch(props) {
     }
     services.linking.navigate(navigator, 'Domain', { domain })
   }
+  const renderStaticImage = (path, alt) => {
+    const src = services.linking.static(path)
+    return <img src={src} alt={alt} className="w-full" />
+  }
 
   return (
     <div className="bg-gray-100 rounded-xl w-full text-center relative dark:bg-gray-800">
