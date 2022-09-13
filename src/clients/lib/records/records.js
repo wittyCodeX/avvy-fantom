@@ -52,13 +52,13 @@ export default {
     },
     {
       key: 6,
-      name: 'Description',
+      name: 'DESCRIPTION',
       regex: {
         http:
           'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)',
         ipfs: 'ipfs:\\/\\/[A-Za-z0-9]{46}',
       },
-      label: 'Content',
+      label: 'Description',
       description:
         'A downloadable file. Value should be a URL (e.g. IPFS, HTTPS, ..) which references the image.',
     },

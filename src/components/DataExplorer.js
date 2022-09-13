@@ -25,6 +25,7 @@ class DataExplorer extends React.PureComponent {
         logo: services.linking.static('images/vendor/dns-lookup.png'),
         class: 'h-12 w-12',
       },
+
       ipinfo: {
         name: 'ipinfo.io',
         logo: services.linking.static('images/vendor/ipinfo-io.png'),
@@ -40,6 +41,28 @@ class DataExplorer extends React.PureComponent {
       cloudflare: {
         name: 'Cloudflare',
         logo: services.linking.static('images/vendor/cloudflare.svg'),
+        class: 'h-12 w-12',
+      },
+
+      // social
+      telegram: {
+        name: 'telegram',
+        logo: services.linking.static('images/vendor/telegram.png'),
+        class: 'h-12 w-12',
+      },
+      twitter: {
+        name: 'twitter',
+        logo: services.linking.static('images/vendor/twitter.png'),
+        class: 'h-12 w-12',
+      },
+      facebook: {
+        name: 'facebook',
+        logo: services.linking.static('images/vendor/facebook.png'),
+        class: 'h-12 w-12',
+      },
+      email: {
+        name: 'email',
+        logo: services.linking.static('images/vendor/gmail.png'),
         class: 'h-12 w-12',
       },
     }
@@ -105,7 +128,34 @@ class DataExplorer extends React.PureComponent {
       </div>
     )
   }
-
+  renderTelegram() {
+    return (
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor('telegram', (d) => `https://t.me/${d}`)}
+      </div>
+    )
+  }
+  renderTwitter() {
+    return (
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor('twitter', (d) => `http://twitter.com/${d}`)}
+      </div>
+    )
+  }
+  renderFaceBook() {
+    return (
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor('facebook', (d) => `http://facebook.com//${d}`)}
+      </div>
+    )
+  }
+  renderEmail() {
+    return (
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        {this.renderVendor('email', (d) => `mailTo:${d}`)}
+      </div>
+    )
+  }
   renderAvatar() {
     return (
       <div>
@@ -161,8 +211,20 @@ class DataExplorer extends React.PureComponent {
       case records.AVATAR:
         return this.renderAvatar()
 
-      case records.CONTENT:
+      case records.DISCRIPTION:
         return this.renderContent()
+
+      case records.TELEGRAM:
+        return this.renderTelegram()
+
+      case records.FACEBOOK:
+        return this.renderFaceBook()
+
+      case records.TWITTER:
+        return this.renderTwitter()
+
+      case records.EMAIL:
+        return this.renderEmail()
     }
     return null
   }
@@ -177,7 +239,11 @@ class DataExplorer extends React.PureComponent {
       [records.DNS_CNAME]: 'DNS Information',
       [records.DNS_A]: 'IP Address Information',
       [records.AVATAR]: 'Preview Avatar',
-      [records.CONTENT]: 'Open on IPFS Gateway',
+      [records.DESCRIPTION]: 'Open on IPFS Gateway',
+      [records.TELEGRAM]: 'Open on Telegram',
+      [records.TWITTER]: 'Open on Twitter',
+      [records.FACEBOOK]: 'Open on Facebook',
+      [records.EMAIL]: 'Open Email',
     }[this.props.data.dataType]
     if (!title) title = 'External Link'
     return title
