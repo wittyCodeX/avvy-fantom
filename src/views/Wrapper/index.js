@@ -27,7 +27,12 @@ class Wrapper extends React.PureComponent {
 
   render() {
     return (
-      <div className={`font-poppins`}>
+      <div
+        className={`font-poppins`}
+        style={{
+          backgroundImage: `url(${services.linking.static('images/bg.svg')})`,
+        }}
+      >
         {/* Mobile menu */}
         <div
           className="fixed top-0 bg-white dark:bg-gray-900 h-full left-0 w-screen z-10 transition-all"
@@ -182,15 +187,17 @@ class Wrapper extends React.PureComponent {
         {/* Content */}
         <div className="h-16 md:h-24"></div>
         <components.ContinueRegistration />
-        <div className="max-w-screen-xl m-auto p-16">{this.props.children}</div>
+        <div className="max-w-screen-xl m-auto p-16 min-h-screen">
+          {this.props.children}
+        </div>
 
         {/* Cart */}
         <div className="absolute bottom-0 w-full"></div>
         {/* Footer */}
-        <footer className="fixed bottom-0 w-full">
+        <footer className="fixed bottom-0 w-full  border-t-2 border-gray-100 bg-white dark:bg-gray-900 dark:border-gray-700 z-10">
           <div className="w-full mx-auto px-4 sm:px-6">
             {/* Bottom area */}
-            <div className="md:flex md:items-center md:justify-between py-2 border-t border-gray-200">
+            <div className="md:flex md:items-center md:justify-between py-1 border-t border-gray-200">
               {/* Social links */}
               <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-center">
                 <li>
