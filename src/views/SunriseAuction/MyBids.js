@@ -541,7 +541,7 @@ class MyBids extends React.PureComponent {
               {
                 'During the Bid Placement phase, you submit a sealed bid to the C-Chain and your bid details are kept on your device. After you submit the sealed bid, you are forced to download a backup file '
               }
-              <span className="italic">{'avvy-backup.json'}</span>
+              <span className="italic">{'fns-backup.json'}</span>
               {'. If you are able to find that file, '}
               <Link
                 className="text-alert-blue"
@@ -780,7 +780,7 @@ class MyBids extends React.PureComponent {
 
   renderDocumentation() {
     return (
-      <a href="https://avvy.domains/docs/sunrise-auction" target="_blank">
+      <a href="https://fns.domains/docs/sunrise-auction" target="_blank">
         <div className="cursor-pointer flex items-center justify-between bg-gray-100 rounded-lg p-4 font-bold dark:bg-gray-800 mt-4">
           <div>{'Auction Documentation'}</div>
           <ExternalLinkIcon className="h-6" />

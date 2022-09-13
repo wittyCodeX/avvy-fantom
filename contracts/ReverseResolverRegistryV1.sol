@@ -1517,7 +1517,7 @@ interface NamespaceInterface {
 // MMMMMMMMMMMMMWXkoc,.....   ....,:okKWMMMMMMMMMMMMM
 // 'MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM'
 //
-//                    AVVY DOMAINS.
+//                    fns DOMAINS.
 //
 
 pragma solidity ^0.8.0;

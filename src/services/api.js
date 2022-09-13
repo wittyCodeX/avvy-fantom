@@ -13,10 +13,10 @@ import services from 'services'
 class FNSClient {
   constructor(chainId, account, signerOrProvider) {
     this.chainId = parseInt(chainId)
-    this.avvy = new client(signerOrProvider, {
+    this.fns = new client(signerOrProvider, {
       chainId,
     })
-    this.contracts = this.avvy.contracts
+    this.contracts = this.fns.contracts
 
     this.account = account
     this.signer = signerOrProvider
@@ -629,7 +629,7 @@ class FNSClient {
   async getStandardRecords(domain) {
     // this won't work for subdomains yet.
     const hash = await client.utils.nameHash(domain)
-    const promises = this.avvy.RECORDS._LIST.map((r) =>
+    const promises = this.fns.RECORDS._LIST.map((r) =>
       this.contracts.PublicResolverV1.resolveStandard(hash, hash, r.key),
     )
     const results = await Promise.all(promises)
@@ -646,11 +646,11 @@ class FNSClient {
   async getReverseRecords(domain) {
     const hash = await client.utils.nameHash(domain)
     const promises = [
-      this.avvy.contracts.EVMReverseResolverV1.getEntry(hash, hash),
+      this.fns.contracts.EVMReverseResolverV1.getEntry(hash, hash),
     ]
     const results = await Promise.all(promises)
     return {
-      [this.avvy.RECORDS.EVM]:
+      [this.fns.RECORDS.EVM]:
         results[0] === '0x0000000000000000000000000000000000000000'
           ? null
           : results[0],
@@ -661,7 +661,7 @@ class FNSClient {
     const hash = await client.utils.nameHash(domain)
     console.log('evm reverse domain: ', domain)
     console.log('evm reverse hash: ', hash)
-    const tx = await this.avvy.contracts.EVMReverseResolverV1.set(
+    const tx = await this.fns.contracts.EVMReverseResolverV1.set(
       '3831551468565272533207492648373345634269920659407147817310279435281576705919',
       [0, 0],
     )

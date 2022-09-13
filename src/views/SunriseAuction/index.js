@@ -89,9 +89,9 @@ class SunriseAuction extends React.PureComponent {
 
   downloadBulkBidTemplate() {
     services.files.download(
-      'Domain Name,Bid Amount (wei)\navvydomains.ftm,1000000000000000000',
+      'Domain Name,Bid Amount (wei)\nfnsdomains.ftm,1000000000000000000',
       'text/csv',
-      'avvy-bid-template.csv',
+      'fns-bid-template.csv',
     )
   }
 
@@ -138,7 +138,7 @@ class SunriseAuction extends React.PureComponent {
           </div>
         ) : null}
         <div>
-          <a href="https://avvy.domains/docs/" target="_blank">
+          <a href="https://fns.domains/docs/" target="_blank">
             <div className="cursor-pointer flex items-center justify-between bg-gray-100 rounded-lg p-4 font-bold dark:bg-gray-800">
               <div>{'Auction Documentation'}</div>
               <ExternalLinkIcon className="h-6" />

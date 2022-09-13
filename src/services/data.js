@@ -7,11 +7,15 @@ const data = {
   backup: async () => {
     const data = await storage.getItem('persist:root')
     const timestamp = parseInt(Date.now())
-    files.download(data, 'application/json', `avvy-backup-${timestamp}.json`)
+    files.download(data, 'application/json', `fns-backup-${timestamp}.json`)
   },
-  
+
   restore: async () => {
-    if (window.confirm("Restoring data will overwrite any existing data. Please back up existing data before proceeding. Would you like to proceed?")) {
+    if (
+      window.confirm(
+        'Restoring data will overwrite any existing data. Please back up existing data before proceeding. Would you like to proceed?',
+      )
+    ) {
       const data = await files.upload()
       await storage.setItem('persist:root', data)
       alert('Data has been restored')
@@ -20,11 +24,15 @@ const data = {
   },
 
   reset: () => {
-    if (window.confirm("Your browser stores your auction bids, as well as your hidden domain names. Please ensure you have backed up your data before continuing.")) { 
+    if (
+      window.confirm(
+        'Your browser stores your auction bids, as well as your hidden domain names. Please ensure you have backed up your data before continuing.',
+      )
+    ) {
       storage.setItem('persist:root', null)
       window.location.reload()
     }
-  }
+  },
 }
 
 export default data

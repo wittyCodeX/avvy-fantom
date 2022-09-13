@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/avvydomains/client-common.git"
+    "url": "git+https://github.com/fnsdomains/client-common.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/avvydomains/client-common/issues"
+    "url": "https://github.com/fnsdomains/client-common/issues"
   },
-  "homepage": "https://github.com/avvydomains/client-common#readme",
+  "homepage": "https://github.com/fnsdomains/client-common#readme",
   "devDependencies": {
     "assert": "^2.0.0",
     "chai": "^4.3.6",

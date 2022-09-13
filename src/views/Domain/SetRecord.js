@@ -13,7 +13,7 @@ class AddRecord extends React.PureComponent {
       recordType: null,
       value: '',
       options: props.api
-        ? props.api.avvy.RECORDS._LIST.map((record) => {
+        ? props.api.fns.RECORDS._LIST.map((record) => {
             return {
               value: record.key,
               name: record.label,

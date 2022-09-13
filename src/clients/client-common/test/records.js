@@ -129,19 +129,19 @@ describe('Records', () => {
 
     describe('AVATAR', () => {
       it('should work for http', async () => {
-        const value = 'https://github.com/avvydomains/i-hate-regex'
+        const value = 'https://github.com/fnsdomains/i-hate-regex'
         expect(test('AVATAR', value)).to.be.true
       })
 
       it('should fail for random', async () => {
-        const value = 'xx/github.com/avvydomains/i-hate-regex'
+        const value = 'xx/github.com/fnsdomains/i-hate-regex'
         expect(test('AVATAR', value)).to.be.false
       })
     })
 
     describe('CONTENT', () => {
       it('should work for http', async () => {
-        const value = 'https://github.com/avvydomains/i-hate-regex'
+        const value = 'https://github.com/fnsdomains/i-hate-regex'
         expect(test('CONTENT', value)).to.be.true
       })
 
@@ -151,7 +151,7 @@ describe('Records', () => {
       })
 
       it('should fail for random', async () => {
-        const value = 'xx/github.com/avvydomains/i-hate-regex'
+        const value = 'xx/github.com/fnsdomains/i-hate-regex'
         expect(test('CONTENT', value)).to.be.false
       })
     })

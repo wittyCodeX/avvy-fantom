@@ -70,7 +70,7 @@ class DataExplorer extends React.PureComponent {
 
   async getFNS() {
     const api = await services.provider.buildAPI()
-    this.avvy = api.avvy
+    this.fns = api.fns
   }
 
   renderVendor(key, getLink) {
@@ -194,7 +194,7 @@ class DataExplorer extends React.PureComponent {
   }
 
   renderLinks() {
-    const records = this.avvy.RECORDS
+    const records = this.fns.RECORDS
     switch (this.props.data.dataType) {
       case records.EVM:
         return this.renderEVM()
@@ -230,7 +230,7 @@ class DataExplorer extends React.PureComponent {
   }
 
   getTitle() {
-    const records = this.avvy.RECORDS
+    const records = this.fns.RECORDS
     let title = {
       [records.X_CHAIN]: 'View on Block Explorer',
       [records.P_CHAIN]: 'View on Block Explorer',
@@ -251,7 +251,7 @@ class DataExplorer extends React.PureComponent {
 
   render() {
     if (!this.props.data) return null
-    if (!this.avvy) return null
+    if (!this.fns) return null
     const title = this.getTitle()
 
     return (

@@ -6,11 +6,11 @@
 // and ["SOME_LABEL"] as the labels, then you'll be returned
 // an object as follows:
 // {
-//   SOME_LABEL: 'avvy-web/services/darkmode/SOME_LABEL'
+//   SOME_LABEL: 'fns-web/services/darkmode/SOME_LABEL'
 // }
 export const prepareConstants = (prefix, labels) => {
   return labels.reduce((labelDict, label) => {
-    labelDict[label] = `avvy-web/${prefix}/${label}`
+    labelDict[label] = `fns-web/${prefix}/${label}`
     return labelDict
   }, {})
 }

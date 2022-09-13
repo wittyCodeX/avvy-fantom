@@ -9,127 +9,181 @@ const hre = require('hardhat')
 async function main() {
   const [owner] = await ethers.getSigners()
 
-  // // ContractRegistryV1 Contract Deployment
-  // const ContractRegistryV1 = await hre.ethers.getContractFactory(
-  //   'ContractRegistryV1',
-  // )
-  // const contractRegistryV1 = await ContractRegistryV1.deploy(owner.address)
+  // 1. ContractRegistryV1 Contract Deployment
+  const ContractRegistryV1 = await hre.ethers.getContractFactory(
+    'ContractRegistryV1',
+  )
+  const contractRegistryV1 = await ContractRegistryV1.deploy(owner.address)
+  await contractRegistryV1.deployed()
+  console.log(`ContractRegistryV1 deployed to ${contractRegistryV1.address}`)
 
-  // await contractRegistryV1.deployed()
+  await hre.run('verify:verify', {
+    address: contractRegistryV1.address,
+    constructorArguments: [owner.address],
+  })
 
-  // console.log(`ContractRegistryV1 deployed to ${contractRegistryV1.address}`)
+  // 2. Domain Contract Deployment
+  const Domain = await hre.ethers.getContractFactory(
+    'contracts/Domain.sol:Domain',
+  )
+  const domain = await Domain.deploy(
+    'Fantom Name Service',
+    'FNS',
+    contractRegistryV1.address,
+  )
+  await domain.deployed()
+  console.log(`Domain deployed to ${domain.address}`)
 
-  // // Domain Contract Deployment
-  // const Domain = await hre.ethers.getContractFactory(
-  //   'contracts/Domain.sol:Domain',
-  // )
-  // const domain = await Domain.deploy(
-  //   'Fantom Name Service',
-  //   'FNS',
-  //   contractRegistryV1.address,
-  // )
+  await hre.run('verify:verify', {
+    address: domain.address,
+    constructorArguments: [
+      'Fantom Name Service',
+      'FNS',
+      contractRegistryV1.address,
+    ],
+  })
 
-  // await domain.deployed()
+  // 3. EVMReverseResolverV1 Contract Deployment
+  const EVMReverseResolverV1 = await hre.ethers.getContractFactory(
+    'EVMReverseResolverV1',
+  )
+  const _EVMReverseResolverV1 = await EVMReverseResolverV1.deploy(
+    contractRegistryV1.address,
+  )
+  await _EVMReverseResolverV1.deployed()
+  console.log(
+    `EVMReverseResolverV1 deployed to ${_EVMReverseResolverV1.address}`,
+  )
+  await hre.run('verify:verify', {
+    address: _EVMReverseResolverV1.address,
+    constructorArguments: [contractRegistryV1.address],
+  })
 
-  // console.log(`Domain deployed to ${domain.address}`)
+  // 4. LeasingAgentV1 Contract Deployment
+  const LeasingAgentV1 = await hre.ethers.getContractFactory('LeasingAgentV1')
+  const leasingAgentV1 = await LeasingAgentV1.deploy(
+    contractRegistryV1.address,
+    '15731699658405033416417838394306507087307279032766355365310016737432995626672',
+  )
+  await leasingAgentV1.deployed()
+  console.log(`LeasingAgentV1 deployed to ${leasingAgentV1.address}`)
 
-  // // EVMReverseResolverV1 Contract Deployment
-  // const EVMReverseResolverV1 = await hre.ethers.getContractFactory(
-  //   'EVMReverseResolverV1',
-  // )
-  // const _EVMReverseResolverV1 = await EVMReverseResolverV1.deploy(
-  //   contractRegistryV1.address,
-  // )
+  await hre.run('verify:verify', {
+    address: leasingAgentV1.address,
+    constructorArguments: [
+      contractRegistryV1.address,
+      '15731699658405033416417838394306507087307279032766355365310016737432995626672',
+    ],
+  })
 
-  // await _EVMReverseResolverV1.deployed()
+  // 5. PublicResolverV1 Contract Deployment
+  const PublicResolverV1 = await hre.ethers.getContractFactory(
+    'PublicResolverV1',
+  )
+  const publicResolverV1 = await PublicResolverV1.deploy(
+    contractRegistryV1.address,
+  )
+  await publicResolverV1.deployed()
+  console.log(`PublicResolverV1 deployed to ${publicResolverV1.address}`)
 
-  // console.log(
-  //   `EVMReverseResolverV1 deployed to ${_EVMReverseResolverV1.address}`,
-  // )
-  // LeasingAgentV1 Contract Deployment
-  // const LeasingAgentV1 = await hre.ethers.getContractFactory('LeasingAgentV1')
-  // const leasingAgentV1 = await LeasingAgentV1.deploy(
-  //   '0x371C080a236f7C4A5EC1F21a6869D84A8aeEd184',
-  //   '15731699658405033416417838394306507087307279032766355365310016737432995626672',
-  // )
+  await hre.run('verify:verify', {
+    address: publicResolverV1.address,
+    constructorArguments: [contractRegistryV1.address],
+  })
 
-  // await leasingAgentV1.deployed()
+  // 6. RainbowTableV1 Contract Deployment
+  const RainbowTableV1 = await hre.ethers.getContractFactory('RainbowTableV1')
+  const rainbowTableV1 = await RainbowTableV1.deploy(contractRegistryV1.address)
+  await rainbowTableV1.deployed()
+  console.log(`RainbowTableV1 deployed to ${rainbowTableV1.address}`)
 
-  // console.log(`LeasingAgentV1 deployed to ${leasingAgentV1.address}`)
+  await hre.run('verify:verify', {
+    address: rainbowTableV1.address,
+    constructorArguments: [contractRegistryV1.address],
+  })
 
-  // // PublicResolverV1 Contract Deployment
-  // const PublicResolverV1 = await hre.ethers.getContractFactory(
-  //   'PublicResolverV1',
-  // )
-  // const publicResolverV1 = await PublicResolverV1.deploy(
-  //   contractRegistryV1.address,
-  // )
+  // 7. ResolverRegistryV1 Contract Deployment
+  const ResolverRegistryV1 = await hre.ethers.getContractFactory(
+    'ResolverRegistryV1',
+  )
+  const resolverRegistryV1 = await ResolverRegistryV1.deploy(
+    contractRegistryV1.address,
+  )
+  await resolverRegistryV1.deployed()
+  console.log(`ResolverRegistryV1 deployed to ${resolverRegistryV1.address}`)
 
-  // await publicResolverV1.deployed()
+  await hre.run('verify:verify', {
+    address: resolverRegistryV1.address,
+    constructorArguments: [contractRegistryV1.address],
+  })
 
-  // console.log(`PublicResolverV1 deployed to ${publicResolverV1.address}`)
-
-  // // RainbowTableV1 Contract Deployment
-  // const RainbowTableV1 = await hre.ethers.getContractFactory('RainbowTableV1')
-  // const rainbowTableV1 = await RainbowTableV1.deploy(contractRegistryV1.address)
-
-  // await rainbowTableV1.deployed()
-
-  // console.log(`RainbowTableV1 deployed to ${rainbowTableV1.address}`)
-
-  // // ResolverRegistryV1 Contract Deployment
-  // const ResolverRegistryV1 = await hre.ethers.getContractFactory(
-  //   'ResolverRegistryV1',
-  // )
-  // const resolverRegistryV1 = await ResolverRegistryV1.deploy(
-  //   contractRegistryV1.address,
-  // )
-
-  // await resolverRegistryV1.deployed()
-
-  // console.log(`ResolverRegistryV1 deployed to ${resolverRegistryV1.address}`)
-
-  // ReverseResolverRegistryV1 Contract Deployment
+  // 8. ReverseResolverRegistryV1 Contract Deployment
   const ReverseResolverRegistryV1 = await hre.ethers.getContractFactory(
     'ReverseResolverRegistryV1',
   )
   const reverseResolverRegistryV1 = await ReverseResolverRegistryV1.deploy(
-    '0x371C080a236f7C4A5EC1F21a6869D84A8aeEd184',
+    contractRegistryV1.address,
   )
-
   await reverseResolverRegistryV1.deployed()
-
   console.log(
     `ReverseResolverRegistryV1 deployed to ${reverseResolverRegistryV1.address}`,
   )
+  await hre.run('verify:verify', {
+    address: reverseResolverRegistryV1.address,
+    constructorArguments: [contractRegistryV1.address],
+  })
 
-  // // ContractRegistryV1 Contract Deployment
-  // const NamespaceV1 = await hre.ethers.getContractFactory('NamespaceV1')
-  // const namespaceV1 = await NamespaceV1.deploy()
+  // 9. NamespaceV1 Contract Deployment
+  const NamespaceV1 = await hre.ethers.getContractFactory('NamespaceV1')
+  const namespaceV1 = await NamespaceV1.deploy()
+  await namespaceV1.deployed()
+  console.log(`NamespaceV1 deployed to ${namespaceV1.address}`)
 
-  // await namespaceV1.deployed()
+  await hre.run('verify:verify', {
+    address: namespaceV1.address,
+    constructorArguments: [],
+  })
 
-  // console.log(`NamespaceV1 deployed to ${namespaceV1.address}`)
+  // 10. ConstraintsVerifier Contract Deployment
+  const ConstraintsVerifier = await hre.ethers.getContractFactory(
+    'ConstraintsVerifier',
+  )
+  const constraintsVerifier = await ConstraintsVerifier.deploy()
+  await constraintsVerifier.deployed()
+  console.log(`ConstraintsVerifier deployed to ${constraintsVerifier.address}`)
 
-  // // ConstraintsVerifier Contract Deployment
-  // const ConstraintsVerifier = await hre.ethers.getContractFactory(
-  //   'ConstraintsVerifier',
-  // )
-  // const constraintsVerifier = await ConstraintsVerifier.deploy()
+  await hre.run('verify:verify', {
+    address: constraintsVerifier.address,
+    constructorArguments: [],
+  })
+  // 11. ConstraintsFNSV1 Contract Deployment
+  const ConstraintsFNSV1 = await hre.ethers.getContractFactory(
+    'ConstraintsFNSV1',
+  )
+  const constraintsFNSV1 = await ConstraintsFNSV1.deploy(
+    constraintsVerifier.address,
+  )
 
-  // await constraintsVerifier.deployed()
+  await constraintsFNSV1.deployed()
+  console.log(`ConstraintsFNSV1 deployed to ${constraintsFNSV1.address}`)
 
-  // console.log(`ConstraintsVerifier deployed to ${constraintsVerifier.address}`)
+  await hre.run('verify:verify', {
+    address: constraintsFNSV1.address,
+    constructorArguments: [constraintsVerifier.address],
+  })
 
-  // // PricingOracleV1 Contract Deployment
-  // const PricingOracleV1 = await hre.ethers.getContractFactory('PricingOracleV1')
-  // const pricingOracleV1 = await PricingOracleV1.deploy(
-  //   constraintsVerifier.address,
-  // )
+  // 12. PricingOracleV1 Contract Deployment
+  const PricingOracleV1 = await hre.ethers.getContractFactory('PricingOracleV1')
+  const pricingOracleV1 = await PricingOracleV1.deploy(
+    constraintsVerifier.address,
+  )
+  await pricingOracleV1.deployed()
+  console.log(`PricingOracleV1 deployed to ${pricingOracleV1.address}`)
 
-  // await pricingOracleV1.deployed()
-
-  // console.log(`PricingOracleV1 deployed to ${pricingOracleV1.address}`)
+  await hre.run('verify:verify', {
+    address: pricingOracleV1.address,
+    constructorArguments: [constraintsVerifier.address],
+  })
 }
 
 // We recommend this pattern to be able to use async/await everywhere

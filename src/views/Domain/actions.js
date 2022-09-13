@@ -214,7 +214,7 @@ const actions = {
     return async (dispatch, getState) => {
       dispatch(actions.isLoadingRecords(true))
       const api = services.provider.buildAPI()
-      const recordsByKey = api.avvy.RECORDS._LIST.reduce((sum, curr) => {
+      const recordsByKey = api.fns.RECORDS._LIST.reduce((sum, curr) => {
         sum[curr.key] = curr
         return sum
       }, {})
@@ -278,7 +278,7 @@ const actions = {
         await api.setEVMReverseRecord(domain)
         dispatch(
           actions.setReverseRecords({
-            [api.avvy.RECORDS.EVM]: api.account,
+            [api.fns.RECORDS.EVM]: api.account,
           }),
         )
         dispatch(actions.isSettingEVMReverseRecordComplete(true))

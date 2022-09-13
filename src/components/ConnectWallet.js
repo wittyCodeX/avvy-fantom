@@ -101,7 +101,7 @@ class ConnectWallet extends React.PureComponent {
             agree to our{' '}
             <a
               className="text-alert-blue"
-              href="https://avvy.domains/p/privacy-policy"
+              href="https://fns.domains/p/privacy-policy"
               target="_blank"
             >
               Privacy Policy
@@ -109,7 +109,7 @@ class ConnectWallet extends React.PureComponent {
             and our{' '}
             <a
               className="text-alert-blue"
-              href="https://avvy.domains/p/terms-of-service"
+              href="https://fns.domains/p/terms-of-service"
               target="_blank"
             >
               Terms of Service
@@ -121,7 +121,7 @@ class ConnectWallet extends React.PureComponent {
             <a
               className="text-alert-blue"
               target="_blank"
-              href="https://avvy.domains/blog/name-squatting-dispute-resolution/"
+              href="https://fns.domains/blog/name-squatting-dispute-resolution/"
             >
               FNS Domains supports name disputes
             </a>

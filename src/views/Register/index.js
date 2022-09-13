@@ -183,7 +183,7 @@ class Register extends React.PureComponent {
         {this.props.registrationPremium.gt(ethers.BigNumber.from('0')) ? (
           <a
             target="_blank"
-            href="https://avvy.domains/auction-guide/"
+            href="https://fns.domains/auction-guide/"
             className="relative mt-2 inline-block text-xs bg-gray-200 dark:bg-gray-600 py-1 px-2 rounded"
           >
             <span className="inline-block">
@@ -420,7 +420,7 @@ class Register extends React.PureComponent {
             {hasRegistrationPremium ? (
               <div className="flex justify-between">
                 <a
-                  href="https://avvy.domains/auction-guide/"
+                  href="https://fns.domains/auction-guide/"
                   target="_blank"
                   className="flex font-bold"
                 >
@@ -500,9 +500,9 @@ class Register extends React.PureComponent {
 
   downloadBulkBidTemplate() {
     services.files.download(
-      'Domain Name,Registration Length (years)\navvydomains.ftm,1',
+      'Domain Name,Registration Length (years)\nfnsdomains.ftm,1',
       'text/csv',
-      'avvy-registration-template.csv',
+      'fns-registration-template.csv',
     )
   }
 

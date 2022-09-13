@@ -73,7 +73,7 @@ class AddBid extends React.PureComponent {
           {'Please be sure to read the '}
           <a
             className="underline"
-            href="https://avvy.domains/docs/sunrise-auction/"
+            href="https://fns.domains/docs/sunrise-auction/"
             target="_blank"
           >
             Documentation on the Sunrise Auction

@@ -42,7 +42,7 @@ class Domain extends React.PureComponent {
 
   async getFNS() {
     const api = await services.provider.buildAPI()
-    this.avvy = api.avvy
+    this.fns = api.fns
   }
 
   async setDefaultResolver() {
@@ -159,7 +159,7 @@ class Domain extends React.PureComponent {
   setRecords = () => {
     console.log('starting records: ')
     const records = []
-    this.avvy?.RECORDS._LIST.map((record, index) => {
+    this.fns?.RECORDS._LIST.map((record, index) => {
       const recs = this.props.records.filter(
         (rec) => rec.label === record.label,
       )
@@ -193,7 +193,7 @@ class Domain extends React.PureComponent {
               }
             </div>
             <div className="mt-4 underline">
-              <a href="https://avvy.domains/auction-guide/" target="_blank">
+              <a href="https://fns.domains/auction-guide/" target="_blank">
                 Read more about Registration Premiums
               </a>
             </div>
@@ -299,7 +299,7 @@ class Domain extends React.PureComponent {
     const hasLoadedPrivacy =
       !!this.props.isRevealed &&
       this.props.isRevealed[this.props.domain.hash] != undefined
-    if (!this.avvy) return
+    if (!this.fns) return
 
     return (
       <div className="max-w-screen-md m-auto flex w-full md:flex-row md:items-start">
@@ -385,7 +385,7 @@ class Domain extends React.PureComponent {
               />
               <a
                 className="flex items-center justify-center my-4 bg-gray-100 dark:bg-gray-800 dark:text-white p-4 rounded-lg text-center"
-                href="https://avvy.domains/docs/privacy-features-registrations/"
+                href="https://fns.domains/docs/privacy-features-registrations/"
                 target="_blank"
               >
                 Read about privacy features{' '}
@@ -432,7 +432,7 @@ class Domain extends React.PureComponent {
                       dataExplorer: {
                         title: 'View on Block Explorer',
                         data: this.props.domain.owner,
-                        dataType: this.avvy.RECORDS.EVM,
+                        dataType: this.fns.RECORDS.EVM,
                       },
                     })
                     this.dataExplorerModal.toggle()
@@ -565,7 +565,7 @@ class Domain extends React.PureComponent {
               </div>
             ) : (
               <div>
-                {this.avvy?.RECORDS._LIST.map((record, index) => (
+                {this.fns?.RECORDS._LIST.map((record, index) => (
                   <div className="mt-4" key={index}>
                     <div className="text-sm font-bold">{record.label}</div>
                     <div
@@ -667,7 +667,7 @@ class Domain extends React.PureComponent {
               <div className="mt-4 text-sm">
                 <div className="font-bold">{'C-Chain / EVM Address'}</div>
                 <div className="truncate flex items-center flex-wrap">
-                  {this.props.reverseRecords[this.avvy.RECORDS.EVM] ? (
+                  {this.props.reverseRecords[this.fns.RECORDS.EVM] ? (
                     <div
                       className="flex items-center cursor-pointer w-full sm:w-auto"
                       onClick={() => {
@@ -675,7 +675,7 @@ class Domain extends React.PureComponent {
                           dataExplorer: {
                             title: 'View on Block Explorer',
                             data: this.props.domain.owner,
-                            dataType: this.avvy.RECORDS.EVM,
+                            dataType: this.fns.RECORDS.EVM,
                           },
                         })
                         this.dataExplorerModal.toggle()
