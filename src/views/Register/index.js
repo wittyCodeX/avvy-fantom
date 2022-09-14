@@ -326,7 +326,6 @@ class Register extends React.PureComponent {
     for (let i = 0; i < names.length; i += 1) {
       if (!nameData[names[i]] || !quantities[names[i]]) {
         console.log('missing namedata')
-        console.log(names[i])
         return null
       }
     }
