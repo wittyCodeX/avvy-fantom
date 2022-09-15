@@ -546,7 +546,21 @@ class Domain extends React.PureComponent {
 
           <div className="mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full">
             <div className="flex justify-between items-center">
-              <div className="font-bold">{'Records'}</div>
+              <div className="font-bold">
+                {'Records'}({' '}
+                {this.props.resolver ? (
+                  <span className="text-green-500">
+                    {this.props.resolver.resolver === this.state.defaultResolver
+                      ? 'Default Resolver'
+                      : 'Unknown Resolver'}
+                  </span>
+                ) : (
+                  <span className="text-red-500">
+                    Set Resolver to set records
+                  </span>
+                )}
+                )
+              </div>
               {!this.state.connected ? (
                 <components.buttons.Button
                   sm={true}
