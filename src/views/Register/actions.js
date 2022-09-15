@@ -188,8 +188,8 @@ const actions = {
           )
         }
         await api.generateNFTImage(names)
-        const defaultResolverAddress = api.getDefaultResolverAddress()
-        await api.setResolver(names[0], defaultResolverAddress)
+        // const defaultResolverAddress = api.getDefaultResolverAddress()
+        // await api.setResolver(names[0], defaultResolverAddress)
 
         dispatch(actions.setIsComplete(true))
         dispatch(services.cart.actions.clearNames(names))
