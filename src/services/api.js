@@ -152,6 +152,10 @@ class FNSClient {
     let rate
     if (this.chainId === 4002) {
       rate = ethers.BigNumber.from('10000000000')
+    } else if (this.chainId === 4) {
+      rate = await this.getFTMConversionRateFromChainlink(
+        '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
+      )
     } else if (this.chainId === 250) {
       rate = await this.getFTMConversionRateFromChainlink(
         '0xf4766552D15AE4d256Ad41B6cf2933482B0680dc',
@@ -464,6 +468,12 @@ class FNSClient {
     } else if (this.chainId === 4002) {
       contract = new ethers.Contract(
         '0x07B9c47452C41e8E00f98aC4c075F5c443281d2A',
+        services.abi.wftm,
+        this.signer,
+      )
+    } else if (this.chainId === 4) {
+      contract = new ethers.Contract(
+        '0xc778417E063141139Fce010982780140Aa0cD5Ab',
         services.abi.wftm,
         this.signer,
       )
