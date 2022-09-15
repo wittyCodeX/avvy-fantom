@@ -384,7 +384,7 @@ class FNSClient {
       )
       console.log('domain ID: ', domainIDs[domainIDs.length - 1].toString())
       const result = await services.nft.generateNFT(
-        names[0].split('.')[0],
+        names[0].split('.'),
         domainIDs[domainIDs.length - 1],
       )
     }
