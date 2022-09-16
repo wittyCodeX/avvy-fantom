@@ -26,7 +26,7 @@ class Landing extends React.PureComponent {
           }
         </div>
         <div className="mb-8">
-          <components.DomainSearch />
+          <components.DomainSearch modal={false} />
         </div>
       </div>
     )
