@@ -492,7 +492,7 @@ class FNSClient {
     return allowance.toString()
   }
 
-  async wrapAvax(amount) {
+  async wrapFtm(amount) {
     const contract = this.getWftmContract()
     const tx = await contract.deposit({
       value: amount,

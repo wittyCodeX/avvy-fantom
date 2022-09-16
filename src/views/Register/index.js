@@ -353,21 +353,21 @@ class Register extends React.PureComponent {
           hasRenewal = true
         }
         const namePrice = nameData[curr].priceUSDCents
-        const namePriceAvax = nameData[curr].priceFTMEstimate
-        if (!namePrice || !namePriceAvax)
+        const namePriceFtm = nameData[curr].priceFTMEstimate
+        if (!namePrice || !namePriceFtm)
           return {
             usd: '0',
             ftm: '0',
           }
         const quantity = quantities[curr]
         const registrationPrice = services.money.mul(namePrice, quantity)
-        const registrationPriceAvax = services.money.add(
-          services.money.mul(namePriceAvax, quantity),
+        const registrationPriceFtm = services.money.add(
+          services.money.mul(namePriceFtm, quantity),
           this.props.registrationPremium,
         )
         return {
           usd: services.money.add(sum.usd, registrationPrice),
-          ftm: services.money.add(sum.ftm, registrationPriceAvax),
+          ftm: services.money.add(sum.ftm, registrationPriceFtm),
         }
       },
       { usd: '0', ftm: '0' },

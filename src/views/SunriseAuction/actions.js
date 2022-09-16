@@ -376,7 +376,7 @@ const actions = {
       dispatch(actions.gettingWFTM(true))
       try {
         const api = services.provider.buildAPI()
-        await api.wrapAvax(amount)
+        await api.wrapFtm(amount)
         dispatch(actions.checkAvailableWFTM())
       } catch (err) {}
       dispatch(actions.loadWinningBids(true))
