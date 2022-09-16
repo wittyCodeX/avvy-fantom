@@ -33,6 +33,13 @@ class Wrapper extends React.PureComponent {
           backgroundImage: `url(${services.linking.static('images/bg.svg')})`,
         }}
       >
+        <components.Modal ref={(ref) => (this.searchModal = ref)}>
+          <div className="font-bold"></div>
+          <components.DomainSearch
+            onBeforeSubmit={() => this.searchModal.toggle()}
+            modal={true}
+          />
+        </components.Modal>
         {/* Mobile menu */}
         <div
           className="fixed top-0 bg-white dark:bg-gray-900 h-full left-0 w-screen z-10 transition-all"
@@ -177,6 +184,14 @@ class Wrapper extends React.PureComponent {
               </svg>
             </div>
             <div className="pr-8 hidden md:flex items-center dark:text-white">
+              <div className="font-poppins ml-4 text-md">
+                <div
+                  className="py-8 px-4 cursor-pointer"
+                  onClick={() => this.searchModal.toggle()}
+                >
+                  <SearchIcon className="w-6" />
+                </div>
+              </div>
               <div className="font-poppins ml-8 text-md">
                 <Link to={services.linking.path('MyDomains')}>My Domains</Link>
               </div>

@@ -26,23 +26,33 @@ function DomainSearch(props) {
   }
 
   return (
-    <div className="bg-gray-100 rounded-xl w-full text-center relative dark:bg-gray-800">
-      <form onSubmit={handleSubmit}>
-        <input
-          autoComplete="off"
-          ref={textInput}
-          autoCapitalize="off"
-          placeholder={props.placeholder || 'Search domain names'}
-          className="bg-transparent w-full placeholder:text-gray-400 text-black dark:text-gray-300 text-center p-4"
-        />
-      </form>
-      <div
-        className="absolute right-0 top-0 h-full flex items-center justify-center mr-4 cursor-pointer"
-        onClick={handleSubmit}
-      >
-        <SearchIcon className="w-6 text-gray-300" />
+    <>
+      {props.modal && (
+        <div
+          className="text-xl md:text-xl font-bold leading-tighter tracking-tighter mb-4 text-left"
+          data-aos="zoom-y-out"
+        >
+          {'Search FNS Domain names'}
+        </div>
+      )}
+      <div className="bg-gray-100 rounded-xl w-full text-center relative dark:bg-gray-800">
+        <form onSubmit={handleSubmit}>
+          <input
+            autoComplete="off"
+            ref={textInput}
+            autoCapitalize="off"
+            placeholder={props.placeholder || 'Search domain names'}
+            className="bg-transparent w-full placeholder:text-gray-400 text-black dark:text-gray-300 text-center p-4"
+          />
+        </form>
+        <div
+          className="absolute right-0 top-0 h-full flex items-center justify-center mr-4 cursor-pointer"
+          onClick={handleSubmit}
+        >
+          <SearchIcon className="w-6 text-gray-300" />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
