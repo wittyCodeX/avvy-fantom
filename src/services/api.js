@@ -90,7 +90,7 @@ class FNSClient {
   // ESTIMATE
   async getNamePrice(domain) {
     const name = domain.split('.')[0]
-    let priceUSDCents = '500'
+    let priceUSDCents = '900'
     if (name.length === 3) {
       priceUSDCents = '64000'
     } else if (name.length === 4) {
@@ -502,7 +502,7 @@ class FNSClient {
     return allowance.toString()
   }
 
-  async wrapAvax(amount) {
+  async wrapFtm(amount) {
     const contract = this.getWftmContract()
     const tx = await contract.deposit({
       value: amount,
