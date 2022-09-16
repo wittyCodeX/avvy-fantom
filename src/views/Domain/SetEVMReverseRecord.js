@@ -35,7 +35,7 @@ class SetResolver extends React.PureComponent {
         <>
           <div className="max-w-md m-auto">
             <components.labels.Success
-              text={'Reverse Record for C-Chain / EVM has been set'}
+              text={'Reverse Record for EVM has been set'}
             />
           </div>
           <div className="max-w-md m-auto mt-4">

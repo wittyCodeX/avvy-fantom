@@ -679,7 +679,7 @@ class Domain extends React.PureComponent {
               </div>
             ) : (
               <div className="mt-4 text-sm">
-                <div className="font-bold">{'C-Chain / EVM Address'}</div>
+                <div className="font-bold">{'EVM Address'}</div>
                 <div className="truncate flex items-center flex-wrap">
                   {this.props.reverseRecords[this.fns.RECORDS.EVM] ? (
                     <div
