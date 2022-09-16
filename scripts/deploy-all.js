@@ -41,6 +41,7 @@ async function main() {
       'FNS',
       contractRegistryV1.address,
     ],
+    contract: 'contracts/Domain.sol:Domain',
   })
 
   // 3. EVMReverseResolverV1 Contract Deployment
