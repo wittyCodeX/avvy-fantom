@@ -32,7 +32,7 @@ function DomainSearch(props) {
           className="text-xl md:text-xl font-bold leading-tighter tracking-tighter mb-4 text-left"
           data-aos="zoom-y-out"
         >
-          {'Search FNS Domain names'}
+          {'Search Fantom Domain names'}
         </div>
       )}
       <div className="bg-gray-100 rounded-xl w-full text-center relative dark:bg-gray-800">
