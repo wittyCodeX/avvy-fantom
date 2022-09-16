@@ -661,10 +661,7 @@ class FNSClient {
     const hash = await client.utils.nameHash(domain)
     console.log('evm reverse domain: ', domain)
     console.log('evm reverse hash: ', hash)
-    const tx = await this.fns.contracts.EVMReverseResolverV1.set(
-      '3831551468565272533207492648373345634269920659407147817310279435281576705919',
-      [0, 0],
-    )
+    const tx = await this.fns.contracts.EVMReverseResolverV1.set(hash, [])
     await tx.wait()
   }
 
