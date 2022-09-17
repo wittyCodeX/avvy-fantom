@@ -35,6 +35,7 @@ NamespaceV1 deployed to 0xF69F86534cde025888fB2cc4A18D021aA633107f
 ConstraintsVerifier deployed to 0x73fB111B897844F0fcd4dbB45cf002238240cfCB
 ConstraintsFTMV1 deployed to 0x8AB0bbD627599AF901Ce94E98DDbD28437A6DBA0
 PricingOracleV1 deployed to 0xd5b8df06Affb60EEdeE195BFd6d5e62530b8CA57
+PoseidonContract deployed to 0x8196d7610e4934E0dfd5FC0f9a317B2AaBa1Fb30
 
 ## Deployed Addresses on Fantom Testnet
 ContractRegistryV1 deployed to 0x371C080a236f7C4A5EC1F21a6869D84A8aeEd184

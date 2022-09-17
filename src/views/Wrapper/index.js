@@ -40,6 +40,10 @@ class Wrapper extends React.PureComponent {
             modal={true}
           />
         </components.Modal>
+        <components.Modal ref={(ref) => (this.browserModal = ref)}>
+          <div className="font-bold"></div>
+          <components.UpcomingNews />
+        </components.Modal>
         {/* Mobile menu */}
         <div
           className="fixed top-0 bg-white dark:bg-gray-900 h-full left-0 w-screen z-10 transition-all"
@@ -98,6 +102,17 @@ class Wrapper extends React.PureComponent {
               <div>My Domains</div>
               <ArrowRightIcon className="w-6" />
             </Link>
+
+            <div
+              className="block text-lg p-2 w-full h-16 flex items-center justify-between"
+              onClick={() => {
+                this.browserModal.toggle()
+                this.toggleMenu.bind(this)
+              }}
+            >
+              <div>Open Browser</div>
+              <ArrowRightIcon className="w-6" />
+            </div>
             <div className="w-full h-1 bg-gray-100 dark:bg-gray-800"></div>
             <Link
               className="block text-lg p-2 w-full h-16 flex items-center justify-between"
@@ -194,6 +209,14 @@ class Wrapper extends React.PureComponent {
               </div>
               <div className="font-poppins ml-8 text-md">
                 <Link to={services.linking.path('MyDomains')}>My Domains</Link>
+              </div>
+              <div className="font-poppins ml-4 text-md">
+                <div
+                  className="py-8 px-4 cursor-pointer"
+                  onClick={() => this.browserModal.toggle()}
+                >
+                  Open Browser
+                </div>
               </div>
             </div>
           </div>

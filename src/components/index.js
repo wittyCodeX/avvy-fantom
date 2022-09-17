@@ -14,6 +14,7 @@ import account from './account'
 import buttons from './buttons'
 import checkbox from './checkbox'
 import labels from './labels'
+import UpcomingNews from './UpcomingNews'
 
 const components = {
   account,
@@ -32,6 +33,7 @@ const components = {
   ProgressBar,
   Select,
   Spinner,
+  UpcomingNews,
 }
 
 export default components
