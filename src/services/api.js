@@ -90,11 +90,11 @@ class FNSClient {
   // ESTIMATE
   async getNamePrice(domain) {
     const name = domain.split('.')[0]
-    let priceUSDCents = '900'
+    let priceUSDCents = '500'
     if (name.length === 3) {
-      priceUSDCents = '64000'
+      priceUSDCents = '900'
     } else if (name.length === 4) {
-      priceUSDCents = '16000'
+      priceUSDCents = '700'
     }
     return priceUSDCents
   }
