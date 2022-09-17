@@ -129,19 +129,19 @@ class _WftmSummary extends React.PureComponent {
       <div className="mt-4">
         <components.Modal
           ref={(ref) => (this.connect = ref)}
-          title="Connect Fantom Opera supported wallet"
+          title="Connect your wallet"
         >
           <components.ConnectWallet />
         </components.Modal>
         <components.labels.Information
           text={
             this.props.notConnectedLabel ||
-            'Connect Fantom Opera supported wallet to see whether your bids are covered'
+            'Connect your wallet to see whether your bids are covered'
           }
         />
         <div className="mt-4">
           <components.buttons.Button
-            text={'Connect Fantom Opera supported wallet'}
+            text={'Connect your wallet'}
             onClick={() => this.connect.toggle()}
           />
         </div>

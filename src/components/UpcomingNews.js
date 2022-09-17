@@ -18,7 +18,7 @@ function UpcomingNews(props) {
       >
         {props.explorer
           ? 'explorer integration launching soon'
-          : 'Browser will live on the 20th of October 2022.'}
+          : 'Browser will be live on the 20th of October 2022.'}
       </div>
     </>
   )

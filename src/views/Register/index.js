@@ -472,7 +472,7 @@ class Register extends React.PureComponent {
         />
         <div className="mt-8">
           <components.buttons.Button
-            text={'Connect Fantom Opera supported wallet'}
+            text={'Connect your wallet'}
             onClick={() => this.connectModal.toggle()}
           />
         </div>
@@ -509,11 +509,7 @@ class Register extends React.PureComponent {
       <div>
         <components.Modal
           ref={(ref) => (this.bulkModal = ref)}
-          title={
-            this.state.connected
-              ? 'Bulk register'
-              : 'Connect Fantom Opera supported wallet'
-          }
+          title={this.state.connected ? 'Bulk register' : 'Connect your wallet'}
         >
           {this.state.importingRegistrations ? (
             <div className="max-w-sm m-auto">
@@ -591,7 +587,7 @@ class Register extends React.PureComponent {
         </components.Modal>
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
-          title={'Connect Fantom Opera supported wallet'}
+          title={'Connect your wallet'}
         >
           <components.ConnectWallet />
         </components.Modal>

@@ -400,7 +400,7 @@ class Domain extends React.PureComponent {
           )}
         </components.Modal>
         <components.Modal
-          title={'Connect Fantom Opera supported wallet'}
+          title={'Connect your wallet'}
           ref={(ref) => (this.connectModal = ref)}
         >
           <components.ConnectWallet />

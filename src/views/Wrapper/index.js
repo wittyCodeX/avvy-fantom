@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ArrowRightIcon, SearchIcon } from '@heroicons/react/solid'
 import { MoonIcon, SunIcon, CogIcon } from '@heroicons/react/outline'
-
 import components from 'components'
+import axios from 'axios'
 import services from 'services'
 
 class Wrapper extends React.PureComponent {
@@ -12,15 +12,39 @@ class Wrapper extends React.PureComponent {
     super(props)
     this.state = {
       menuOpen: false,
+      pumpkinInfo: {},
     }
   }
 
+  componentDidMount() {
+    var headers = {}
+    var url =
+      'https://api.dexscreener.com/latest/dex/pairs/fantom/0xA73d251D37040ADE6e3eFf71207901621c9C867a'
+    fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.log(response)
+        }
+        return response.json()
+      })
+      .then((data) => {
+        var pumpkinInfo = data
+        this.setState({ pumpkinInfo: pumpkinInfo })
+        console.log(this.state)
+      })
+      .catch(function (error) {
+        console.log('price ticker issue: ', error)
+      })
+  }
   toggleMenu = () => {
     this.setState((state) => ({
       menuOpen: !state.menuOpen,
     }))
   }
-
   toggleDarkmode = () => {
     this.props.setDarkmode(!this.props.isDarkmode)
   }
@@ -113,6 +137,19 @@ class Wrapper extends React.PureComponent {
               <div>Open Browser</div>
               <ArrowRightIcon className="w-6" />
             </div>
+            <div className="block text-lg p-2 w-full h-16 flex items-center justify-between">
+              <a href="https://spooky.fi/#/swap?outputCurrency=0xad522217e64ec347601015797dd39050a2a69694">
+                <img
+                  src={services.linking.static('images/pumpkin_symbol.png')}
+                  alt="Powered by Fantom."
+                  className="inline-block object-scale-down w-5 h-5 m-2"
+                />
+                <span className="text-sm md:text-sm">
+                  {this.state.pumpkinInfo?.pair?.priceUsd}
+                </span>
+              </a>
+              <ArrowRightIcon className="w-6" />
+            </div>
             <div className="w-full h-1 bg-gray-100 dark:bg-gray-800"></div>
             <div>
               <div className="font-poppins mr-4 text-md">
@@ -198,17 +235,6 @@ class Wrapper extends React.PureComponent {
                   <SearchIcon className="w-6" />
                 </div>
               </div>
-              <div className="font-poppins ml-8 text-md">
-                <Link to={services.linking.path('MyDomains')}>My Domains</Link>
-              </div>
-              <div className="font-poppins ml-4 text-md">
-                <div
-                  className="py-8 px-4 cursor-pointer"
-                  onClick={() => this.browserModal.toggle()}
-                >
-                  Open Browser
-                </div>
-              </div>
               <div className="font-poppins mr-4 text-md">
                 <div
                   className="px-4 cursor-pointer"
@@ -220,6 +246,29 @@ class Wrapper extends React.PureComponent {
                     <MoonIcon className="w-6" />
                   )}
                 </div>
+              </div>
+              <div className="font-poppins ml-8 text-md">
+                <Link to={services.linking.path('MyDomains')}>My Domains</Link>
+              </div>
+              <div className="font-poppins ml-4 text-md">
+                <div
+                  className="py-8 px-4 cursor-pointer"
+                  onClick={() => this.browserModal.toggle()}
+                >
+                  Open Browser
+                </div>
+              </div>
+              <div className="font-poppins ml-4 text-md">
+                <a href="https://spooky.fi/#/swap?outputCurrency=0xad522217e64ec347601015797dd39050a2a69694">
+                  <img
+                    src={services.linking.static('images/pumpkin_symbol.png')}
+                    alt="Powered by Fantom."
+                    className="inline-block object-scale-down w-6 h-6 m-2"
+                  />
+                  <span className="text-sm md:text-sm">
+                    {this.state.pumpkinInfo?.pair?.priceUsd}
+                  </span>
+                </a>
               </div>
             </div>
           </div>
@@ -241,7 +290,7 @@ class Wrapper extends React.PureComponent {
             <div className="md:flex md:items-center md:justify-between py-1 border-t border-gray-200">
               {/* Social links */}
               <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-center">
-                {/* <li>
+                <li>
                   <Link
                     to="#"
                     className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
@@ -285,17 +334,24 @@ class Wrapper extends React.PureComponent {
                       <path d="M14.023 24L14 17h-3v-3h3v-2c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V14H21l-1 3h-2.72v7h-3.257z" />
                     </svg>
                   </Link>
-                </li> */}
+                </li>
               </ul>
-
+              {/* Social links */}
+              <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-center"></ul>
               {/* Copyrights note */}
               <div className="text-sm text-gray-600 mr-4">
-                <div className="w-32 m-auto">
+                <div className="w-100 m-auto">
                   <a href="https://fantom.foundation">
                     <img
-                      src={services.linking.static('images/ftm.png')}
+                      src={services.linking.static(
+                        'images/fantom-ftm-logo.png',
+                      )}
                       alt="Powered by Fantom."
+                      className="inline-block object-scale-down w-10 h-10 m-2"
                     />
+                    <span className="text-lg md:text-lg">
+                      Powered by Fantom
+                    </span>
                   </a>
                 </div>
               </div>

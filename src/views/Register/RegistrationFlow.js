@@ -76,7 +76,7 @@ class RegistrationFlow extends React.PureComponent {
     return (
       <>
         <div className="font-bold border-b border-gray-400 pb-4 mb-4">
-          {'Connect Fantom Opera supported wallet'}
+          {'Connect your wallet'}
         </div>
         <components.ConnectWallet />
       </>
@@ -91,7 +91,7 @@ class RegistrationFlow extends React.PureComponent {
         </div>
         <components.labels.Information
           text={
-            'Please do not refresh or exit the page until generating proofs. Generating zero-knowledge proofs might cause your browser to slow down or even freeze temporarily.'
+            'generating proofs can take up to 5 minutes. please wait until its completed.'
           }
         />
         {this.state.needsProofs ? (

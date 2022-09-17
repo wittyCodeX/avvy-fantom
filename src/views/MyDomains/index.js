@@ -207,11 +207,11 @@ class MyDomains extends React.PureComponent {
     return (
       <div className="max-w-sm m-auto">
         <components.labels.Information
-          text={'You must be connected to a wallet to view your domains'}
+          text={'Connect your Fantom Opera supported wallet'}
         />
         <div className="mt-8">
           <components.buttons.Button
-            text={'Connect Fantom Opera supported wallet'}
+            text={'Connect your wallet'}
             onClick={() => this.connectModal.toggle()}
           />
         </div>
@@ -253,7 +253,7 @@ class MyDomains extends React.PureComponent {
       <div className="w-100 m-auto">
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
-          title={'Connect Fantom Opera supported wallet'}
+          title={'Connect your wallet'}
         >
           <components.ConnectWallet />
         </components.Modal>

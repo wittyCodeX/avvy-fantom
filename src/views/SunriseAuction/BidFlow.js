@@ -93,7 +93,7 @@ class BidFlow extends React.PureComponent {
     return (
       <>
         <div className="font-bold border-b border-gray-400 pb-4 mb-4">
-          {'Connect Fantom Opera supported wallet'}
+          {'Connect your wallet'}
         </div>
         <components.ConnectWallet />
       </>
@@ -145,7 +145,7 @@ class BidFlow extends React.PureComponent {
         </div>
         <components.labels.Information
           text={
-            "Generating zero-knowledge proofs might cause your browser to slow down or even freeze temporarily. Just sit tight, we'll let you know when it's done. Please do not refresh or exit the page."
+            'generating proofs can take up to 5 minutes. please wait until its completed.'
           }
         />
         {this.state.needsProofs ? (
