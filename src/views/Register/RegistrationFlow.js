@@ -14,7 +14,7 @@ class RegistrationFlow extends React.PureComponent {
       connected: services.provider.isConnected(),
       needsProofs: true,
       hasProofs: false,
-      hasPrivacy: false,
+      hasPrivacy: true,
     }
   }
 
@@ -22,7 +22,7 @@ class RegistrationFlow extends React.PureComponent {
     this.setState({
       needProofs: true,
       hasProofs: false,
-      hasPrivacy: false,
+      hasPrivacy: true,
     })
   }
 
@@ -91,7 +91,7 @@ class RegistrationFlow extends React.PureComponent {
         </div>
         <components.labels.Information
           text={
-            "Generating zero-knowledge proofs might cause your browser to slow down or even freeze temporarily. Just sit tight, we'll let you know when it's done. Please do not refresh or exit the page."
+            'Please do not refresh or exit the page until generating proofs. Generating zero-knowledge proofs might cause your browser to slow down or even freeze temporarily.'
           }
         />
         {this.state.needsProofs ? (
@@ -153,19 +153,72 @@ class RegistrationFlow extends React.PureComponent {
 
   renderFinalize() {
     const names = this.props.names
+    const nameData = this.props.nameData
+    const quantities = this.props.quantities
+    const total = names.reduce(
+      (sum, curr) => {
+        if (
+          nameData[curr].status !==
+            nameData[curr].constants.DOMAIN_STATUSES.AVAILABLE &&
+          nameData[curr].status !==
+            nameData[curr].constants.DOMAIN_STATUSES.REGISTERED_SELF
+        ) {
+          unavailable.push(curr)
+          return sum
+        }
+        if (
+          nameData[curr].status ===
+          nameData[curr].constants.DOMAIN_STATUSES.REGISTERED_SELF
+        ) {
+          hasRenewal = true
+        }
+        const namePrice = nameData[curr].priceUSDCents
+        const namePriceFtm = nameData[curr].priceFTMEstimate
+        if (!namePrice || !namePriceFtm)
+          return {
+            usd: '0',
+            ftm: '0',
+          }
+        const quantity = quantities[curr]
+        const registrationPrice = services.money.mul(namePrice, quantity)
+        const registrationPriceFtm = services.money.add(
+          services.money.mul(namePriceFtm, quantity),
+          this.props.registrationPremium,
+        )
+        return {
+          usd: services.money.add(sum.usd, registrationPrice),
+          ftm: services.money.add(sum.ftm, registrationPriceFtm),
+        }
+      },
+      { usd: '0', ftm: '0' },
+    )
+    console.log(total)
     const inBatches = names.length > services.environment.MAX_REGISTRATION_NAMES
     return (
       <>
         <div className="font-bold border-b border-gray-400 pb-4 mb-4">
           {'Complete Registration'}
         </div>
-        {inBatches ? (
-          <>
-            <components.labels.Warning
-              text={`You have ${names.length} names to register. You must register them in batches of ${services.environment.MAX_REGISTRATION_NAMES}.`}
-            />
-          </>
-        ) : null}
+
+        <div className="m-auto mb-8 max-w-xs">
+          <div className="border-b border-gray-400 pb-4 mb-4">
+            <div className="text-lg text-center font-bold">
+              {'Purchase Summary'}
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div className="font-bold">{'Domain Name'}</div>
+            <div className="">{names[0]}</div>
+          </div>
+          <div className="flex justify-between">
+            <div className="font-bold">{'Registration Fees'}</div>
+            <div className="">{services.money.renderUSD(total.usd)}</div>
+          </div>
+          <div className="flex justify-between">
+            <div className="font-bold">{'Total (FTM)'}</div>
+            <div className="">{services.money.renderFTM(total.ftm)}</div>
+          </div>
+        </div>
         <div className="mt-8 max-w-sm m-auto">
           <div className="mt-4">
             <components.buttons.Button

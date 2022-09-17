@@ -26,6 +26,7 @@ class Register extends React.PureComponent {
       paginationIndex: 0,
       connected: services.provider.isConnected(),
       importingRegistrations: false,
+      total: {},
     }
   }
 
@@ -361,6 +362,9 @@ class Register extends React.PureComponent {
       },
       { usd: '0', ftm: '0' },
     )
+
+    console.log(this.state.total)
+
     if (unavailable.length > 0)
       return (
         <div className="mb-4">
@@ -580,7 +584,10 @@ class Register extends React.PureComponent {
             return answer
           }}
         >
-          <RegistrationFlow ref={(ref) => (this.registrationFlow = ref)} />
+          <RegistrationFlow
+            ref={(ref) => (this.registrationFlow = ref)}
+            {...this.props}
+          />
         </components.Modal>
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
