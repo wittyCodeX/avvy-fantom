@@ -324,12 +324,14 @@ class MyBids extends React.PureComponent {
                 <>
                   <components.labels.error
                     text={
-                      'connect your wallet to see auction results & claim domains'
+                      'Connect Fantom Opera supported wallet to see auction results & claim domains'
                     }
                     justify="justify-flex-start"
                   />
                   <div classname="mt-4 max-w-sm md:hidden">
-                    <components.buttons.button text={'connect wallet'} />
+                    <components.buttons.button
+                      text={'Connect Fantom Opera supported wallet'}
+                    />
                   </div>
                 </>
               )}
@@ -418,7 +420,7 @@ class MyBids extends React.PureComponent {
                 registrationTotal={registrationTotal}
                 showAvailable={!(this.state.isConnected && allClaimed)}
                 notConnectedLabel={
-                  'Connect your wallet to see auction results & claim domains'
+                  'Connect Fantom Opera supported wallet to see auction results & claim domains'
                 }
               />
               {this.state.isConnected ? (
@@ -961,7 +963,7 @@ class MyBids extends React.PureComponent {
       <div className="max-w-screen-md m-auto">
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
-          title={'Connect your wallet'}
+          title={'Connect Fantom Opera supported wallet'}
         >
           <components.ConnectWallet />
         </components.Modal>
@@ -974,7 +976,7 @@ class MyBids extends React.PureComponent {
           />
           <div className="mt-8">
             <components.buttons.Button
-              text={'Connect your wallet'}
+              text={'Connect Fantom Opera supported wallet'}
               onClick={() => this.connectModal.toggle()}
             />
           </div>

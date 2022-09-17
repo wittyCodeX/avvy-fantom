@@ -1,6 +1,6 @@
 export default {
   name: 'testnet',
-  chainId: '4002',
+  chainId: '250',
   contracts: {
     Domain: {
       address: '0x48DE29663f232f0F162E0bebB2948462d6181307',

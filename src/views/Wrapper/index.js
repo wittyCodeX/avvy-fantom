@@ -114,15 +114,6 @@ class Wrapper extends React.PureComponent {
               <ArrowRightIcon className="w-6" />
             </div>
             <div className="w-full h-1 bg-gray-100 dark:bg-gray-800"></div>
-            <Link
-              className="block text-lg p-2 w-full h-16 flex items-center justify-between"
-              to={services.linking.path('Settings')}
-              onClick={this.toggleMenu.bind(this)}
-            >
-              <div>Settings</div>
-              <ArrowRightIcon className="w-6" />
-            </Link>
-            <div className="w-full h-1 bg-gray-100 dark:bg-gray-800"></div>
             <div>
               <div className="font-poppins mr-4 text-md">
                 <div
@@ -218,6 +209,18 @@ class Wrapper extends React.PureComponent {
                   Open Browser
                 </div>
               </div>
+              <div className="font-poppins mr-4 text-md">
+                <div
+                  className="px-4 cursor-pointer"
+                  onClick={() => this.props.setDarkmode(!this.props.isDarkmode)}
+                >
+                  {this.props.isDarkmode ? (
+                    <SunIcon className="w-6" />
+                  ) : (
+                    <MoonIcon className="w-6" />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -284,31 +287,6 @@ class Wrapper extends React.PureComponent {
                   </Link>
                 </li> */}
               </ul>
-              {/* Social links */}
-              <div className="flex mb-4 md:order-2 md:ml-4 md:mb-0 justify-center items-center">
-                <div className="font-poppins mr-4 text-md">
-                  <div
-                    className="px-4 cursor-pointer"
-                    onClick={() =>
-                      this.props.setDarkmode(!this.props.isDarkmode)
-                    }
-                  >
-                    {this.props.isDarkmode ? (
-                      <SunIcon className="w-6" />
-                    ) : (
-                      <MoonIcon className="w-6" />
-                    )}
-                  </div>
-                </div>
-                <div className="font-poppins text-md">
-                  <Link
-                    className="px-4 cursor-pointer"
-                    to={services.linking.path('Settings')}
-                  >
-                    <CogIcon className="w-6" />
-                  </Link>
-                </div>
-              </div>
 
               {/* Copyrights note */}
               <div className="text-sm text-gray-600 mr-4">

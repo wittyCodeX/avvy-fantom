@@ -7,7 +7,6 @@ import services from 'services'
 import actions from './actions'
 import selectors from './selectors'
 
-
 class RegistrationFlow extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -28,11 +27,14 @@ class RegistrationFlow extends React.PureComponent {
   }
 
   generateProofs() {
-    this.setState({
-      needsProofs: false
-    }, () => {
-      this.props.generateProofs(this.props.names)
-    })
+    this.setState(
+      {
+        needsProofs: false,
+      },
+      () => {
+        this.props.generateProofs(this.props.names)
+      },
+    )
   }
 
   finalizeTransaction() {
@@ -43,23 +45,29 @@ class RegistrationFlow extends React.PureComponent {
     setTimeout(() => {
       this.setState({
         connected: services.provider.isConnected(),
-        needsProofs: true
+        needsProofs: true,
       })
     }, 1)
   }
 
   componentDidMount() {
-    services.provider.addEventListener(services.provider.EVENTS.CONNECTED, this.onConnect.bind(this))
+    services.provider.addEventListener(
+      services.provider.EVENTS.CONNECTED,
+      this.onConnect.bind(this),
+    )
   }
 
   componentWillUnmount() {
-    services.provider.addEventListener(services.provider.EVENTS.CONNECTED, this.onConnect.bind(this))
+    services.provider.addEventListener(
+      services.provider.EVENTS.CONNECTED,
+      this.onConnect.bind(this),
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.names.length !== prevProps.names.length) {
       this.setState({
-        needsProofs: true
+        needsProofs: true,
       })
     }
   }
@@ -67,7 +75,9 @@ class RegistrationFlow extends React.PureComponent {
   renderConnect() {
     return (
       <>
-        <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{'Connect Wallet'}</div>
+        <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+          {'Connect Fantom Opera supported wallet'}
+        </div>
         <components.ConnectWallet />
       </>
     )
@@ -76,24 +86,39 @@ class RegistrationFlow extends React.PureComponent {
   renderProofs() {
     return (
       <>
-        <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{'Generate Proofs'}</div>
-        <components.labels.Information text={"Generating zero-knowledge proofs might cause your browser to slow down or even freeze temporarily. Just sit tight, we'll let you know when it's done. Please do not refresh or exit the page."} />
+        <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+          {'Generate Proofs'}
+        </div>
+        <components.labels.Information
+          text={
+            "Generating zero-knowledge proofs might cause your browser to slow down or even freeze temporarily. Just sit tight, we'll let you know when it's done. Please do not refresh or exit the page."
+          }
+        />
         {this.state.needsProofs ? (
-          <div className='mt-8 max-w-sm m-auto'>
-            <components.buttons.Button text={'Generate proofs'} onClick={this.generateProofs.bind(this)} />
+          <div className="mt-8 max-w-sm m-auto">
+            <components.buttons.Button
+              text={'Generate proofs'}
+              onClick={this.generateProofs.bind(this)}
+            />
           </div>
         ) : (
           <>
-            <div className='my-8 py-4 rounded'>
-              <div className='mb-4 text-center text-gray-400 flex items-center justify-center'>
+            <div className="my-8 py-4 rounded">
+              <div className="mb-4 text-center text-gray-400 flex items-center justify-center">
                 {this.props.progress.message}
               </div>
-              <div className='max-w-sm m-auto'>
-                <components.ProgressBar progress={this.props.progress.percent} />
+              <div className="max-w-sm m-auto">
+                <components.ProgressBar
+                  progress={this.props.progress.percent}
+                />
               </div>
             </div>
-            <div className='mt-4 max-w-sm m-auto'>
-              <components.buttons.Button text={'Continue'} onClick={() => this.setState({ hasProofs: true })} disabled={this.props.progress.percent < 100} />
+            <div className="mt-4 max-w-sm m-auto">
+              <components.buttons.Button
+                text={'Continue'}
+                onClick={() => this.setState({ hasProofs: true })}
+                disabled={this.props.progress.percent < 100}
+              />
             </div>
           </>
         )}
@@ -104,12 +129,23 @@ class RegistrationFlow extends React.PureComponent {
   renderPrivacy() {
     return (
       <>
-        <div className=''>
-          <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{'Domain Privacy'}</div>
-          <components.DomainPrivacy error={false} onCheck={(isEnhancedPrivacy) => this.props.enableEnhancedPrivacy(isEnhancedPrivacy)} isEnhancedPrivacy={this.props.enhancedPrivacy} />
+        <div className="">
+          <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+            {'Domain Privacy'}
+          </div>
+          <components.DomainPrivacy
+            error={false}
+            onCheck={(isEnhancedPrivacy) =>
+              this.props.enableEnhancedPrivacy(isEnhancedPrivacy)
+            }
+            isEnhancedPrivacy={this.props.enhancedPrivacy}
+          />
         </div>
-        <div className='mt-4 m-auto max-w-sm'>
-          <components.buttons.Button text={'Continue'} onClick={() => this.setState({ hasPrivacy: true })} />
+        <div className="mt-4 m-auto max-w-sm">
+          <components.buttons.Button
+            text={'Continue'}
+            onClick={() => this.setState({ hasPrivacy: true })}
+          />
         </div>
       </>
     )
@@ -120,15 +156,27 @@ class RegistrationFlow extends React.PureComponent {
     const inBatches = names.length > services.environment.MAX_REGISTRATION_NAMES
     return (
       <>
-        <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{'Complete Registration'}</div>
+        <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+          {'Complete Registration'}
+        </div>
         {inBatches ? (
           <>
-            <components.labels.Warning text={`You have ${names.length} names to register. You must register them in batches of ${services.environment.MAX_REGISTRATION_NAMES}.`} />
+            <components.labels.Warning
+              text={`You have ${names.length} names to register. You must register them in batches of ${services.environment.MAX_REGISTRATION_NAMES}.`}
+            />
           </>
         ) : null}
-        <div className='mt-8 max-w-sm m-auto'>
-          <div className='mt-4'>
-            <components.buttons.Button text={inBatches ? `Register next ${services.environment.MAX_REGISTRATION_NAMES} names` : 'Finalize registration'} onClick={this.finalizeTransaction.bind(this)} loading={this.props.isFinalizing} />
+        <div className="mt-8 max-w-sm m-auto">
+          <div className="mt-4">
+            <components.buttons.Button
+              text={
+                inBatches
+                  ? `Register next ${services.environment.MAX_REGISTRATION_NAMES} names`
+                  : 'Finalize registration'
+              }
+              onClick={this.finalizeTransaction.bind(this)}
+              loading={this.props.isFinalizing}
+            />
           </div>
         </div>
       </>
@@ -139,25 +187,41 @@ class RegistrationFlow extends React.PureComponent {
     const remaining = this.props.names.length
     return (
       <>
-        <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{'Registration Complete'}</div>
+        <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+          {'Registration Complete'}
+        </div>
         {remaining > 0 ? (
           <>
-            <components.labels.Success text={`You have successfully registered ${services.environment.MAX_REGISTRATION_NAMES} names`} />
-            <div className='mt-8 max-w-sm m-auto'>
-              <div className='mt-4 text-center w-full font-bold'>
-                {'You have '}{remaining} {remaining === 1 ? 'name' : 'names'}{' left to register'}
+            <components.labels.Success
+              text={`You have successfully registered ${services.environment.MAX_REGISTRATION_NAMES} names`}
+            />
+            <div className="mt-8 max-w-sm m-auto">
+              <div className="mt-4 text-center w-full font-bold">
+                {'You have '}
+                {remaining} {remaining === 1 ? 'name' : 'names'}
+                {' left to register'}
               </div>
-              <div className='mt-4'>
-                <components.buttons.Button text={'Register next batch of names'} onClick={() => this.props.nextBatch()} />
+              <div className="mt-4">
+                <components.buttons.Button
+                  text={'Register next batch of names'}
+                  onClick={() => this.props.nextBatch()}
+                />
               </div>
             </div>
           </>
         ) : (
           <>
-            <components.labels.Success text={"Your registration was successful."} />
-            <div className='mt-8 max-w-sm m-auto'>
-              <div className='mt-4'>
-                <components.buttons.Button text={'View my domains'} onClick={(navigate) => services.linking.navigate(navigate, 'MyDomains')} />
+            <components.labels.Success
+              text={'Your registration was successful.'}
+            />
+            <div className="mt-8 max-w-sm m-auto">
+              <div className="mt-4">
+                <components.buttons.Button
+                  text={'View my domains'}
+                  onClick={(navigate) =>
+                    services.linking.navigate(navigate, 'MyDomains')
+                  }
+                />
               </div>
             </div>
           </>
@@ -169,10 +233,19 @@ class RegistrationFlow extends React.PureComponent {
   renderHasError() {
     return (
       <>
-        <div className='font-bold border-b border-gray-400 pb-4 mb-4'>{'Error'}</div>
-        <components.labels.Error text={"We've encountered an error with your registration. Please reload the page and try again."} />
-        <div className='mt-8 max-w-sm m-auto'>
-          <components.buttons.Button text={'Reload page'} onClick={() => window.location.reload()} />
+        <div className="font-bold border-b border-gray-400 pb-4 mb-4">
+          {'Error'}
+        </div>
+        <components.labels.Error
+          text={
+            "We've encountered an error with your registration. Please reload the page and try again."
+          }
+        />
+        <div className="mt-8 max-w-sm m-auto">
+          <components.buttons.Button
+            text={'Reload page'}
+            onClick={() => window.location.reload()}
+          />
         </div>
       </>
     )
@@ -205,7 +278,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   generateProofs: (names) => dispatch(actions.generateProofs(names)),
   finalizeTransaction: () => dispatch(actions.finalize()),
-  enableEnhancedPrivacy: (value) => dispatch(actions.enableEnhancedPrivacy(value)),
+  enableEnhancedPrivacy: (value) =>
+    dispatch(actions.enableEnhancedPrivacy(value)),
   nextBatch: () => dispatch(actions.reset()),
 })
 

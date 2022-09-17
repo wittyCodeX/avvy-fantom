@@ -98,7 +98,7 @@ class RevealFlow extends React.PureComponent {
     return (
       <>
         <div className="font-bold border-b border-gray-400 pb-4 mb-4">
-          {'Connect Wallet'}
+          {'Connect Fantom Opera supported wallet'}
         </div>
         <components.ConnectWallet />
       </>

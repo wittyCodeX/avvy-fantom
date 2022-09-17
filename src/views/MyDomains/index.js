@@ -211,7 +211,7 @@ class MyDomains extends React.PureComponent {
         />
         <div className="mt-8">
           <components.buttons.Button
-            text={'Connect your wallet'}
+            text={'Connect Fantom Opera supported wallet'}
             onClick={() => this.connectModal.toggle()}
           />
         </div>
@@ -253,7 +253,7 @@ class MyDomains extends React.PureComponent {
       <div className="w-100 m-auto">
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
-          title={'Connect your wallet'}
+          title={'Connect Fantom Opera supported wallet'}
         >
           <components.ConnectWallet />
         </components.Modal>

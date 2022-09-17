@@ -292,20 +292,9 @@ class Register extends React.PureComponent {
     if (!this.props.names || this.props.names.length === 0)
       return (
         <div className="max-w-md m-auto">
-          <div className="mb-8">
-            <components.labels.Information
-              text={"You haven't selected any names to register"}
-            />
-          </div>
+          <div className="mb-8"></div>
           <components.DomainSearch />
-          <div className="mt-4 text-center text-gray-500 text-sm">
-            <div
-              className="underline cursor-pointer"
-              onClick={() => this.initBulkRegistrations()}
-            >
-              {'Want to register in bulk?'}
-            </div>
-          </div>
+          <div className="mt-4 text-center text-gray-500 text-sm"></div>
         </div>
       )
     if (this.props.isRefreshingNameData || !this.props.registrationPremium)
@@ -406,10 +395,7 @@ class Register extends React.PureComponent {
           <div className="m-auto mb-8 max-w-xs">
             <div className="border-b border-gray-400 pb-4 mb-4">
               <div className="text-lg text-center font-bold">
-                {'Purchase Summary'}
-              </div>
-              <div className="text-md text-center text-gray-500">
-                {'(Estimated)'}
+                {'Purchase Summary'} {'(Estimated)'}
               </div>
             </div>
             <div className="flex justify-between">
@@ -437,13 +423,6 @@ class Register extends React.PureComponent {
               <div className="font-bold">{'Total (FTM)'}</div>
               <div className="">{services.money.renderFTM(total.ftm)}</div>
             </div>
-          </div>
-          <div className="my-8">
-            <components.labels.Information
-              text={
-                'Registrations are priced in USD, but payable in FTM. Amounts noted are estimates; actual price will be determined in future steps.'
-              }
-            />
           </div>
           {hasRenewal && hasRegistrationPremium ? (
             <div className="mb-8">
@@ -489,7 +468,7 @@ class Register extends React.PureComponent {
         />
         <div className="mt-8">
           <components.buttons.Button
-            text={'Connect your wallet'}
+            text={'Connect Fantom Opera supported wallet'}
             onClick={() => this.connectModal.toggle()}
           />
         </div>
@@ -526,7 +505,11 @@ class Register extends React.PureComponent {
       <div>
         <components.Modal
           ref={(ref) => (this.bulkModal = ref)}
-          title={this.state.connected ? 'Bulk register' : 'Connect wallet'}
+          title={
+            this.state.connected
+              ? 'Bulk register'
+              : 'Connect Fantom Opera supported wallet'
+          }
         >
           {this.state.importingRegistrations ? (
             <div className="max-w-sm m-auto">
@@ -601,7 +584,7 @@ class Register extends React.PureComponent {
         </components.Modal>
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
-          title={'Connect your wallet'}
+          title={'Connect Fantom Opera supported wallet'}
         >
           <components.ConnectWallet />
         </components.Modal>

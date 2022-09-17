@@ -400,10 +400,14 @@ class Domain extends React.PureComponent {
           )}
         </components.Modal>
         <components.Modal
-          title={'Connect Wallet'}
+          title={'Connect Fantom Opera supported wallet'}
           ref={(ref) => (this.connectModal = ref)}
         >
           <components.ConnectWallet />
+        </components.Modal>
+        <components.Modal ref={(ref) => (this.browserModal = ref)}>
+          <div className="font-bold"></div>
+          <components.UpcomingNews explorer={true} />
         </components.Modal>
         <div className="w-full">
           {/* Basic Information */}
@@ -541,6 +545,57 @@ class Domain extends React.PureComponent {
                 ) : null}
               </div>
             </div>
+            <div className="mt-4 text-sm">
+              <div className="font-bold">{'Primary'}</div>
+              <div className="truncate flex items-center">
+                {'Default Primary'}
+                {this.state.connected && isOwned && !isExpired ? (
+                  <components.buttons.Transparent
+                    onClick={() => this.browserModal.toggle()}
+                  >
+                    <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
+                      Set as Primary
+                    </div>
+                  </components.buttons.Transparent>
+                ) : null}
+              </div>
+            </div>
+            <div className="mt-4 text-sm">
+              <div className="font-bold">{'Reserve Record'}</div>
+              <div className="truncate flex items-center flex-wrap">
+                {this.props.reverseRecords[this.fns.RECORDS.EVM] ? (
+                  <div
+                    className="flex items-center cursor-pointer w-full sm:w-auto"
+                    onClick={() => {
+                      this.setState({
+                        dataExplorer: {
+                          title: 'View on Block Explorer',
+                          data: this.props.domain.owner,
+                          dataType: this.fns.RECORDS.EVM,
+                        },
+                      })
+                      this.dataExplorerModal.toggle()
+                    }}
+                  >
+                    <div className="truncate">{this.props.domain.owner}</div>
+                    <ExternalLinkIcon className="w-4 ml-2 flex-shrink-0" />
+                  </div>
+                ) : (
+                  <div>Not set</div>
+                )}
+                {this.state.connected && isOwned && !isExpired ? (
+                  <components.buttons.Transparent
+                    onClick={() => {
+                      this.setEVMReverseRecordModal.toggle()
+                    }}
+                  >
+                    <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
+                      Set Reverse
+                    </div>
+                  </components.buttons.Transparent>
+                ) : null}
+              </div>
+            </div>
           </div>
           {/* Records */}
 
@@ -653,66 +708,6 @@ class Domain extends React.PureComponent {
                     </div>
                   </div>
                 ))}
-              </div>
-            )}
-          </div>
-          <div className="mt-4 bg-gray-100 rounded-xl w-full relative p-4 md:p-8 dark:bg-gray-800 w-full">
-            <div className="flex justify-between items-center">
-              <div className="font-bold">{'Reverse Records'}</div>
-              {!this.state.connected ? (
-                <components.buttons.Button
-                  sm={true}
-                  text="Connect"
-                  onClick={() => this.connectModal.toggle()}
-                />
-              ) : null}
-            </div>
-
-            <div
-              className="w-full bg-gray-300 dark:bg-gray-700 mt-4"
-              style={{ height: '1px' }}
-            ></div>
-
-            {this.props.isLoadingReverseRecords ? (
-              <div className="mt-4 w-full text-center">
-                <components.Spinner />
-              </div>
-            ) : (
-              <div className="mt-4 text-sm">
-                <div className="font-bold">{'EVM Address'}</div>
-                <div className="truncate flex items-center flex-wrap">
-                  {this.props.reverseRecords[this.fns.RECORDS.EVM] ? (
-                    <div
-                      className="flex items-center cursor-pointer w-full sm:w-auto"
-                      onClick={() => {
-                        this.setState({
-                          dataExplorer: {
-                            title: 'View on Block Explorer',
-                            data: this.props.domain.owner,
-                            dataType: this.fns.RECORDS.EVM,
-                          },
-                        })
-                        this.dataExplorerModal.toggle()
-                      }}
-                    >
-                      <div className="truncate">{this.props.domain.owner}</div>
-                      <ExternalLinkIcon className="w-4 ml-2 flex-shrink-0" />
-                    </div>
-                  ) : (
-                    <div>Not set</div>
-                  )}
-                  {this.state.connected && isOwned && !isExpired ? (
-                    <components.buttons.Transparent
-                      onClick={() => {
-                        this.setEVMReverseRecordModal.toggle()
-                      }}
-                    >
-                      <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
-                        Set Reverse
-                      </div>
-                    </components.buttons.Transparent>
-                  ) : null}
-                </div>
               </div>
             )}
           </div>
