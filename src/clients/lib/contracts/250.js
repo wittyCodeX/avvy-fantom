@@ -1209,11 +1209,7 @@ export default {
               name: 'contractRegistryAddress',
               type: 'address',
             },
-            {
-              internalType: 'uint256',
-              name: 'namespaceId',
-              type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'namespaceId', type: 'uint256' },
           ],
           stateMutability: 'nonpayable',
           type: 'constructor',
@@ -1359,26 +1355,14 @@ export default {
         {
           inputs: [],
           name: 'DEFAULT_ADMIN_ROLE',
-          outputs: [
-            {
-              internalType: 'bytes32',
-              name: '',
-              type: 'bytes32',
-            },
-          ],
+          outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
           inputs: [],
           name: 'MANAGER_ROLE',
-          outputs: [
-            {
-              internalType: 'bytes32',
-              name: '',
-              type: 'bytes32',
-            },
-          ],
+          outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
           stateMutability: 'view',
           type: 'function',
         },
@@ -1398,137 +1382,63 @@ export default {
         {
           inputs: [],
           name: '_enabled',
-          outputs: [
-            {
-              internalType: 'bool',
-              name: '',
-              type: 'bool',
-            },
-          ],
+          outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
           inputs: [],
           name: '_namespaceId',
-          outputs: [
-            {
-              internalType: 'uint256',
-              name: '',
-              type: 'uint256',
-            },
-          ],
+          outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
           inputs: [],
           name: '_premiumEndTime',
-          outputs: [
-            {
-              internalType: 'uint256',
-              name: '',
-              type: 'uint256',
-            },
-          ],
+          outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
-          inputs: [
-            {
-              internalType: 'uint256',
-              name: '',
-              type: 'uint256',
-            },
-          ],
+          inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
           name: '_premiumPricePoints',
-          outputs: [
-            {
-              internalType: 'uint256',
-              name: '',
-              type: 'uint256',
-            },
-          ],
+          outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
           inputs: [],
           name: '_premiumStartTime',
-          outputs: [
-            {
-              internalType: 'uint256',
-              name: '',
-              type: 'uint256',
-            },
-          ],
+          outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
-          inputs: [
-            {
-              internalType: 'bool',
-              name: 'enabled',
-              type: 'bool',
-            },
-          ],
+          inputs: [{ internalType: 'bool', name: 'enabled', type: 'bool' }],
           name: 'enable',
           outputs: [],
           stateMutability: 'nonpayable',
           type: 'function',
         },
         {
-          inputs: [
-            {
-              internalType: 'uint256',
-              name: 't',
-              type: 'uint256',
-            },
-          ],
+          inputs: [{ internalType: 'uint256', name: 't', type: 'uint256' }],
           name: 'getRegistrationPremium',
-          outputs: [
-            {
-              internalType: 'uint256',
-              name: '',
-              type: 'uint256',
-            },
-          ],
+          outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
-          inputs: [
-            {
-              internalType: 'bytes32',
-              name: 'role',
-              type: 'bytes32',
-            },
-          ],
+          inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
           name: 'getRoleAdmin',
-          outputs: [
-            {
-              internalType: 'bytes32',
-              name: '',
-              type: 'bytes32',
-            },
-          ],
+          outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
           inputs: [
-            {
-              internalType: 'bytes32',
-              name: 'role',
-              type: 'bytes32',
-            },
-            {
-              internalType: 'address',
-              name: 'account',
-              type: 'address',
-            },
+            { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+            { internalType: 'address', name: 'account', type: 'address' },
           ],
           name: 'grantRole',
           outputs: [],
@@ -1537,35 +1447,17 @@ export default {
         },
         {
           inputs: [
-            {
-              internalType: 'bytes32',
-              name: 'role',
-              type: 'bytes32',
-            },
-            {
-              internalType: 'address',
-              name: 'account',
-              type: 'address',
-            },
+            { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+            { internalType: 'address', name: 'account', type: 'address' },
           ],
           name: 'hasRole',
-          outputs: [
-            {
-              internalType: 'bool',
-              name: '',
-              type: 'bool',
-            },
-          ],
+          outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
           stateMutability: 'view',
           type: 'function',
         },
         {
           inputs: [
-            {
-              internalType: 'uint256[]',
-              name: 'names',
-              type: 'uint256[]',
-            },
+            { internalType: 'uint256[]', name: 'names', type: 'uint256[]' },
             {
               internalType: 'uint256[]',
               name: 'quantities',
@@ -1576,11 +1468,7 @@ export default {
               name: 'constraintsProofs',
               type: 'bytes[]',
             },
-            {
-              internalType: 'bytes[]',
-              name: 'pricingProofs',
-              type: 'bytes[]',
-            },
+            { internalType: 'bytes[]', name: 'pricingProofs', type: 'bytes[]' },
           ],
           name: 'register',
           outputs: [],
@@ -1589,11 +1477,7 @@ export default {
         },
         {
           inputs: [
-            {
-              internalType: 'uint256[]',
-              name: 'names',
-              type: 'uint256[]',
-            },
+            { internalType: 'uint256[]', name: 'names', type: 'uint256[]' },
             {
               internalType: 'uint256[]',
               name: 'quantities',
@@ -1604,16 +1488,8 @@ export default {
               name: 'constraintsProofs',
               type: 'bytes[]',
             },
-            {
-              internalType: 'bytes[]',
-              name: 'pricingProofs',
-              type: 'bytes[]',
-            },
-            {
-              internalType: 'uint256[]',
-              name: 'preimages',
-              type: 'uint256[]',
-            },
+            { internalType: 'bytes[]', name: 'pricingProofs', type: 'bytes[]' },
+            { internalType: 'uint256[]', name: 'preimages', type: 'uint256[]' },
           ],
           name: 'registerWithPreimage',
           outputs: [],
@@ -1622,16 +1498,49 @@ export default {
         },
         {
           inputs: [
+            { internalType: 'uint256[]', name: 'names', type: 'uint256[]' },
             {
-              internalType: 'bytes32',
-              name: 'role',
-              type: 'bytes32',
+              internalType: 'uint256[]',
+              name: 'quantities',
+              type: 'uint256[]',
             },
             {
-              internalType: 'address',
-              name: 'account',
-              type: 'address',
+              internalType: 'bytes[]',
+              name: 'constraintsProofs',
+              type: 'bytes[]',
             },
+            { internalType: 'bytes[]', name: 'pricingProofs', type: 'bytes[]' },
+            { internalType: 'uint256[]', name: 'preimages', type: 'uint256[]' },
+          ],
+          name: 'registerWithPreimageWithToken',
+          outputs: [],
+          stateMutability: 'payable',
+          type: 'function',
+        },
+        {
+          inputs: [
+            { internalType: 'uint256[]', name: 'names', type: 'uint256[]' },
+            {
+              internalType: 'uint256[]',
+              name: 'quantities',
+              type: 'uint256[]',
+            },
+            {
+              internalType: 'bytes[]',
+              name: 'constraintsProofs',
+              type: 'bytes[]',
+            },
+            { internalType: 'bytes[]', name: 'pricingProofs', type: 'bytes[]' },
+          ],
+          name: 'registerWithToken',
+          outputs: [],
+          stateMutability: 'payable',
+          type: 'function',
+        },
+        {
+          inputs: [
+            { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+            { internalType: 'address', name: 'account', type: 'address' },
           ],
           name: 'renounceRole',
           outputs: [],
@@ -1640,16 +1549,8 @@ export default {
         },
         {
           inputs: [
-            {
-              internalType: 'bytes32',
-              name: 'role',
-              type: 'bytes32',
-            },
-            {
-              internalType: 'address',
-              name: 'account',
-              type: 'address',
-            },
+            { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+            { internalType: 'address', name: 'account', type: 'address' },
           ],
           name: 'revokeRole',
           outputs: [],
@@ -1681,20 +1582,19 @@ export default {
         },
         {
           inputs: [
-            {
-              internalType: 'bytes4',
-              name: 'interfaceId',
-              type: 'bytes4',
-            },
+            { internalType: 'address', name: '_tokenAddress', type: 'address' },
+          ],
+          name: 'setTokenAddress',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function',
+        },
+        {
+          inputs: [
+            { internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' },
           ],
           name: 'supportsInterface',
-          outputs: [
-            {
-              internalType: 'bool',
-              name: '',
-              type: 'bool',
-            },
-          ],
+          outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
           stateMutability: 'view',
           type: 'function',
         },

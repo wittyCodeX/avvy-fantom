@@ -353,6 +353,42 @@ class FNSClient {
     )
     await registerTx.wait()
   }
+  async registerWithToken(
+    domains,
+    quantities,
+    constraintsProofs,
+    pricingProofs,
+  ) {
+    const { total, hashes } = await this._getRegistrationArgs(
+      domains,
+      quantities,
+    )
+    const premium = await this.getRegistrationPremium()
+    const value = total.add(premium.mul(hashes.length))
+    const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.registerWithToken(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      {
+        value,
+      },
+    )
+    const gasLimit = gasEstimate.add(
+      this._getTreasuryGasSurplus().mul(hashes.length),
+    )
+    const registerTx = await this.contracts.LeasingAgentV1.registerWithToken(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      {
+        gasLimit,
+        value,
+      },
+    )
+    await registerTx.wait()
+  }
 
   async registerWithPreimage(
     domains,
@@ -382,6 +418,47 @@ class FNSClient {
       this._getTreasuryGasSurplus().mul(hashes.length),
     )
     const registerTx = await this.contracts.LeasingAgentV1.registerWithPreimage(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      preimages,
+      {
+        gasLimit,
+        value,
+      },
+    )
+    await registerTx.wait()
+  }
+
+  async registerWithPreimageWithToken(
+    domains,
+    quantities,
+    constraintsProofs,
+    pricingProofs,
+    preimages,
+  ) {
+    const { total, hashes } = await this._getRegistrationArgs(
+      domains,
+      quantities,
+    )
+    const premium = await this.getRegistrationPremium()
+    const value = total.add(premium.mul(hashes.length))
+    const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.registerWithPreimageWithToken(
+      hashes,
+      quantities,
+      constraintsProofs,
+      pricingProofs,
+      preimages,
+      {
+        value,
+      },
+    )
+
+    const gasLimit = gasEstimate.add(
+      this._getTreasuryGasSurplus().mul(hashes.length),
+    )
+    const registerTx = await this.contracts.LeasingAgentV1.registerWithPreimageWithToken(
       hashes,
       quantities,
       constraintsProofs,

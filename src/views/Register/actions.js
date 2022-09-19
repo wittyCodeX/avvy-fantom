@@ -167,31 +167,42 @@ const actions = {
           constraintsProofs.push(_constraintsProofs[name])
         })
 
-        const enhancedPrivacy = selectors.enhancedPrivacy(state)
+        // const enhancedPrivacy = selectors.enhancedPrivacy(state)
         const reverseLookups = services.names.selectors.reverseLookups(state)
 
-        if (enhancedPrivacy) {
-          await api.register(
+        // if (enhancedPrivacy) {
+        //   await api.register(
+        //     names,
+        //     quantities,
+        //     constraintsProofs,
+        //     pricingProofs,
+        //     isPaymentPumpkin,
+        //     tokenAddress,
+        //   )
+        // } else {
+        const _names = names.map((n) => reverseLookups[n])
+        console.log(names)
+        console.log(_names)
+        const preimages = await api.buildPreimages(names)
+        if (isPaymentPumpkin) {
+          await api.registerWithPreimageWithToken(
             names,
             quantities,
             constraintsProofs,
             pricingProofs,
-            isPaymentPumpkin,
-            tokenAddress,
+            preimages,
           )
         } else {
-          const _names = names.map((n) => reverseLookups[n])
-          const preimages = await api.buildPreimages(names)
           await api.registerWithPreimage(
             names,
             quantities,
             constraintsProofs,
             pricingProofs,
             preimages,
-            isPaymentPumpkin,
-            tokenAddress,
           )
         }
+
+        // }
         await api.generateNFTImage(names)
         const defaultResolverAddress = api.getDefaultResolverAddress()
         await api.setResolver(names[0], defaultResolverAddress)
