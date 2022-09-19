@@ -327,7 +327,7 @@ class Wrapper extends React.PureComponent {
                     aria-label="Discord"
                   >
                     <img
-                      src={services.linking.static('images/vendor/discord.svg')}
+                      src={services.linking.static('images/vendor/discord.png')}
                       alt="Discord."
                       className="inline-block object-scale-down w-4 h-4 m-2"
                     />
