@@ -55,14 +55,12 @@ class Domain extends React.PureComponent {
   updateParams() {
     const params = services.linking.getParams('Domain')
     const domain = params.domain ? params.domain.toLowerCase() : null
-    this.setState(
-      {
+    this.setState(() => {
+      this.loadDomain(domain)
+      return {
         domain: domain,
-      },
-      () => {
-        this.loadDomain(domain)
-      },
-    )
+      }
+    })
   }
 
   loadDomain() {
@@ -92,7 +90,7 @@ class Domain extends React.PureComponent {
   }
 
   componentDidMount() {
-    services.linking.addEventListener('Domain', this.updateParams)
+    services.linking.addEventListener('Domain', this.updateParams.bind(this))
     services.provider.addEventListener(
       services.provider.EVENTS.CONNECTED,
       this.onConnect.bind(this),
@@ -102,7 +100,7 @@ class Domain extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    services.linking.removeEventListener('Domain', this.updateParams)
+    services.linking.removeEventListener('Domain', this.updateParams.bind(this))
     services.provider.addEventListener(
       services.provider.EVENTS.CONNECTED,
       this.onConnect.bind(this),
