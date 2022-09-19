@@ -335,14 +335,14 @@ class Wrapper extends React.PureComponent {
                 </li>
               </ul>
               {/* Social links */}
-              <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-center  w-200">
+              <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-end w-3/12">
                 <li>
                   Copyright <span>&#169;</span>
                   {'   ' + new Date().getFullYear()}
                 </li>
               </ul>
               {/* Copyrights note */}
-              <div className="text-sm text-gray-600 mr-4 w-200">
+              <div className="text-sm text-gray-600 mr-4 w-3/12">
                 <div className="w-100 m-auto">
                   <a href="https://fantom.foundation">
                     <img
