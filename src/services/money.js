@@ -30,7 +30,9 @@ const money = {
     const amt = ethers.utils.formatEther(amount)
     return (+amt).toFixed(4) + ' FTM'
   },
-
+  renderPUMPKIN: (amount) => {
+    return amount + ' PUMPKIN'
+  },
   // multiplies two strings together
   mul: (str1, str2) => {
     const n1 = ethers.BigNumber.from(str1)

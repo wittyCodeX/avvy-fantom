@@ -174,10 +174,12 @@ class RegistrationFlow extends React.PureComponent {
         }
         const namePrice = nameData[curr].priceUSDCents
         const namePriceFtm = nameData[curr].priceFTMEstimate
-        if (!namePrice || !namePriceFtm)
+        const namePricePumpkin = nameData[curr].pricePumpkinEstimate
+        if (!namePrice || !namePriceFtm || !namePricePumpkin)
           return {
             usd: '0',
             ftm: '0',
+            pumpkin: '0',
           }
         const quantity = quantities[curr]
         const registrationPrice = services.money.mul(namePrice, quantity)
@@ -185,14 +187,19 @@ class RegistrationFlow extends React.PureComponent {
           services.money.mul(namePriceFtm, quantity),
           this.props.registrationPremium,
         )
+        const registrationPricePumpkin =
+          Number(namePricePumpkin) * Number(quantity) +
+          Number(this.props.registrationPremium)
+
         return {
           usd: services.money.add(sum.usd, registrationPrice),
           ftm: services.money.add(sum.ftm, registrationPriceFtm),
+          pumpkin: Number(sum.pumpkin) + Number(registrationPricePumpkin),
         }
       },
-      { usd: '0', ftm: '0' },
+      { usd: '0', ftm: '0', pumpkin: '0' },
     )
-    console.log(total)
+
     const inBatches = names.length > services.environment.MAX_REGISTRATION_NAMES
     return (
       <>
@@ -214,10 +221,19 @@ class RegistrationFlow extends React.PureComponent {
             <div className="font-bold">{'Registration Fees'}</div>
             <div className="">{services.money.renderUSD(total.usd)}</div>
           </div>
-          <div className="flex justify-between">
-            <div className="font-bold">{'Total (FTM)'}</div>
-            <div className="">{services.money.renderFTM(total.ftm)}</div>
-          </div>
+          {this.props.paymentFTM ? (
+            <div className="flex justify-between">
+              <div className="font-bold">{'Total (FTM)'}</div>
+              <div className="">{services.money.renderFTM(total.ftm)}</div>
+            </div>
+          ) : (
+            <div className="flex justify-between">
+              <div className="font-bold">{'Total (PUMPKIN)'}</div>
+              <div className="">
+                {services.money.renderPUMPKIN(total.pumpkin)}
+              </div>
+            </div>
+          )}
         </div>
         <div className="mt-8 max-w-sm m-auto">
           <div className="mt-4">

@@ -26,6 +26,8 @@ class Register extends React.PureComponent {
       paginationIndex: 0,
       connected: services.provider.isConnected(),
       importingRegistrations: false,
+      paymentFTM: true,
+      paymentPumpkin: false,
       total: {},
     }
   }
@@ -78,7 +80,12 @@ class Register extends React.PureComponent {
       this.props.clear()
     }
   }
-
+  handlePaymentType(_type) {
+    if (_type == 'pumpkin')
+      this.setState({ paymentPumpkin: true, paymentFTM: false })
+    if (_type == 'ftm')
+      this.setState({ paymentFTM: true, paymentPumpkin: false })
+  }
   removeUnavailable() {
     this.props.names.forEach((name) => {
       const nameData = this.props.nameData[name]
@@ -123,6 +130,7 @@ class Register extends React.PureComponent {
         currPage + 3,
       ]
     }
+
     return (
       <div className="flex items-center justify-center">
         <div
@@ -344,10 +352,12 @@ class Register extends React.PureComponent {
         }
         const namePrice = nameData[curr].priceUSDCents
         const namePriceFtm = nameData[curr].priceFTMEstimate
-        if (!namePrice || !namePriceFtm)
+        const namePricePumpkin = nameData[curr].pricePumpkinEstimate
+        if (!namePrice || !namePriceFtm || !namePricePumpkin)
           return {
             usd: '0',
             ftm: '0',
+            pumpkin: '0',
           }
         const quantity = quantities[curr]
         const registrationPrice = services.money.mul(namePrice, quantity)
@@ -355,15 +365,18 @@ class Register extends React.PureComponent {
           services.money.mul(namePriceFtm, quantity),
           this.props.registrationPremium,
         )
+        const registrationPricePumpkin =
+          Number(namePricePumpkin) * Number(quantity) +
+          Number(this.props.registrationPremium)
+
         return {
           usd: services.money.add(sum.usd, registrationPrice),
           ftm: services.money.add(sum.ftm, registrationPriceFtm),
+          pumpkin: Number(sum.pumpkin) + Number(registrationPricePumpkin),
         }
       },
-      { usd: '0', ftm: '0' },
+      { usd: '0', ftm: '0', pumpkin: '0' },
     )
-
-    console.log(this.state.total)
 
     if (unavailable.length > 0)
       return (
@@ -427,6 +440,54 @@ class Register extends React.PureComponent {
               <div className="font-bold">{'Total (FTM)'}</div>
               <div className="">{services.money.renderFTM(total.ftm)}</div>
             </div>
+            <div className="flex justify-between">
+              <div className="font-bold">{'Or Total (PUMPKIN)'}</div>
+              <div className="">
+                {services.money.renderPUMPKIN(total.pumpkin)}
+              </div>
+            </div>
+          </div>
+          <div className="mb-8">
+            <div className="font-bold">{'Payment Type'}</div>
+
+            <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                <div className="flex items-center pl-3">
+                  <input
+                    id="horizontal-list-radio-license"
+                    type="radio"
+                    value=""
+                    onClick={() => this.handlePaymentType('ftm')}
+                    name="list-radio"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  <label
+                    htmlFor="horizontal-list-radio-license"
+                    className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    FTM
+                  </label>
+                </div>
+              </li>
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                <div className="flex items-center pl-3">
+                  <input
+                    id="horizontal-list-radio-id"
+                    type="radio"
+                    value=""
+                    name="list-radio"
+                    onClick={() => this.handlePaymentType('pumpkin')}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  <label
+                    htmlFor="horizontal-list-radio-id"
+                    className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    PUMPKIN
+                  </label>
+                </div>
+              </li>
+            </ul>
           </div>
           {hasRenewal && hasRegistrationPremium ? (
             <div className="mb-8">
@@ -437,7 +498,8 @@ class Register extends React.PureComponent {
               />
             </div>
           ) : null}
-          {this.props.balance.lt(total.ftm) ? (
+          {(this.props.balance.lt(total.ftm) && this.state.paymentFTM) ||
+          (total.pumpkin && this.state.paymentPumpkin) ? (
             <div className="mb-8">
               <components.labels.Error
                 text={
@@ -449,7 +511,10 @@ class Register extends React.PureComponent {
           <components.buttons.Button
             text={'Continue Registration'}
             onClick={this.startPurchase.bind(this)}
-            disabled={this.props.balance.lt(total.ftm)}
+            disabled={
+              (this.props.balance.lt(total.ftm) && this.state.paymentFTM) ||
+              (total.pumpkin && this.state.paymentPumpkin)
+            }
           />
           <div className="mt-4 text-center text-gray-500 text-sm">
             <div
@@ -583,6 +648,7 @@ class Register extends React.PureComponent {
           <RegistrationFlow
             ref={(ref) => (this.registrationFlow = ref)}
             {...this.props}
+            {...this.state}
           />
         </components.Modal>
         <components.Modal

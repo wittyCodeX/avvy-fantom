@@ -165,6 +165,19 @@ class FNSClient {
     return ethers.BigNumber.from('10').pow('24').div(rate)
   }
 
+  async getPumpkinConversionRate() {
+    // this is just fixed price for now based on latestRound from oracle
+    let rate
+    var url =
+      'https://api.dexscreener.com/latest/dex/pairs/fantom/0xA73d251D37040ADE6e3eFf71207901621c9C867a'
+    const res = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+    })
+    const pumpkinInfo = await res.json()
+    return Number(1 / pumpkinInfo.pair.priceUsd).toFixed(3)
+  }
+
   async revealDomain(domain) {
     const preimage = await client.utils.encodeNameHashInputSignals(domain)
     const hash = await client.utils.nameHash(domain)
@@ -194,9 +207,14 @@ class FNSClient {
 
     let priceUSDCents = await this.getNamePrice(domain)
     let ftmConversionRate = await this.getFTMConversionRate()
+    let pumpkinConversionRate = await this.getPumpkinConversionRate()
     let priceFTMEstimate = ftmConversionRate
       .mul(ethers.BigNumber.from(priceUSDCents))
       .toString()
+    let pricePumpkinEstimate = (
+      (pumpkinConversionRate * priceUSDCents) /
+      100
+    ).toString()
     let expiresAt = await this.getNameExpiry(hash)
 
     return {
@@ -211,6 +229,7 @@ class FNSClient {
       status: domainStatus,
       priceUSDCents,
       priceFTMEstimate,
+      pricePumpkinEstimate,
       timestamp: parseInt(Date.now() / 1000),
     }
   }
@@ -476,13 +495,33 @@ class FNSClient {
     }
     return contract
   }
-
+  getPumpkinContract() {
+    let contract
+    if (this.chainId === 4002) {
+      contract = new ethers.Contract(
+        '0xA73d251D37040ADE6e3eFf71207901621c9C867a',
+        services.abi.erc20,
+        this.signer,
+      )
+    } else if (this.chainId === 250) {
+      contract = new ethers.Contract(
+        '0xA73d251D37040ADE6e3eFf71207901621c9C867a',
+        services.abi.erc20,
+        this.signer,
+      )
+    }
+    return contract
+  }
   async getWftmBalance() {
     const contract = this.getWftmContract()
     const balance = await contract.balanceOf(this.account)
     return balance.toString()
   }
-
+  async getPumpkinBalance() {
+    const contract = this.getPumpkinContract()
+    const balance = await contract.balanceOf(this.account)
+    return balance.toString()
+  }
   async getAuctionWftm() {
     const contract = this.getWftmContract()
     const allowance = await contract.allowance(
@@ -669,7 +708,6 @@ class FNSClient {
     const balance = await this.signer.getBalance()
     return balance
   }
-
   async transferDomain(domain, address) {
     const tokenId = await client.utils.nameHash(domain)
     const tx = await this.contracts.Domain[
