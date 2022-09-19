@@ -2392,14 +2392,19 @@ contract LeasingAgentV1 is AccessControl {
     (bool sent,) = _treasuryAddress.call{value: total}("");
     require(sent, "LeasingAgentV1: payment not sent");
   }
-
+  function _transferTokenToTreasury(uint256 total, address tokenAddress) internal {
+    address payable _treasuryAddress = payable(_contractRegistry.get('Treasury'));
+    require(IERC20(tokenAddress).transferFrom(msg.sender, _treasuryAddress, total), "LeasingAgentV1: payment not sent");
+  }
   // attempt to register the name.
   // compare it to hash details provided in commit
   function register(
     uint256[] calldata names, 
     uint256[] calldata quantities,
     bytes[] calldata constraintsProofs,
-    bytes[] calldata pricingProofs
+    bytes[] calldata pricingProofs,
+    bool isToken,
+    address tokenAddress
   ) public payable {
     require(_enabled, "LeasingAgentV1: registration disabled");
     require(names.length == constraintsProofs.length, "LeasingAgentV1: proof length mismatch");
@@ -2423,9 +2428,18 @@ contract LeasingAgentV1 is AccessControl {
     total += getRegistrationPremium(block.timestamp) * names.length;
     
     // collect payment 
-    require(msg.value >= total, "LeasingAgentV1: insufficient payment");
-    uint256 diff = msg.value - total;
-    _transferToTreasury(total);
+    if(!isToken) {
+        require(msg.value >= total, "LeasingAgentV1: insufficient payment");
+        uint256 diff = msg.value - total;
+        _transferToTreasury(total);
+            // return over-payment to sender
+        if (diff > 0) {
+        payable(msg.sender).transfer(diff);
+        }
+    } else {
+        require(IERC20(tokenAddress).balanceOf(msg.sender) >= total, "LeasingAgentV1: insufficient payment");
+        _transferTokenToTreasury(total, tokenAddress);
+    }
 
     // register names
     emit Registered(names, quantities, msg.value);
@@ -2433,10 +2447,7 @@ contract LeasingAgentV1 is AccessControl {
       _registerName(names[i], quantities[i], constraintsProofs[i], _domain);
     }
 
-    // return over-payment to sender
-    if (diff > 0) {
-      payable(msg.sender).transfer(diff);
-    }
+
   }
 
   function registerWithPreimage(
@@ -2444,7 +2455,9 @@ contract LeasingAgentV1 is AccessControl {
     uint256[] calldata quantities,
     bytes[] calldata constraintsProofs,
     bytes[] calldata pricingProofs,
-    uint256[] calldata preimages
+    uint256[] calldata preimages,
+    bool isToken,
+    address tokenAddress
   ) external payable {
     require(preimages.length % 4 == 0, "LeasingAgentV1: incorrect preimage length");
     require(preimages.length / names.length == 4, "LeasingAgentV1: incorrect preimage length");
@@ -2454,7 +2467,7 @@ contract LeasingAgentV1 is AccessControl {
         rainbowTable.reveal(preimages[i * 4:i * 4 + 4], names[i]);
       }
     }
-    register(names, quantities, constraintsProofs, pricingProofs);
+    register(names, quantities, constraintsProofs, pricingProofs, isToken, tokenAddress);
   }
 
   constructor(address contractRegistryAddress, uint256 namespaceId) {
