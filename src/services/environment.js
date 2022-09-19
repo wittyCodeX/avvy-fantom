@@ -16,6 +16,9 @@ const environment = {
   ENVIRONMENT: process.env.REACT_APP_ENVIRONMENT,
   AUCTION_KEY: process.env.REACT_APP_AUCTION_KEY,
   PROOF_KEY: process.env.REACT_APP_PROOF_KEY,
+  PUMPKIN_ADDRESS:
+    process.env.REACT_PUMPKIN_ADDRESS ||
+    '0xa73d251d37040ade6e3eff71207901621c9c867a',
 }
 
 export default environment

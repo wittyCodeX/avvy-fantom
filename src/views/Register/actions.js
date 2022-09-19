@@ -140,7 +140,7 @@ const actions = {
     }
   },
 
-  finalize: () => {
+  finalize: (isPaymentPumpkin) => {
     return async (dispatch, getState) => {
       try {
         dispatch(actions.setIsFinalizing(true))
@@ -152,6 +152,7 @@ const actions = {
           state,
         )
         const _pricingProofs = services.proofs.selectors.pricingProofs(state)
+        const tokenAddress = services.environment.PUMPKIN_ADDRESS
         let quantities = []
         let pricingProofs = []
         let constraintsProofs = []
@@ -175,6 +176,8 @@ const actions = {
             quantities,
             constraintsProofs,
             pricingProofs,
+            isPaymentPumpkin,
+            tokenAddress,
           )
         } else {
           const _names = names.map((n) => reverseLookups[n])
@@ -185,6 +188,8 @@ const actions = {
             constraintsProofs,
             pricingProofs,
             preimages,
+            isPaymentPumpkin,
+            tokenAddress,
           )
         }
         await api.generateNFTImage(names)

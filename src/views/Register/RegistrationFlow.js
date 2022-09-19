@@ -37,8 +37,8 @@ class RegistrationFlow extends React.PureComponent {
     )
   }
 
-  finalizeTransaction() {
-    this.props.finalizeTransaction()
+  finalizeTransaction(isPaymentPumpkin) {
+    this.props.finalizeTransaction(isPaymentPumpkin)
   }
 
   onConnect() {
@@ -243,7 +243,9 @@ class RegistrationFlow extends React.PureComponent {
                   ? `Register next ${services.environment.MAX_REGISTRATION_NAMES} names`
                   : 'Finalize registration'
               }
-              onClick={this.finalizeTransaction.bind(this)}
+              onClick={this.finalizeTransaction(this.props.paymentPumpkin).bind(
+                this,
+              )}
               loading={this.props.isFinalizing}
             />
           </div>
@@ -346,7 +348,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   generateProofs: (names) => dispatch(actions.generateProofs(names)),
-  finalizeTransaction: () => dispatch(actions.finalize()),
+  finalizeTransaction: (isPaymentPumpkin) =>
+    dispatch(actions.finalize(isPaymentPumpkin)),
   enableEnhancedPrivacy: (value) =>
     dispatch(actions.enableEnhancedPrivacy(value)),
   nextBatch: () => dispatch(actions.reset()),
