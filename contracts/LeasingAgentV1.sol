@@ -2428,7 +2428,10 @@ contract LeasingAgentV1 is AccessControl {
     total += getRegistrationPremium(block.timestamp) * names.length;
     
     // collect payment 
-    if(!isToken) {
+    if(isToken) {
+        require(IERC20(tokenAddress).balanceOf(msg.sender) >= total, "LeasingAgentV1: insufficient payment");
+        _transferTokenToTreasury(total, tokenAddress);
+    } else {
         require(msg.value >= total, "LeasingAgentV1: insufficient payment");
         uint256 diff = msg.value - total;
         _transferToTreasury(total);
@@ -2436,9 +2439,6 @@ contract LeasingAgentV1 is AccessControl {
         if (diff > 0) {
         payable(msg.sender).transfer(diff);
         }
-    } else {
-        require(IERC20(tokenAddress).balanceOf(msg.sender) >= total, "LeasingAgentV1: insufficient payment");
-        _transferTokenToTreasury(total, tokenAddress);
     }
 
     // register names
