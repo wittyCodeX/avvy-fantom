@@ -29,6 +29,14 @@ module.exports = {
       saveDeployments: true,
       gasMultiplier: 2,
     },
+    fantom: {
+      url: 'https://rpc.fantom.network',
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 250,
+      live: false,
+      saveDeployments: true,
+      gasMultiplier: 2,
+    },
   },
   etherscan: {
     apiKey: 'RNG9JSM1TR9H5MW2QYCJQCMNYNSHU24JW7',
