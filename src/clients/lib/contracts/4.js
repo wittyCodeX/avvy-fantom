@@ -1200,7 +1200,7 @@ export default {
       ],
     },
     LeasingAgentV1: {
-      address: '0xE0B62f0F2E017F94f4fEE9F5111A08300eeF1684',
+      address: '0x4C01f70C131De256054c64c646C296609ec2Ce10',
       abi: [
         {
           inputs: [
@@ -1511,6 +1511,7 @@ export default {
             },
             { internalType: 'bytes[]', name: 'pricingProofs', type: 'bytes[]' },
             { internalType: 'uint256[]', name: 'preimages', type: 'uint256[]' },
+            { internalType: 'uint256', name: 'amount', type: 'uint256' },
           ],
           name: 'registerWithPreimageWithToken',
           outputs: [],
@@ -1531,6 +1532,7 @@ export default {
               type: 'bytes[]',
             },
             { internalType: 'bytes[]', name: 'pricingProofs', type: 'bytes[]' },
+            { internalType: 'uint256', name: 'amount', type: 'uint256' },
           ],
           name: 'registerWithToken',
           outputs: [],

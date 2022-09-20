@@ -2,6 +2,7 @@ import services from 'services'
 
 import constants from './constants'
 import selectors from './selectors'
+import { ethers } from 'ethers'
 
 const actions = {
   setHash: (hash) => {
@@ -192,13 +193,16 @@ const actions = {
         console.log(_names)
         const preimages = await api.buildPreimages(names)
         if (isPaymentPumpkin) {
-          await approvePumpkin(total.pumpkin)
+          await api.approvePumpkin(
+            ethers.utils.parseEther(Number(total.pumpkin).toString()),
+          )
           await api.registerWithPreimageWithToken(
             names,
             quantities,
             constraintsProofs,
             pricingProofs,
             preimages,
+            ethers.utils.parseEther(Number(total.pumpkin).toString()),
           )
         } else {
           await api.registerWithPreimage(

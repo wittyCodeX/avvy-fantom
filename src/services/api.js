@@ -441,6 +441,7 @@ class FNSClient {
     constraintsProofs,
     pricingProofs,
     preimages,
+    amount,
   ) {
     const { total, hashes } = await this._getRegistrationArgs(
       domains,
@@ -454,6 +455,7 @@ class FNSClient {
       constraintsProofs,
       pricingProofs,
       preimages,
+      amount,
       {
         value,
       },
@@ -468,6 +470,7 @@ class FNSClient {
       constraintsProofs,
       pricingProofs,
       preimages,
+      amount,
       {
         gasLimit,
         value,
@@ -600,7 +603,7 @@ class FNSClient {
     return contract
   }
   async approvePumpkin(amount) {
-    const contract = this.getWftmContract()
+    const contract = this.getPumpkinContract()
     await contract.approve(this.account, amount)
   }
   async getWftmBalance() {
