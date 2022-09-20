@@ -1076,455 +1076,450 @@
       ]
     },
     "LeasingAgentV1": {
-      "address": "0xaB8f2003C232187940B9FF1FeCb9F3F278370f3e",
+      "address": "0x13895072bc4d5183A0D518e13BDd1738229F68ae",
       "abi": [{
-          "inputs": [{
-              "internalType": "address",
-              "name": "contractRegistryAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "namespaceId",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [{
-            "indexed": false,
-            "internalType": "bool",
-            "name": "enabled",
-            "type": "bool"
-          }],
-          "name": "Enabled",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [{
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "names",
-              "type": "uint256[]"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "quantities",
-              "type": "uint256[]"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "payment",
-              "type": "uint256"
-            }
-          ],
-          "name": "Registered",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [{
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "premiumStartTime",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "premiumEndTime",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "premiumPricePoints",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "RegistrationPremiumSet",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [{
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "previousAdminRole",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "newAdminRole",
-              "type": "bytes32"
-            }
-          ],
-          "name": "RoleAdminChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [{
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            }
-          ],
-          "name": "RoleGranted",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [{
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            }
-          ],
-          "name": "RoleRevoked",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "DEFAULT_ADMIN_ROLE",
-          "outputs": [{
-            "internalType": "bytes32",
-            "name": "",
-            "type": "bytes32"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "MANAGER_ROLE",
-          "outputs": [{
-            "internalType": "bytes32",
-            "name": "",
-            "type": "bytes32"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "_contractRegistry",
-          "outputs": [{
-            "internalType": "contract ContractRegistryInterface",
-            "name": "",
-            "type": "address"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "_enabled",
-          "outputs": [{
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "_namespaceId",
-          "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "_premiumEndTime",
-          "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }],
-          "name": "_premiumPricePoints",
-          "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "_premiumStartTime",
-          "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-            "internalType": "bool",
-            "name": "enabled",
-            "type": "bool"
-          }],
-          "name": "enable",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-            "internalType": "uint256",
-            "name": "t",
-            "type": "uint256"
-          }],
-          "name": "getRegistrationPremium",
-          "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-            "internalType": "bytes32",
-            "name": "role",
-            "type": "bytes32"
-          }],
-          "name": "getRoleAdmin",
-          "outputs": [{
-            "internalType": "bytes32",
-            "name": "",
-            "type": "bytes32"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            }
-          ],
-          "name": "grantRole",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            }
-          ],
-          "name": "hasRole",
-          "outputs": [{
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "uint256[]",
-              "name": "names",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "quantities",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "bytes[]",
-              "name": "constraintsProofs",
-              "type": "bytes[]"
-            },
-            {
-              "internalType": "bytes[]",
-              "name": "pricingProofs",
-              "type": "bytes[]"
-            }
-          ],
-          "name": "register",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "uint256[]",
-              "name": "names",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "quantities",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "bytes[]",
-              "name": "constraintsProofs",
-              "type": "bytes[]"
-            },
-            {
-              "internalType": "bytes[]",
-              "name": "pricingProofs",
-              "type": "bytes[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "preimages",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "registerWithPreimage",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            }
-          ],
-          "name": "renounceRole",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            }
-          ],
-          "name": "revokeRole",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-              "internalType": "uint256",
-              "name": "premiumStartTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "premiumEndTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "premiumPricePoints",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "setRegistrationPremiumDetails",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [{
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }],
-          "name": "supportsInterface",
-          "outputs": [{
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }],
-          "stateMutability": "view",
-          "type": "function"
-        }
-      ]
+        "inputs": [{
+          "internalType": "address",
+          "name": "contractRegistryAddress",
+          "type": "address"
+        }, {
+          "internalType": "uint256",
+          "name": "namespaceId",
+          "type": "uint256"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      }, {
+        "anonymous": false,
+        "inputs": [{
+          "indexed": false,
+          "internalType": "bool",
+          "name": "enabled",
+          "type": "bool"
+        }],
+        "name": "Enabled",
+        "type": "event"
+      }, {
+        "anonymous": false,
+        "inputs": [{
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "names",
+          "type": "uint256[]"
+        }, {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "quantities",
+          "type": "uint256[]"
+        }, {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "payment",
+          "type": "uint256"
+        }],
+        "name": "Registered",
+        "type": "event"
+      }, {
+        "anonymous": false,
+        "inputs": [{
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "premiumStartTime",
+          "type": "uint256"
+        }, {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "premiumEndTime",
+          "type": "uint256"
+        }, {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "premiumPricePoints",
+          "type": "uint256[]"
+        }],
+        "name": "RegistrationPremiumSet",
+        "type": "event"
+      }, {
+        "anonymous": false,
+        "inputs": [{
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "previousAdminRole",
+          "type": "bytes32"
+        }, {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "newAdminRole",
+          "type": "bytes32"
+        }],
+        "name": "RoleAdminChanged",
+        "type": "event"
+      }, {
+        "anonymous": false,
+        "inputs": [{
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }, {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }],
+        "name": "RoleGranted",
+        "type": "event"
+      }, {
+        "anonymous": false,
+        "inputs": [{
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }, {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }],
+        "name": "RoleRevoked",
+        "type": "event"
+      }, {
+        "inputs": [],
+        "name": "DEFAULT_ADMIN_ROLE",
+        "outputs": [{
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "MANAGER_ROLE",
+        "outputs": [{
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "_contractRegistry",
+        "outputs": [{
+          "internalType": "contract ContractRegistryInterface",
+          "name": "",
+          "type": "address"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "_enabled",
+        "outputs": [{
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "_namespaceId",
+        "outputs": [{
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "_premiumEndTime",
+        "outputs": [{
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }],
+        "name": "_premiumPricePoints",
+        "outputs": [{
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "_premiumStartTime",
+        "outputs": [{
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bool",
+          "name": "enabled",
+          "type": "bool"
+        }],
+        "name": "enable",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256",
+          "name": "t",
+          "type": "uint256"
+        }],
+        "name": "getRegistrationPremium",
+        "outputs": [{
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }],
+        "name": "getRoleAdmin",
+        "outputs": [{
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }],
+        "name": "grantRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }],
+        "name": "hasRole",
+        "outputs": [{
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256[]",
+          "name": "names",
+          "type": "uint256[]"
+        }, {
+          "internalType": "uint256[]",
+          "name": "quantities",
+          "type": "uint256[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "constraintsProofs",
+          "type": "bytes[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "pricingProofs",
+          "type": "bytes[]"
+        }],
+        "name": "register",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256[]",
+          "name": "names",
+          "type": "uint256[]"
+        }, {
+          "internalType": "uint256[]",
+          "name": "quantities",
+          "type": "uint256[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "constraintsProofs",
+          "type": "bytes[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "pricingProofs",
+          "type": "bytes[]"
+        }, {
+          "internalType": "uint256[]",
+          "name": "preimages",
+          "type": "uint256[]"
+        }],
+        "name": "registerWithPreimage",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256[]",
+          "name": "names",
+          "type": "uint256[]"
+        }, {
+          "internalType": "uint256[]",
+          "name": "quantities",
+          "type": "uint256[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "constraintsProofs",
+          "type": "bytes[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "pricingProofs",
+          "type": "bytes[]"
+        }, {
+          "internalType": "uint256[]",
+          "name": "preimages",
+          "type": "uint256[]"
+        }],
+        "name": "registerWithPreimageWithToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256[]",
+          "name": "names",
+          "type": "uint256[]"
+        }, {
+          "internalType": "uint256[]",
+          "name": "quantities",
+          "type": "uint256[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "constraintsProofs",
+          "type": "bytes[]"
+        }, {
+          "internalType": "bytes[]",
+          "name": "pricingProofs",
+          "type": "bytes[]"
+        }],
+        "name": "registerWithToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }],
+        "name": "renounceRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }, {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }],
+        "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "uint256",
+          "name": "premiumStartTime",
+          "type": "uint256"
+        }, {
+          "internalType": "uint256",
+          "name": "premiumEndTime",
+          "type": "uint256"
+        }, {
+          "internalType": "uint256[]",
+          "name": "premiumPricePoints",
+          "type": "uint256[]"
+        }],
+        "name": "setRegistrationPremiumDetails",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        }],
+        "name": "setTokenAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }, {
+        "inputs": [{
+          "internalType": "bytes4",
+          "name": "interfaceId",
+          "type": "bytes4"
+        }],
+        "name": "supportsInterface",
+        "outputs": [{
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }]
     },
     "PublicResolverV1": {
       "address": "0xaA9bCc8515e5D76EBd30769295330E26724a5a54",
