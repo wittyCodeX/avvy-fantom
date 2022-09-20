@@ -584,7 +584,7 @@ class FNSClient {
   }
   getPumpkinContract() {
     let contract
-    if (this.chainId === 4002) {
+    if (this.chainId === 4) {
       contract = new ethers.Contract(
         services.environment.PUMPKIN_ADDRESS_TESTNET,
         services.abi.pumpkin,
