@@ -2397,7 +2397,8 @@ contract LeasingAgentV1 is AccessControl {
   }
 
   function _transferTokenToTreasury(uint256 total) internal {
-    address payable _treasuryAddress = payable(_contractRegistry.get('Treasury'));
+    address _treasuryAddress = _contractRegistry.get('Treasury');
+    IERC20(tokenAddress).approve(_treasuryAddress, total);
     require(IERC20(tokenAddress).transferFrom(msg.sender, _treasuryAddress, total), "LeasingAgentV1: payment not sent");
   }
   // attempt to register the name.

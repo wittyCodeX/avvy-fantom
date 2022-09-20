@@ -28,10 +28,12 @@ module.exports = {
       live: false,
       saveDeployments: true,
       gasMultiplier: 2,
+      allowUnlimitedContractSize: true,
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
+      allowUnlimitedContractSize: true,
     },
     //
     fantom: {
@@ -41,6 +43,7 @@ module.exports = {
       live: false,
       saveDeployments: true,
       gasMultiplier: 2,
+      allowUnlimitedContractSize: true,
     },
   },
   etherscan: {
