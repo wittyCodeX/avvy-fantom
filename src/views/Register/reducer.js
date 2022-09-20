@@ -8,12 +8,13 @@ export const initialState = {
   commitSalt: null,
   progress: {},
   hasCommit: false,
-  hasError: false, 
+  hasError: false,
   isComplete: false,
   isCommitting: false,
   isFinalizing: false,
   enableEnhancedPrivacy: false,
   balance: null,
+  tokenbalance: null,
 }
 
 export const reducer = (state = initialState, action) => {
@@ -21,67 +22,72 @@ export const reducer = (state = initialState, action) => {
     case constants.SET_BALANCE:
       return {
         ...state,
-        balance: action.balance
+        balance: action.balance,
+      }
+    case constants.SET_TOKEN_BALANCE:
+      return {
+        ...state,
+        tokenbalance: action.balance,
       }
 
     case constants.SET_SALT:
       return {
         ...state,
-        commitSalt: action.salt
+        commitSalt: action.salt,
       }
 
     case constants.SET_HASH:
       return {
         ...state,
-        commitHash: action.hash
+        commitHash: action.hash,
       }
 
     case constants.SET_PROGRESS:
       return {
         ...state,
-        progress: action.progress
+        progress: action.progress,
       }
 
     case constants.SET_HAS_COMMIT:
       return {
         ...state,
-        hasCommit: action.value
+        hasCommit: action.value,
       }
 
     case constants.SET_HAS_ERROR:
       return {
         ...state,
-        hasError: action.value
+        hasError: action.value,
       }
 
     case constants.SET_IS_COMPLETE:
       return {
         ...state,
-        isComplete: action.value
+        isComplete: action.value,
       }
 
     case constants.SET_IS_COMMITTING:
       return {
         ...state,
-        isCommitting: action.value
+        isCommitting: action.value,
       }
 
     case constants.SET_IS_FINALIZING:
       return {
         ...state,
-        isFinalizing: action.value
+        isFinalizing: action.value,
       }
 
     case constants.ENABLE_ENHANCED_PRIVACY:
       return {
         ...state,
-        enableEnhancedPrivacy: action.value
+        enableEnhancedPrivacy: action.value,
       }
 
     case constants.SET_REGISTRATION_PREMIUM:
       return {
         ...state,
-        registrationPremium: action.premium
+        registrationPremium: action.premium,
       }
 
     default:
@@ -90,7 +96,7 @@ export const reducer = (state = initialState, action) => {
 }
 
 const exports = {
-  reducer, 
+  reducer,
   reducerName,
   initialState,
 }

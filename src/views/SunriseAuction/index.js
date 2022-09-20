@@ -165,7 +165,7 @@ class SunriseAuction extends React.PureComponent {
       <div className="max-w-screen-md m-auto">
         <components.Modal
           ref={(ref) => (this.bulkBidModal = ref)}
-          title={this.state.isConnected ? 'Bulk bid' : 'Connect wallet'}
+          title={this.state.isConnected ? 'Bulk bid' : 'Connect your wallet'}
         >
           {this.state.importingBids ? (
             <div className="max-w-sm m-auto">

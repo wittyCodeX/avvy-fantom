@@ -207,7 +207,7 @@ class MyDomains extends React.PureComponent {
     return (
       <div className="max-w-sm m-auto">
         <components.labels.Information
-          text={'You must be connected to a wallet to view your domains'}
+          text={'Connect your Fantom Opera supported wallet'}
         />
         <div className="mt-8">
           <components.buttons.Button

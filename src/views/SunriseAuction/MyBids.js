@@ -324,12 +324,12 @@ class MyBids extends React.PureComponent {
                 <>
                   <components.labels.error
                     text={
-                      'connect your wallet to see auction results & claim domains'
+                      'Connect your wallet to see auction results & claim domains'
                     }
                     justify="justify-flex-start"
                   />
                   <div classname="mt-4 max-w-sm md:hidden">
-                    <components.buttons.button text={'connect wallet'} />
+                    <components.buttons.button text={'Connect your wallet'} />
                   </div>
                 </>
               )}

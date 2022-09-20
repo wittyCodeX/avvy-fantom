@@ -129,7 +129,7 @@ class _WftmSummary extends React.PureComponent {
       <div className="mt-4">
         <components.Modal
           ref={(ref) => (this.connect = ref)}
-          title="Connect Wallet"
+          title="Connect your wallet"
         >
           <components.ConnectWallet />
         </components.Modal>
@@ -141,7 +141,7 @@ class _WftmSummary extends React.PureComponent {
         />
         <div className="mt-4">
           <components.buttons.Button
-            text={'Connect wallet'}
+            text={'Connect your wallet'}
             onClick={() => this.connect.toggle()}
           />
         </div>

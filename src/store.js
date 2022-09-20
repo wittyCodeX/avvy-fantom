@@ -21,14 +21,15 @@ const reducers = [
   services.names.reducer,
   services.proofs.reducer,
   services.sunrise.reducer,
-  services.user.reducer
+  services.user.reducer,
 ]
 
-reducers.forEach(service => {
+reducers.forEach((service) => {
   reducerMap[service.reducerName] = service.reducer
 })
 
-const persistedReducer = persistReducer({
+const persistedReducer = persistReducer(
+  {
     key: 'root',
     storage: localforage,
     whitelist: [
@@ -39,15 +40,13 @@ const persistedReducer = persistReducer({
       services.proofs.reducer.reducerName,
       services.sunrise.reducer.reducerName,
       services.user.reducer.reducerName,
-    ]
+    ],
   },
-  combineReducers(reducerMap)
+  combineReducers(reducerMap),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 )
 
-export const store = createStore(
-  persistedReducer,
-  applyMiddleware(thunk),
-);
+export const store = createStore(persistedReducer, applyMiddleware(thunk))
 
 persistStore(store, null, () => {
   // after rehydrate

@@ -26,6 +26,9 @@ class Register extends React.PureComponent {
       paginationIndex: 0,
       connected: services.provider.isConnected(),
       importingRegistrations: false,
+      paymentFTM: true,
+      paymentPumpkin: false,
+      total: {},
     }
   }
 
@@ -77,7 +80,12 @@ class Register extends React.PureComponent {
       this.props.clear()
     }
   }
-
+  handlePaymentType(_type) {
+    if (_type == 'pumpkin')
+      this.setState({ paymentPumpkin: true, paymentFTM: false })
+    if (_type == 'ftm')
+      this.setState({ paymentFTM: true, paymentPumpkin: false })
+  }
   removeUnavailable() {
     this.props.names.forEach((name) => {
       const nameData = this.props.nameData[name]
@@ -122,6 +130,7 @@ class Register extends React.PureComponent {
         currPage + 3,
       ]
     }
+
     return (
       <div className="flex items-center justify-center">
         <div
@@ -292,20 +301,9 @@ class Register extends React.PureComponent {
     if (!this.props.names || this.props.names.length === 0)
       return (
         <div className="max-w-md m-auto">
-          <div className="mb-8">
-            <components.labels.Information
-              text={"You haven't selected any names to register"}
-            />
-          </div>
+          <div className="mb-8"></div>
           <components.DomainSearch />
-          <div className="mt-4 text-center text-gray-500 text-sm">
-            <div
-              className="underline cursor-pointer"
-              onClick={() => this.initBulkRegistrations()}
-            >
-              {'Want to register in bulk?'}
-            </div>
-          </div>
+          <div className="mt-4 text-center text-gray-500 text-sm"></div>
         </div>
       )
     if (this.props.isRefreshingNameData || !this.props.registrationPremium)
@@ -354,10 +352,12 @@ class Register extends React.PureComponent {
         }
         const namePrice = nameData[curr].priceUSDCents
         const namePriceFtm = nameData[curr].priceFTMEstimate
-        if (!namePrice || !namePriceFtm)
+        const namePricePumpkin = nameData[curr].pricePumpkinEstimate
+        if (!namePrice || !namePriceFtm || !namePricePumpkin)
           return {
             usd: '0',
             ftm: '0',
+            pumpkin: '0',
           }
         const quantity = quantities[curr]
         const registrationPrice = services.money.mul(namePrice, quantity)
@@ -365,13 +365,19 @@ class Register extends React.PureComponent {
           services.money.mul(namePriceFtm, quantity),
           this.props.registrationPremium,
         )
+        const registrationPricePumpkin =
+          Number(namePricePumpkin) * Number(quantity) +
+          Number(this.props.registrationPremium)
+
         return {
           usd: services.money.add(sum.usd, registrationPrice),
           ftm: services.money.add(sum.ftm, registrationPriceFtm),
+          pumpkin: Number(sum.pumpkin) + Number(registrationPricePumpkin),
         }
       },
-      { usd: '0', ftm: '0' },
+      { usd: '0', ftm: '0', pumpkin: '0' },
     )
+
     if (unavailable.length > 0)
       return (
         <div className="mb-4">
@@ -406,10 +412,7 @@ class Register extends React.PureComponent {
           <div className="m-auto mb-8 max-w-xs">
             <div className="border-b border-gray-400 pb-4 mb-4">
               <div className="text-lg text-center font-bold">
-                {'Purchase Summary'}
-              </div>
-              <div className="text-md text-center text-gray-500">
-                {'(Estimated)'}
+                {'Purchase Summary'} {'(Estimated)'}
               </div>
             </div>
             <div className="flex justify-between">
@@ -437,13 +440,54 @@ class Register extends React.PureComponent {
               <div className="font-bold">{'Total (FTM)'}</div>
               <div className="">{services.money.renderFTM(total.ftm)}</div>
             </div>
+            <div className="flex justify-between">
+              <div className="font-bold">{'Or Total (PUMPKIN)'}</div>
+              <div className="">
+                {services.money.renderPUMPKIN(total.pumpkin)}
+              </div>
+            </div>
           </div>
-          <div className="my-8">
-            <components.labels.Information
-              text={
-                'Registrations are priced in USD, but payable in FTM. Amounts noted are estimates; actual price will be determined in future steps.'
-              }
-            />
+          <div className="mb-8">
+            <div className="font-bold">{'Payment Type'}</div>
+
+            <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                <div className="flex items-center pl-3">
+                  <input
+                    id="horizontal-list-radio-license"
+                    type="radio"
+                    value=""
+                    onClick={() => this.handlePaymentType('ftm')}
+                    name="list-radio"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  <label
+                    htmlFor="horizontal-list-radio-license"
+                    className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    FTM
+                  </label>
+                </div>
+              </li>
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                <div className="flex items-center pl-3">
+                  <input
+                    id="horizontal-list-radio-id"
+                    type="radio"
+                    value=""
+                    name="list-radio"
+                    onClick={() => this.handlePaymentType('pumpkin')}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  <label
+                    htmlFor="horizontal-list-radio-id"
+                    className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    PUMPKIN
+                  </label>
+                </div>
+              </li>
+            </ul>
           </div>
           {hasRenewal && hasRegistrationPremium ? (
             <div className="mb-8">
@@ -454,7 +498,9 @@ class Register extends React.PureComponent {
               />
             </div>
           ) : null}
-          {this.props.balance.lt(total.ftm) ? (
+          {(this.props.balance.lt(total.ftm) && this.state.paymentFTM) ||
+          (parseInt(this.props.tokenbalance) < parseInt(total.pumpkin) &&
+            this.state.paymentPumpkin) ? (
             <div className="mb-8">
               <components.labels.Error
                 text={
@@ -466,7 +512,11 @@ class Register extends React.PureComponent {
           <components.buttons.Button
             text={'Continue Registration'}
             onClick={this.startPurchase.bind(this)}
-            disabled={this.props.balance.lt(total.ftm)}
+            disabled={
+              (this.props.balance.lt(total.ftm) && this.state.paymentFTM) ||
+              (parseInt(this.props.tokenbalance) < parseInt(total.pumpkin) &&
+                this.state.paymentPumpkin)
+            }
           />
           <div className="mt-4 text-center text-gray-500 text-sm">
             <div
@@ -526,7 +576,7 @@ class Register extends React.PureComponent {
       <div>
         <components.Modal
           ref={(ref) => (this.bulkModal = ref)}
-          title={this.state.connected ? 'Bulk register' : 'Connect wallet'}
+          title={this.state.connected ? 'Bulk register' : 'Connect your wallet'}
         >
           {this.state.importingRegistrations ? (
             <div className="max-w-sm m-auto">
@@ -597,7 +647,11 @@ class Register extends React.PureComponent {
             return answer
           }}
         >
-          <RegistrationFlow ref={(ref) => (this.registrationFlow = ref)} />
+          <RegistrationFlow
+            ref={(ref) => (this.registrationFlow = ref)}
+            {...this.props}
+            {...this.state}
+          />
         </components.Modal>
         <components.Modal
           ref={(ref) => (this.connectModal = ref)}
@@ -628,6 +682,7 @@ const mapStateToProps = (state) => ({
     state,
   ),
   balance: selectors.balance(state),
+  tokenbalance: selectors.tokenbalance(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

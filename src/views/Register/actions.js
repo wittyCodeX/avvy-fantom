@@ -68,12 +68,19 @@ const actions = {
       balance,
     }
   },
-
+  setTokenBalance: (balance) => {
+    return {
+      type: constants.SET_TOKEN_BALANCE,
+      balance,
+    }
+  },
   loadBalance: () => {
     return async (dispatch, getState) => {
       const api = services.provider.buildAPI()
       const balance = await api.getBalance()
+      const pumpkinBalance = await api.getPumpkinBalance()
       dispatch(actions.setBalance(balance))
+      dispatch(actions.setTokenBalance(pumpkinBalance))
     }
   },
 
@@ -140,7 +147,7 @@ const actions = {
     }
   },
 
-  finalize: () => {
+  finalize: (isPaymentPumpkin) => {
     return async (dispatch, getState) => {
       try {
         dispatch(actions.setIsFinalizing(true))
@@ -152,6 +159,7 @@ const actions = {
           state,
         )
         const _pricingProofs = services.proofs.selectors.pricingProofs(state)
+        const tokenAddress = services.environment.PUMPKIN_ADDRESS
         let quantities = []
         let pricingProofs = []
         let constraintsProofs = []
@@ -166,19 +174,32 @@ const actions = {
           constraintsProofs.push(_constraintsProofs[name])
         })
 
-        const enhancedPrivacy = selectors.enhancedPrivacy(state)
+        // const enhancedPrivacy = selectors.enhancedPrivacy(state)
         const reverseLookups = services.names.selectors.reverseLookups(state)
 
-        if (enhancedPrivacy) {
-          await api.register(
+        // if (enhancedPrivacy) {
+        //   await api.register(
+        //     names,
+        //     quantities,
+        //     constraintsProofs,
+        //     pricingProofs,
+        //     isPaymentPumpkin,
+        //     tokenAddress,
+        //   )
+        // } else {
+        const _names = names.map((n) => reverseLookups[n])
+        console.log(names)
+        console.log(_names)
+        const preimages = await api.buildPreimages(names)
+        if (isPaymentPumpkin) {
+          await api.registerWithPreimageWithToken(
             names,
             quantities,
             constraintsProofs,
             pricingProofs,
+            preimages,
           )
         } else {
-          const _names = names.map((n) => reverseLookups[n])
-          const preimages = await api.buildPreimages(names)
           await api.registerWithPreimage(
             names,
             quantities,
@@ -187,6 +208,8 @@ const actions = {
             preimages,
           )
         }
+
+        // }
         await api.generateNFTImage(names)
         // const defaultResolverAddress = api.getDefaultResolverAddress()
         // await api.setResolver(names[0], defaultResolverAddress)

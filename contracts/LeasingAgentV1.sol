@@ -2299,7 +2299,7 @@ contract LeasingAgentV1 is AccessControl {
   uint256 public _premiumStartTime;
   uint256 public _premiumEndTime;
   uint256[] public _premiumPricePoints;
-
+  address tokenAddress = 0xA73d251D37040ADE6e3eFf71207901621c9C867a;
   event Enabled(bool enabled);
   event RegistrationPremiumSet(uint256 premiumStartTime, uint256 premiumEndTime, uint256[] premiumPricePoints);
   event Registered(uint256[] names, uint256[] quantities, uint256 payment);
@@ -2309,6 +2309,9 @@ contract LeasingAgentV1 is AccessControl {
     emit Enabled(enabled);
   }
 
+  function setTokenAddress(address _tokenAddress) external onlyRole(MANAGER_ROLE) {
+      tokenAddress = _tokenAddress;
+  }
   function setRegistrationPremiumDetails(uint256 premiumStartTime, uint256 premiumEndTime, uint256[] calldata premiumPricePoints) external onlyRole(MANAGER_ROLE) {
     require(premiumEndTime > premiumStartTime, "LeasingAgentV1: premiumEndTime must be larger than premiumStartTime");
 
@@ -2393,6 +2396,10 @@ contract LeasingAgentV1 is AccessControl {
     require(sent, "LeasingAgentV1: payment not sent");
   }
 
+  function _transferTokenToTreasury(uint256 total) internal {
+    address payable _treasuryAddress = payable(_contractRegistry.get('Treasury'));
+    require(IERC20(tokenAddress).transferFrom(msg.sender, _treasuryAddress, total), "LeasingAgentV1: payment not sent");
+  }
   // attempt to register the name.
   // compare it to hash details provided in commit
   function register(
@@ -2422,20 +2429,57 @@ contract LeasingAgentV1 is AccessControl {
     // add the premium
     total += getRegistrationPremium(block.timestamp) * names.length;
     
-    // collect payment 
     require(msg.value >= total, "LeasingAgentV1: insufficient payment");
     uint256 diff = msg.value - total;
     _transferToTreasury(total);
+        // return over-payment to sender
+    if (diff > 0) {
+        payable(msg.sender).transfer(diff);
+    }
 
     // register names
     emit Registered(names, quantities, msg.value);
     for (i = 0; i < names.length; i += 1) {
       _registerName(names[i], quantities[i], constraintsProofs[i], _domain);
     }
+  }
 
-    // return over-payment to sender
-    if (diff > 0) {
-      payable(msg.sender).transfer(diff);
+  // attempt to register the name.
+  // compare it to hash details provided in commit
+  function registerWithToken(
+    uint256[] calldata names, 
+    uint256[] calldata quantities,
+    bytes[] calldata constraintsProofs,
+    bytes[] calldata pricingProofs
+  ) public payable {
+    require(_enabled, "LeasingAgentV1: registration disabled");
+    require(names.length == constraintsProofs.length, "LeasingAgentV1: proof length mismatch");
+    require(names.length == pricingProofs.length, "LeasingAgentV1: proof length mismatch");
+    require(names.length == quantities.length, "LeasingAgentV1: quantities length mismatch");
+
+    PricingOracleInterface _pricingOracle = PricingOracleInterface(_contractRegistry.get('PricingOracle'));
+    Domain _domain = Domain(_contractRegistry.get('Domain'));
+
+    uint256 total = 0;
+    uint256 price;
+    uint256 i;
+
+    // get pricing for names
+    for (i = 0; i < names.length; i += 1) {
+      (price, /* priceCentsUsd */) = _pricingOracle.getPriceForName(names[i], pricingProofs[i]);
+      total += price * quantities[i];
+    }
+
+    // add the premium
+    total += getRegistrationPremium(block.timestamp) * names.length;
+    
+     require(IERC20(tokenAddress).balanceOf(msg.sender) >= total, "LeasingAgentV1: insufficient payment");
+     _transferTokenToTreasury(total);
+
+    // register names
+    emit Registered(names, quantities, msg.value);
+    for (i = 0; i < names.length; i += 1) {
+      _registerName(names[i], quantities[i], constraintsProofs[i], _domain);
     }
   }
 
@@ -2456,7 +2500,23 @@ contract LeasingAgentV1 is AccessControl {
     }
     register(names, quantities, constraintsProofs, pricingProofs);
   }
-
+  function registerWithPreimageWithToken(
+    uint256[] calldata names, 
+    uint256[] calldata quantities,
+    bytes[] calldata constraintsProofs,
+    bytes[] calldata pricingProofs,
+    uint256[] calldata preimages
+  ) external payable {
+    require(preimages.length % 4 == 0, "LeasingAgentV1: incorrect preimage length");
+    require(preimages.length / names.length == 4, "LeasingAgentV1: incorrect preimage length");
+    RainbowTableInterface rainbowTable = RainbowTableInterface(_contractRegistry.get('RainbowTable'));
+    for (uint256 i = 0; i < names.length; i += 1) {
+      if (!rainbowTable.isRevealed(names[i])) {
+        rainbowTable.reveal(preimages[i * 4:i * 4 + 4], names[i]);
+      }
+    }
+    registerWithToken(names, quantities, constraintsProofs, pricingProofs);
+  }
   constructor(address contractRegistryAddress, uint256 namespaceId) {
     _contractRegistry = ContractRegistryInterface(contractRegistryAddress);
     _namespaceId = namespaceId;

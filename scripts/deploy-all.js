@@ -34,15 +34,15 @@ async function main() {
   await domain.deployed()
   console.log(`Domain deployed to ${domain.address}`)
 
-  // await hre.run('verify:verify', {
-  //   address: domain.address,
-  //   constructorArguments: [
-  //     'Fantom Name Service',
-  //     'FNS',
-  //     contractRegistryV1.address,
-  //   ],
-  //   contract: 'contracts/Domain.sol:Domain',
-  // })
+  await hre.run('verify:verify', {
+    address: domain.address,
+    constructorArguments: [
+      'Fantom Name Service',
+      'FNS',
+      contractRegistryV1.address,
+    ],
+    contract: 'contracts/Domain.sol:Domain',
+  })
 
   // 3. EVMReverseResolverV1 Contract Deployment
   const EVMReverseResolverV1 = await hre.ethers.getContractFactory(
