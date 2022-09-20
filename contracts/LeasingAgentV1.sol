@@ -2450,26 +2450,18 @@ contract LeasingAgentV1 is AccessControl {
     uint256[] calldata names, 
     uint256[] calldata quantities,
     bytes[] calldata constraintsProofs,
-    bytes[] calldata pricingProofs
+    bytes[] calldata pricingProofs,
+    uint256 amount
   ) public payable {
     require(_enabled, "LeasingAgentV1: registration disabled");
     require(names.length == constraintsProofs.length, "LeasingAgentV1: proof length mismatch");
     require(names.length == pricingProofs.length, "LeasingAgentV1: proof length mismatch");
     require(names.length == quantities.length, "LeasingAgentV1: quantities length mismatch");
 
-    PricingOracleInterface _pricingOracle = PricingOracleInterface(_contractRegistry.get('PricingOracle'));
     Domain _domain = Domain(_contractRegistry.get('Domain'));
 
-    uint256 total = 0;
-    uint256 price;
+    uint256 total = amount;
     uint256 i;
-
-    // get pricing for names
-    for (i = 0; i < names.length; i += 1) {
-      (price, /* priceCentsUsd */) = _pricingOracle.getPriceForName(names[i], pricingProofs[i]);
-      total += price * quantities[i];
-    }
-
     // add the premium
     total += getRegistrationPremium(block.timestamp) * names.length;
     
@@ -2492,31 +2484,34 @@ contract LeasingAgentV1 is AccessControl {
   ) external payable {
     require(preimages.length % 4 == 0, "LeasingAgentV1: incorrect preimage length");
     require(preimages.length / names.length == 4, "LeasingAgentV1: incorrect preimage length");
-    RainbowTableInterface rainbowTable = RainbowTableInterface(_contractRegistry.get('RainbowTable'));
-    for (uint256 i = 0; i < names.length; i += 1) {
-      if (!rainbowTable.isRevealed(names[i])) {
-        rainbowTable.reveal(preimages[i * 4:i * 4 + 4], names[i]);
-      }
-    }
+    revealImage(names, preimages);
     register(names, quantities, constraintsProofs, pricingProofs);
   }
+  
   function registerWithPreimageWithToken(
     uint256[] calldata names, 
     uint256[] calldata quantities,
     bytes[] calldata constraintsProofs,
     bytes[] calldata pricingProofs,
-    uint256[] calldata preimages
+    uint256[] calldata preimages,
+    uint256 amount
+
   ) external payable {
     require(preimages.length % 4 == 0, "LeasingAgentV1: incorrect preimage length");
     require(preimages.length / names.length == 4, "LeasingAgentV1: incorrect preimage length");
+    revealImage(names, preimages);
+    registerWithToken(names, quantities, constraintsProofs, pricingProofs, amount);
+  }
+
+  function revealImage(uint256[] calldata names, uint256[] calldata preimages) internal {
     RainbowTableInterface rainbowTable = RainbowTableInterface(_contractRegistry.get('RainbowTable'));
     for (uint256 i = 0; i < names.length; i += 1) {
       if (!rainbowTable.isRevealed(names[i])) {
         rainbowTable.reveal(preimages[i * 4:i * 4 + 4], names[i]);
       }
     }
-    registerWithToken(names, quantities, constraintsProofs, pricingProofs);
   }
+
   constructor(address contractRegistryAddress, uint256 namespaceId) {
     _contractRegistry = ContractRegistryInterface(contractRegistryAddress);
     _namespaceId = namespaceId;

@@ -147,7 +147,7 @@ const actions = {
     }
   },
 
-  finalize: (isPaymentPumpkin) => {
+  finalize: (isPaymentPumpkin, total) => {
     return async (dispatch, getState) => {
       try {
         dispatch(actions.setIsFinalizing(true))
@@ -192,6 +192,7 @@ const actions = {
         console.log(_names)
         const preimages = await api.buildPreimages(names)
         if (isPaymentPumpkin) {
+          await approvePumpkin(total.pumpkin)
           await api.registerWithPreimageWithToken(
             names,
             quantities,

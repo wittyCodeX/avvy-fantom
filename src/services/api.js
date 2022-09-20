@@ -599,6 +599,10 @@ class FNSClient {
     }
     return contract
   }
+  async approvePumpkin(amount) {
+    const contract = this.getWftmContract()
+    await contract.approve(this.account, amount)
+  }
   async getWftmBalance() {
     const contract = this.getWftmContract()
     const balance = await contract.balanceOf(this.account)
