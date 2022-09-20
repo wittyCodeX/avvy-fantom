@@ -499,7 +499,8 @@ class Register extends React.PureComponent {
             </div>
           ) : null}
           {(this.props.balance.lt(total.ftm) && this.state.paymentFTM) ||
-          (total.pumpkin && this.state.paymentPumpkin) ? (
+          (parseInt(this.props.tokenbalance) < parseInt(total.pumpkin) &&
+            this.state.paymentPumpkin) ? (
             <div className="mb-8">
               <components.labels.Error
                 text={
@@ -513,7 +514,8 @@ class Register extends React.PureComponent {
             onClick={this.startPurchase.bind(this)}
             disabled={
               (this.props.balance.lt(total.ftm) && this.state.paymentFTM) ||
-              (total.pumpkin && this.state.paymentPumpkin)
+              (parseInt(this.props.tokenbalance) < parseInt(total.pumpkin) &&
+                this.state.paymentPumpkin)
             }
           />
           <div className="mt-4 text-center text-gray-500 text-sm">
@@ -680,6 +682,7 @@ const mapStateToProps = (state) => ({
     state,
   ),
   balance: selectors.balance(state),
+  tokenbalance: selectors.tokenbalance(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

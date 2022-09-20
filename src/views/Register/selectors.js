@@ -14,6 +14,7 @@ const selectors = {
   enhancedPrivacy: (state) => root(state).enableEnhancedPrivacy,
   registrationPremium: (state) => root(state).registrationPremium,
   balance: (state) => root(state).balance,
+  tokenbalance: (state) => root(state).tokenbalance,
 }
 
 export default selectors

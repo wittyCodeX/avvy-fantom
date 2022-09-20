@@ -576,14 +576,14 @@ class FNSClient {
     let contract
     if (this.chainId === 4002) {
       contract = new ethers.Contract(
-        '0xA73d251D37040ADE6e3eFf71207901621c9C867a',
-        services.abi.erc20,
+        services.environment.PUMPKIN_ADDRESS_TESTNET,
+        services.abi.pumpkin,
         this.signer,
       )
     } else if (this.chainId === 250) {
       contract = new ethers.Contract(
-        '0xA73d251D37040ADE6e3eFf71207901621c9C867a',
-        services.abi.erc20,
+        services.environment.PUMPKIN_ADDRESS,
+        services.abi.pumpkin,
         this.signer,
       )
     }
@@ -597,6 +597,7 @@ class FNSClient {
   async getPumpkinBalance() {
     const contract = this.getPumpkinContract()
     const balance = await contract.balanceOf(this.account)
+    console.log('pumpkin balance: ', balance.toString())
     return balance.toString()
   }
   async getAuctionWftm() {

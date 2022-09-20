@@ -14,7 +14,7 @@ class RegistrationFlow extends React.PureComponent {
       connected: services.provider.isConnected(),
       needsProofs: true,
       hasProofs: false,
-      hasPrivacy: true,
+      hasPrivacy: false,
     }
   }
 
@@ -22,7 +22,7 @@ class RegistrationFlow extends React.PureComponent {
     this.setState({
       needProofs: true,
       hasProofs: false,
-      hasPrivacy: true,
+      hasPrivacy: false,
     })
   }
 
@@ -152,6 +152,7 @@ class RegistrationFlow extends React.PureComponent {
   }
 
   renderFinalize() {
+    let hasRenewal = false
     const names = this.props.names
     const nameData = this.props.nameData
     const quantities = this.props.quantities
@@ -243,9 +244,9 @@ class RegistrationFlow extends React.PureComponent {
                   ? `Register next ${services.environment.MAX_REGISTRATION_NAMES} names`
                   : 'Finalize registration'
               }
-              onClick={this.finalizeTransaction(this.props.paymentPumpkin).bind(
-                this,
-              )}
+              onClick={() =>
+                this.finalizeTransaction(this.props.paymentPumpkin)
+              }
               loading={this.props.isFinalizing}
             />
           </div>

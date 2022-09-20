@@ -68,12 +68,19 @@ const actions = {
       balance,
     }
   },
-
+  setTokenBalance: (balance) => {
+    return {
+      type: constants.SET_TOKEN_BALANCE,
+      balance,
+    }
+  },
   loadBalance: () => {
     return async (dispatch, getState) => {
       const api = services.provider.buildAPI()
       const balance = await api.getBalance()
+      const pumpkinBalance = await api.getPumpkinBalance()
       dispatch(actions.setBalance(balance))
+      dispatch(actions.setTokenBalance(pumpkinBalance))
     }
   },
 

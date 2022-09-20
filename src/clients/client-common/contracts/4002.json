@@ -1076,7 +1076,7 @@
       ]
     },
     "LeasingAgentV1": {
-      "address": "0xC1a79c4042133aA9E68ded943681D4D432c629D1",
+      "address": "0x770fe5356a04AD69d08EB5AF0C1F814D2624D862",
       "abi": [{
         "inputs": [{
           "internalType": "address",
