@@ -14,7 +14,7 @@ class RegistrationFlow extends React.PureComponent {
       connected: services.provider.isConnected(),
       needsProofs: true,
       hasProofs: false,
-      hasPrivacy: false,
+      hasPrivacy: true,
     }
   }
 
@@ -22,7 +22,7 @@ class RegistrationFlow extends React.PureComponent {
     this.setState({
       needProofs: true,
       hasProofs: false,
-      hasPrivacy: false,
+      hasPrivacy: true,
     })
   }
 
