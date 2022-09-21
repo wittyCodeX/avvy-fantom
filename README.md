@@ -8,19 +8,27 @@ npx hardhat test
 GAS_REPORT=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy-all.js --network fantomtest
+
+## deploy on rinkeby
+npx hardhat run scripts/deploy-all.js --network rinkeby
 ```
-#Verify contract
-Verify Domain contract:
-$ npx hardhat  verify  --contract contracts/Domain.sol:Domain --network fantomtest 0x3A92Ad8A7aAe4dde1027FE70b60708715DF4211f  --constructor-args ./scripts/arguments.js
-Verify LeasingAgent contract:
-$ npx hardhat  verify --network fantomtest 0xC1a79c4042133aA9E68ded943681D4D432c629D1  --constructor-args ./scripts/arguments-leasing.js
-
-Verify other reserve contracts:
-$ npx hardhat  verify --network fantomtest 0x024E6860524c9a4E1138ABFEe75b74E9e795303c  --constructor-args ./scripts/arguments-reserve.js
-
 ## Namespace ID
 15731699658405033416417838394306507087307279032766355365310016737432995626672
 
+## Deployed Addresses on Rinkeby
+ContractRegistryV1 deployed to 0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5
+Domain deployed to 0xC569D541B8c908DEC24bd02baDA74078C6A58ec1
+EVMReverseResolverV1 deployed to 0xF2Fa2Ab016f11D32Ac89B184C090ee5ff000973A
+LeasingAgentV1 deployed to 0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0
+PublicResolverV1 deployed to 0xaA9bCc8515e5D76EBd30769295330E26724a5a54
+RainbowTableV1 deployed to 0x0Cf72077e3632528B5a792BD378Fa47d1061A187
+ResolverRegistryV1 deployed to 0xe6EA8Cc5b35e28E669264c967b4d4Ef524B27B06
+ReverseResolverRegistryV1 deployed to 0xb1182f674FeB8FaF43D91B48F4172D6b765e5539
+NamespaceV1 deployed to 0xF1fDaC2702bF7C7a11Bba80798Ead3F89c113632
+ConstraintsVerifier deployed to 0x2116B4FfD4048208a7e1b094582f8e32e090a888
+ConstraintsFTMV1 deployed to 0x92FEfEf8583A72b9f05DDA072e0bCC738a76E92E
+PricingOracleV1 deployed to 0x1A0ce5Eb9f70881416490f55Ba71Eb3a62c06647
+PoseidonContract deployed to 0xf72C0a05ff86BB68454FE406418b6e65f474e402
 
 ## Deployed Addresses on Fantom Network
 ContractRegistryV1 deployed to 0x4f61cAa4E681741C73429208716c5A2A02D534a7

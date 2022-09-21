@@ -17,10 +17,10 @@ async function main() {
   await contractRegistryV1.deployed()
   console.log(`ContractRegistryV1 deployed to ${contractRegistryV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: contractRegistryV1.address,
-    constructorArguments: [owner.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: contractRegistryV1.address,
+  //   constructorArguments: [owner.address],
+  // })
 
   // 2. Domain Contract Deployment
   const Domain = await hre.ethers.getContractFactory(
@@ -55,10 +55,10 @@ async function main() {
   console.log(
     `EVMReverseResolverV1 deployed to ${_EVMReverseResolverV1.address}`,
   )
-  await hre.run('verify:verify', {
-    address: _EVMReverseResolverV1.address,
-    constructorArguments: [contractRegistryV1.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: _EVMReverseResolverV1.address,
+  //   constructorArguments: [contractRegistryV1.address],
+  // })
 
   // 4. LeasingAgentV1 Contract Deployment
   const LeasingAgentV1 = await hre.ethers.getContractFactory('LeasingAgentV1')
@@ -69,13 +69,13 @@ async function main() {
   await leasingAgentV1.deployed()
   console.log(`LeasingAgentV1 deployed to ${leasingAgentV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: leasingAgentV1.address,
-    constructorArguments: [
-      contractRegistryV1.address,
-      '15731699658405033416417838394306507087307279032766355365310016737432995626672',
-    ],
-  })
+  // await hre.run('verify:verify', {
+  //   address: leasingAgentV1.address,
+  //   constructorArguments: [
+  //     contractRegistryV1.address,
+  //     '15731699658405033416417838394306507087307279032766355365310016737432995626672',
+  //   ],
+  // })
 
   // 5. PublicResolverV1 Contract Deployment
   const PublicResolverV1 = await hre.ethers.getContractFactory(
@@ -87,10 +87,10 @@ async function main() {
   await publicResolverV1.deployed()
   console.log(`PublicResolverV1 deployed to ${publicResolverV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: publicResolverV1.address,
-    constructorArguments: [contractRegistryV1.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: publicResolverV1.address,
+  //   constructorArguments: [contractRegistryV1.address],
+  // })
 
   // 6. RainbowTableV1 Contract Deployment
   const RainbowTableV1 = await hre.ethers.getContractFactory('RainbowTableV1')
@@ -98,10 +98,10 @@ async function main() {
   await rainbowTableV1.deployed()
   console.log(`RainbowTableV1 deployed to ${rainbowTableV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: rainbowTableV1.address,
-    constructorArguments: [contractRegistryV1.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: rainbowTableV1.address,
+  //   constructorArguments: [contractRegistryV1.address],
+  // })
 
   // 7. ResolverRegistryV1 Contract Deployment
   const ResolverRegistryV1 = await hre.ethers.getContractFactory(
@@ -113,10 +113,10 @@ async function main() {
   await resolverRegistryV1.deployed()
   console.log(`ResolverRegistryV1 deployed to ${resolverRegistryV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: resolverRegistryV1.address,
-    constructorArguments: [contractRegistryV1.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: resolverRegistryV1.address,
+  //   constructorArguments: [contractRegistryV1.address],
+  // })
 
   // 8. ReverseResolverRegistryV1 Contract Deployment
   const ReverseResolverRegistryV1 = await hre.ethers.getContractFactory(
@@ -129,10 +129,10 @@ async function main() {
   console.log(
     `ReverseResolverRegistryV1 deployed to ${reverseResolverRegistryV1.address}`,
   )
-  await hre.run('verify:verify', {
-    address: reverseResolverRegistryV1.address,
-    constructorArguments: [contractRegistryV1.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: reverseResolverRegistryV1.address,
+  //   constructorArguments: [contractRegistryV1.address],
+  // })
 
   // 9. NamespaceV1 Contract Deployment
   const NamespaceV1 = await hre.ethers.getContractFactory('NamespaceV1')
@@ -140,10 +140,10 @@ async function main() {
   await namespaceV1.deployed()
   console.log(`NamespaceV1 deployed to ${namespaceV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: namespaceV1.address,
-    constructorArguments: [],
-  })
+  // await hre.run('verify:verify', {
+  //   address: namespaceV1.address,
+  //   constructorArguments: [],
+  // })
 
   // 10. ConstraintsVerifier Contract Deployment
   const ConstraintsVerifier = await hre.ethers.getContractFactory(
@@ -153,25 +153,25 @@ async function main() {
   await constraintsVerifier.deployed()
   console.log(`ConstraintsVerifier deployed to ${constraintsVerifier.address}`)
 
-  await hre.run('verify:verify', {
-    address: constraintsVerifier.address,
-    constructorArguments: [],
-  })
+  // await hre.run('verify:verify', {
+  //   address: constraintsVerifier.address,
+  //   constructorArguments: [],
+  // })
   // 11. ConstraintsFNSV1 Contract Deployment
-  const ConstraintsFNSV1 = await hre.ethers.getContractFactory(
-    'ConstraintsFNSV1',
+  const ConstraintsFTMV1 = await hre.ethers.getContractFactory(
+    'ConstraintsFTMV1',
   )
-  const constraintsFNSV1 = await ConstraintsFNSV1.deploy(
+  const constraintsFTMV1 = await ConstraintsFTMV1.deploy(
     constraintsVerifier.address,
   )
 
-  await constraintsFNSV1.deployed()
-  console.log(`ConstraintsFNSV1 deployed to ${constraintsFNSV1.address}`)
+  await constraintsFTMV1.deployed()
+  console.log(`ConstraintsFTMV1 deployed to ${constraintsFTMV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: constraintsFNSV1.address,
-    constructorArguments: [constraintsVerifier.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: constraintsFTMV1.address,
+  //   constructorArguments: [constraintsVerifier.address],
+  // })
 
   // 12. PricingOracleV1 Contract Deployment
   const PricingOracleV1 = await hre.ethers.getContractFactory('PricingOracleV1')
@@ -181,10 +181,10 @@ async function main() {
   await pricingOracleV1.deployed()
   console.log(`PricingOracleV1 deployed to ${pricingOracleV1.address}`)
 
-  await hre.run('verify:verify', {
-    address: pricingOracleV1.address,
-    constructorArguments: [constraintsVerifier.address],
-  })
+  // await hre.run('verify:verify', {
+  //   address: pricingOracleV1.address,
+  //   constructorArguments: [constraintsVerifier.address],
+  // })
 }
 
 // We recommend this pattern to be able to use async/await everywhere

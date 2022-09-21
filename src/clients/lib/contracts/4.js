@@ -1,9 +1,9 @@
 export default {
   name: 'testnet',
-  chainId: '4002',
+  chainId: '4',
   contracts: {
     Domain: {
-      address: '0x3A92Ad8A7aAe4dde1027FE70b60708715DF4211f',
+      address: '0xC569D541B8c908DEC24bd02baDA74078C6A58ec1',
       abi: [
         {
           inputs: [
@@ -1062,7 +1062,7 @@ export default {
       ],
     },
     EVMReverseResolverV1: {
-      address: '0x2091Fd6B703bC948B2caAA467448C0F2C49Bf3e2',
+      address: '0xF2Fa2Ab016f11D32Ac89B184C090ee5ff000973A',
       abi: [
         {
           inputs: [
@@ -1200,7 +1200,7 @@ export default {
       ],
     },
     LeasingAgentV1: {
-      address: '0x770fe5356a04AD69d08EB5AF0C1F814D2624D862',
+      address: '0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0',
       abi: [
         {
           inputs: [
@@ -1515,7 +1515,7 @@ export default {
           ],
           name: 'registerWithPreimageWithToken',
           outputs: [],
-          stateMutability: 'payable',
+          stateMutability: 'nonpayable',
           type: 'function',
         },
         {
@@ -1603,7 +1603,7 @@ export default {
       ],
     },
     PublicResolverV1: {
-      address: '0x2e884b7Bba3D737AD9a993F5BBff18406832cD35',
+      address: '0xaA9bCc8515e5D76EBd30769295330E26724a5a54',
       abi: [
         {
           inputs: [
@@ -1807,7 +1807,7 @@ export default {
       ],
     },
     RainbowTableV1: {
-      address: '0x00218bBE553c2BDB177AfF9622704F64aE52169E',
+      address: '0x0Cf72077e3632528B5a792BD378Fa47d1061A187',
       abi: [
         {
           inputs: [
@@ -1929,7 +1929,7 @@ export default {
       ],
     },
     ResolverRegistryV1: {
-      address: '0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5',
+      address: '0xe6EA8Cc5b35e28E669264c967b4d4Ef524B27B06',
       abi: [
         {
           inputs: [
@@ -2039,7 +2039,7 @@ export default {
       ],
     },
     ReverseResolverRegistryV1: {
-      address: '0xC569D541B8c908DEC24bd02baDA74078C6A58ec1',
+      address: '0xb1182f674FeB8FaF43D91B48F4172D6b765e5539',
       abi: [
         {
           inputs: [

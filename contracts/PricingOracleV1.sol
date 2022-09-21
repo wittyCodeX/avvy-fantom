@@ -389,6 +389,8 @@ contract PricingOracleV1 is PricingOracleInterface {
     address priceFeedAddress;
     if (id == 250) {
       priceFeedAddress = 0xf4766552D15AE4d256Ad41B6cf2933482B0680dc;
+    } else if (id == 4) {
+      priceFeedAddress = 0x8A753747A1Fa494EC906cE90E9f37563A8AF630e;
     }
     priceFeed = AggregatorV3Interface(priceFeedAddress);
   }

@@ -10,109 +10,90 @@ async function main() {
   const [owner] = await ethers.getSigners()
 
   // 1. ContractRegistryV1 Contract Deployment
-
   await hre.run('verify:verify', {
-    address: contractRegistryV1.address,
+    address: '0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5',
     constructorArguments: [owner.address],
   })
 
   // 2. Domain Contract Deployment
 
   await hre.run('verify:verify', {
-    address: domain.address,
+    address: '0xC569D541B8c908DEC24bd02baDA74078C6A58ec1',
     constructorArguments: [
       'Fantom Name Service',
       'FNS',
-      contractRegistryV1.address,
+      '0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5',
     ],
     contract: 'contracts/Domain.sol:Domain',
   })
 
   // 3. EVMReverseResolverV1 Contract Deployment
-
   await hre.run('verify:verify', {
-    address: _EVMReverseResolverV1.address,
-    constructorArguments: [contractRegistryV1.address],
+    address: '0xF2Fa2Ab016f11D32Ac89B184C090ee5ff000973A',
+    constructorArguments: ['0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5'],
   })
 
   // 4. LeasingAgentV1 Contract Deployment
 
   await hre.run('verify:verify', {
-    address: leasingAgentV1.address,
+    address: '0xaB8f2003C232187940B9FF1FeCb9F3F278370f3e',
     constructorArguments: [
-      contractRegistryV1.address,
+      '0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5',
       '15731699658405033416417838394306507087307279032766355365310016737432995626672',
     ],
   })
 
   // 5. PublicResolverV1 Contract Deployment
-
   await hre.run('verify:verify', {
-    address: publicResolverV1.address,
-    constructorArguments: [contractRegistryV1.address],
+    address: '0xaA9bCc8515e5D76EBd30769295330E26724a5a54',
+    constructorArguments: ['0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5'],
   })
 
   // 6. RainbowTableV1 Contract Deployment
-
   await hre.run('verify:verify', {
-    address: rainbowTableV1.address,
-    constructorArguments: [contractRegistryV1.address],
+    address: '0x0Cf72077e3632528B5a792BD378Fa47d1061A187',
+    constructorArguments: ['0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5'],
   })
 
   // 7. ResolverRegistryV1 Contract Deployment
 
   await hre.run('verify:verify', {
-    address: resolverRegistryV1.address,
-    constructorArguments: [contractRegistryV1.address],
+    address: '0xe6EA8Cc5b35e28E669264c967b4d4Ef524B27B06',
+    constructorArguments: ['0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5'],
   })
 
   // 8. ReverseResolverRegistryV1 Contract Deployment
 
   await hre.run('verify:verify', {
-    address: reverseResolverRegistryV1.address,
-    constructorArguments: [contractRegistryV1.address],
+    address: '0xb1182f674FeB8FaF43D91B48F4172D6b765e5539',
+    constructorArguments: ['0xFecc65EEa5CAd2d994b71f7145ae205B7D3E4bf5'],
   })
 
   // 9. NamespaceV1 Contract Deployment
 
   await hre.run('verify:verify', {
-    address: namespaceV1.address,
+    address: '0xF1fDaC2702bF7C7a11Bba80798Ead3F89c113632',
     constructorArguments: [],
   })
 
   // 10. ConstraintsVerifier Contract Deployment
 
   await hre.run('verify:verify', {
-    address: constraintsVerifier.address,
+    address: '0x2116B4FfD4048208a7e1b094582f8e32e090a888',
     constructorArguments: [],
   })
-  // 11. ConstraintsFNSV1 Contract Deployment
-  const ConstraintsFNSV1 = await hre.ethers.getContractFactory(
-    'ConstraintsFNSV1',
-  )
-  const constraintsFNSV1 = await ConstraintsFNSV1.deploy(
-    constraintsVerifier.address,
-  )
 
-  await constraintsFNSV1.deployed()
-  console.log(`ConstraintsFNSV1 deployed to ${constraintsFNSV1.address}`)
+  // 11. ConstraintsFNSV1 Contract Deployment
 
   await hre.run('verify:verify', {
-    address: constraintsFNSV1.address,
-    constructorArguments: [constraintsVerifier.address],
+    address: '0x92FEfEf8583A72b9f05DDA072e0bCC738a76E92E',
+    constructorArguments: ['0x2116B4FfD4048208a7e1b094582f8e32e090a888'],
   })
 
   // 12. PricingOracleV1 Contract Deployment
-  const PricingOracleV1 = await hre.ethers.getContractFactory('PricingOracleV1')
-  const pricingOracleV1 = await PricingOracleV1.deploy(
-    constraintsVerifier.address,
-  )
-  await pricingOracleV1.deployed()
-  console.log(`PricingOracleV1 deployed to ${pricingOracleV1.address}`)
-
   await hre.run('verify:verify', {
-    address: pricingOracleV1.address,
-    constructorArguments: [constraintsVerifier.address],
+    address: '0x1A0ce5Eb9f70881416490f55Ba71Eb3a62c06647',
+    constructorArguments: ['0x2116B4FfD4048208a7e1b094582f8e32e090a888'],
   })
 }
 

@@ -290,7 +290,7 @@ class Wrapper extends React.PureComponent {
             <div className="md:flex md:items-center md:justify-between py-1 border-t border-gray-200">
               {/* Social links */}
               <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-center">
-                <li>
+                {/* <li>
                   <Link
                     to="https://twitter.com/fantomnames"
                     className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
@@ -332,7 +332,7 @@ class Wrapper extends React.PureComponent {
                       className="inline-block object-scale-down w-4 h-4 m-2"
                     />
                   </Link>
-                </li>
+                </li> */}
               </ul>
               {/* Social links */}
               <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0 justify-end w-3/12">

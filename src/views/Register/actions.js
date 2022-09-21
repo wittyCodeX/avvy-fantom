@@ -2,6 +2,7 @@ import services from 'services'
 
 import constants from './constants'
 import selectors from './selectors'
+import { ethers } from 'ethers'
 
 const actions = {
   setHash: (hash) => {
@@ -147,7 +148,7 @@ const actions = {
     }
   },
 
-  finalize: (isPaymentPumpkin) => {
+  finalize: (isPaymentPumpkin, total) => {
     return async (dispatch, getState) => {
       try {
         dispatch(actions.setIsFinalizing(true))
@@ -192,12 +193,17 @@ const actions = {
         console.log(_names)
         const preimages = await api.buildPreimages(names)
         if (isPaymentPumpkin) {
+          await api.approvePumpkin(
+            ethers.utils.parseEther(Number(total.pumpkin).toString()),
+          )
+          // console.log(Number(total.pumpkin).toString())
           await api.registerWithPreimageWithToken(
             names,
             quantities,
             constraintsProofs,
             pricingProofs,
             preimages,
+            ethers.utils.parseEther(Number(total.pumpkin).toString()),
           )
         } else {
           await api.registerWithPreimage(
@@ -211,8 +217,8 @@ const actions = {
 
         // }
         await api.generateNFTImage(names)
-        const defaultResolverAddress = api.getDefaultResolverAddress()
-        await api.setResolver(names[0], defaultResolverAddress)
+        // const defaultResolverAddress = api.getDefaultResolverAddress()
+        // await api.setResolver(names[0], defaultResolverAddress)
 
         dispatch(actions.setIsComplete(true))
         dispatch(services.cart.actions.clearNames(names))

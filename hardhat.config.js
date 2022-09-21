@@ -28,7 +28,14 @@ module.exports = {
       live: false,
       saveDeployments: true,
       gasMultiplier: 2,
+      allowUnlimitedContractSize: true,
     },
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_KEY}`,
+      accounts: [process.env.PRIVATE_KEY],
+      allowUnlimitedContractSize: true,
+    },
+    //
     fantom: {
       url: 'https://rpc.fantom.network',
       accounts: [process.env.PRIVATE_KEY],
@@ -36,9 +43,10 @@ module.exports = {
       live: false,
       saveDeployments: true,
       gasMultiplier: 2,
+      allowUnlimitedContractSize: true,
     },
   },
   etherscan: {
-    apiKey: 'RNG9JSM1TR9H5MW2QYCJQCMNYNSHU24JW7',
+    apiKey: '2RJNBPSPJ8MM9FABDZJCHP5JGBY2PB7JAE', //  'RNG9JSM1TR9H5MW2QYCJQCMNYNSHU24JW7',
   },
 }

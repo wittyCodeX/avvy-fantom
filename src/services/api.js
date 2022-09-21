@@ -90,7 +90,7 @@ class FNSClient {
   // ESTIMATE
   async getNamePrice(domain) {
     const name = domain.split('.')[0]
-    let priceUSDCents = '500'
+    let priceUSDCents = '900'
     if (name.length === 3) {
       priceUSDCents = '900'
     } else if (name.length === 4) {
@@ -152,6 +152,10 @@ class FNSClient {
     let rate
     if (this.chainId === 4002) {
       rate = ethers.BigNumber.from('10000000000')
+    } else if (this.chainId === 4) {
+      rate = await this.getFTMConversionRateFromChainlink(
+        '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
+      )
     } else if (this.chainId === 250) {
       rate = await this.getFTMConversionRateFromChainlink(
         '0xf4766552D15AE4d256Ad41B6cf2933482B0680dc',
@@ -353,11 +357,13 @@ class FNSClient {
     )
     await registerTx.wait()
   }
+
   async registerWithToken(
     domains,
     quantities,
     constraintsProofs,
     pricingProofs,
+    amount,
   ) {
     const { total, hashes } = await this._getRegistrationArgs(
       domains,
@@ -370,9 +376,7 @@ class FNSClient {
       quantities,
       constraintsProofs,
       pricingProofs,
-      {
-        value,
-      },
+      amount,
     )
     const gasLimit = gasEstimate.add(
       this._getTreasuryGasSurplus().mul(hashes.length),
@@ -382,9 +386,9 @@ class FNSClient {
       quantities,
       constraintsProofs,
       pricingProofs,
+      amount,
       {
         gasLimit,
-        value,
       },
     )
     await registerTx.wait()
@@ -437,36 +441,37 @@ class FNSClient {
     constraintsProofs,
     pricingProofs,
     preimages,
+    amount,
   ) {
     const { total, hashes } = await this._getRegistrationArgs(
       domains,
       quantities,
     )
     const premium = await this.getRegistrationPremium()
-    const value = total.add(premium.mul(hashes.length))
+    const value = amount.add(premium.mul(hashes.length))
+    console.log('starting gas estimation...')
     const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.registerWithPreimageWithToken(
       hashes,
       quantities,
       constraintsProofs,
       pricingProofs,
       preimages,
-      {
-        value,
-      },
+      value,
     )
 
     const gasLimit = gasEstimate.add(
       this._getTreasuryGasSurplus().mul(hashes.length),
     )
+    console.log(gasLimit)
     const registerTx = await this.contracts.LeasingAgentV1.registerWithPreimageWithToken(
       hashes,
       quantities,
       constraintsProofs,
       pricingProofs,
       preimages,
+      value,
       {
         gasLimit,
-        value,
       },
     )
     await registerTx.wait()
@@ -480,7 +485,7 @@ class FNSClient {
       )
       console.log('domain ID: ', domainIDs[domainIDs.length - 1].toString())
       const result = await services.nft.generateNFT(
-        names[0].split('.'),
+        names[0],
         domainIDs[domainIDs.length - 1],
       )
     }
@@ -563,6 +568,12 @@ class FNSClient {
         services.abi.wftm,
         this.signer,
       )
+    } else if (this.chainId === 4) {
+      contract = new ethers.Contract(
+        '0xc778417E063141139Fce010982780140Aa0cD5Ab',
+        services.abi.wftm,
+        this.signer,
+      )
     } else if (this.chainId === 250) {
       contract = new ethers.Contract(
         '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
@@ -574,7 +585,7 @@ class FNSClient {
   }
   getPumpkinContract() {
     let contract
-    if (this.chainId === 4002) {
+    if (this.chainId === 4) {
       contract = new ethers.Contract(
         services.environment.PUMPKIN_ADDRESS_TESTNET,
         services.abi.pumpkin,
@@ -588,6 +599,14 @@ class FNSClient {
       )
     }
     return contract
+  }
+  async approvePumpkin(amount) {
+    const contract = this.getPumpkinContract()
+    const approveTx = await contract.approve(
+      '0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0',
+      amount,
+    )
+    await approveTx.wait()
   }
   async getWftmBalance() {
     const contract = this.getWftmContract()
