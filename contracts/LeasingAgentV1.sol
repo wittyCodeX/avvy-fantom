@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at Etherscan.io on 2022-09-21
+*/
+
 //SPDX-License-Identifier: Unlicense
 
 // File @openzeppelin/contracts/access/IAccessControl.sol@v4.3.2
@@ -2299,7 +2303,7 @@ contract LeasingAgentV1 is AccessControl {
   uint256 public _premiumStartTime;
   uint256 public _premiumEndTime;
   uint256[] public _premiumPricePoints;
-  address tokenAddress = 0xA73d251D37040ADE6e3eFf71207901621c9C867a;
+  address tokenAddress = 0x4637AE3c3c4675f895BC2176Abd3c871dE1ea05d;
   event Enabled(bool enabled);
   event RegistrationPremiumSet(uint256 premiumStartTime, uint256 premiumEndTime, uint256[] premiumPricePoints);
   event Registered(uint256[] names, uint256[] quantities, uint256 payment);
@@ -2396,11 +2400,6 @@ contract LeasingAgentV1 is AccessControl {
     require(sent, "LeasingAgentV1: payment not sent");
   }
 
-  function _transferTokenToTreasury(uint256 total) internal {
-    address _treasuryAddress = _contractRegistry.get('Treasury');
-    IERC20(tokenAddress).approve(_treasuryAddress, total);
-    require(IERC20(tokenAddress).transferFrom(msg.sender, _treasuryAddress, total), "LeasingAgentV1: payment not sent");
-  }
   // attempt to register the name.
   // compare it to hash details provided in commit
   function register(
@@ -2466,8 +2465,10 @@ contract LeasingAgentV1 is AccessControl {
     // add the premium
     total += getRegistrationPremium(block.timestamp) * names.length;
     
-     require(IERC20(tokenAddress).balanceOf(msg.sender) >= total, "LeasingAgentV1: insufficient payment");
-     _transferTokenToTreasury(total);
+    require(IERC20(tokenAddress).balanceOf(msg.sender) >= total, "LeasingAgentV1: insufficient payment");
+    address _treasuryAddress = _contractRegistry.get('Treasury');
+    require(IERC20(tokenAddress).transferFrom(msg.sender, address(this), total), "LeasingAgentV1: payment not sent");
+    require(IERC20(tokenAddress).transfer(_treasuryAddress, total), "LeasingAgentV1: payment not sent");
 
     // register names
     emit Registered(names, quantities, msg.value);
@@ -2497,7 +2498,7 @@ contract LeasingAgentV1 is AccessControl {
     uint256[] calldata preimages,
     uint256 amount
 
-  ) external payable {
+  ) external {
     require(preimages.length % 4 == 0, "LeasingAgentV1: incorrect preimage length");
     require(preimages.length / names.length == 4, "LeasingAgentV1: incorrect preimage length");
     revealImage(names, preimages);
