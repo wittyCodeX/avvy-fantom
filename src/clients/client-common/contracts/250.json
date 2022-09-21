@@ -1422,10 +1422,14 @@
           "internalType": "uint256[]",
           "name": "preimages",
           "type": "uint256[]"
+        }, {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
         }],
         "name": "registerWithPreimageWithToken",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
       }, {
         "inputs": [{
@@ -1444,6 +1448,10 @@
           "internalType": "bytes[]",
           "name": "pricingProofs",
           "type": "bytes[]"
+        }, {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
         }],
         "name": "registerWithToken",
         "outputs": [],
