@@ -1200,7 +1200,7 @@ export default {
       ],
     },
     LeasingAgentV1: {
-      address: '0x2D94FaDD5b6A7c6FB471d0907501D6e97826Fa0a',
+      address: '0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0',
       abi: [
         {
           inputs: [
@@ -1515,7 +1515,7 @@ export default {
           ],
           name: 'registerWithPreimageWithToken',
           outputs: [],
-          stateMutability: 'payable',
+          stateMutability: 'nonpayable',
           type: 'function',
         },
         {

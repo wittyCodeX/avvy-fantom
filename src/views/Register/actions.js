@@ -196,6 +196,7 @@ const actions = {
           await api.approvePumpkin(
             ethers.utils.parseEther(Number(total.pumpkin).toString()),
           )
+          // console.log(Number(total.pumpkin).toString())
           await api.registerWithPreimageWithToken(
             names,
             quantities,

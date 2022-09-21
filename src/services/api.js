@@ -357,11 +357,13 @@ class FNSClient {
     )
     await registerTx.wait()
   }
+
   async registerWithToken(
     domains,
     quantities,
     constraintsProofs,
     pricingProofs,
+    amount,
   ) {
     const { total, hashes } = await this._getRegistrationArgs(
       domains,
@@ -374,9 +376,7 @@ class FNSClient {
       quantities,
       constraintsProofs,
       pricingProofs,
-      {
-        value,
-      },
+      amount,
     )
     const gasLimit = gasEstimate.add(
       this._getTreasuryGasSurplus().mul(hashes.length),
@@ -386,9 +386,9 @@ class FNSClient {
       quantities,
       constraintsProofs,
       pricingProofs,
+      amount,
       {
         gasLimit,
-        value,
       },
     )
     await registerTx.wait()
@@ -448,32 +448,30 @@ class FNSClient {
       quantities,
     )
     const premium = await this.getRegistrationPremium()
-    const value = total.add(premium.mul(hashes.length))
+    const value = amount.add(premium.mul(hashes.length))
+    console.log('starting gas estimation...')
     const gasEstimate = await this.contracts.LeasingAgentV1.estimateGas.registerWithPreimageWithToken(
       hashes,
       quantities,
       constraintsProofs,
       pricingProofs,
       preimages,
-      amount,
-      {
-        value,
-      },
+      value,
     )
 
     const gasLimit = gasEstimate.add(
       this._getTreasuryGasSurplus().mul(hashes.length),
     )
+    console.log(gasLimit)
     const registerTx = await this.contracts.LeasingAgentV1.registerWithPreimageWithToken(
       hashes,
       quantities,
       constraintsProofs,
       pricingProofs,
       preimages,
-      amount,
+      value,
       {
         gasLimit,
-        value,
       },
     )
     await registerTx.wait()
@@ -604,7 +602,11 @@ class FNSClient {
   }
   async approvePumpkin(amount) {
     const contract = this.getPumpkinContract()
-    await contract.approve(this.account, amount)
+    const approveTx = await contract.approve(
+      '0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0',
+      amount,
+    )
+    await approveTx.wait()
   }
   async getWftmBalance() {
     const contract = this.getWftmContract()

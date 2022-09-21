@@ -1076,7 +1076,7 @@
       ]
     },
     "LeasingAgentV1": {
-      "address": "0x4C01f70C131De256054c64c646C296609ec2Ce10",
+      "address": "0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0",
       "abi": [{
         "inputs": [{
           "internalType": "address",
@@ -1429,7 +1429,7 @@
         }],
         "name": "registerWithPreimageWithToken",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
       }, {
         "inputs": [{
