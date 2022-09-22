@@ -65,28 +65,6 @@ class MyDomains extends React.PureComponent {
     )
   }
 
-  renderHiddenDomainsNotice(domainCount) {
-    return (
-      <div className="mb-4">
-        <components.labels.Information
-          text={`You have ${domainCount} unrevealed Enhanced Privacy ${
-            domainCount === 1 ? 'domain' : 'domains'
-          } in your wallet.`}
-        />
-        <div className="max-w-sm m-auto">
-          <div className="mt-4 text-gray-700">
-            {
-              'Enhanced Privacy Domains are hidden on-chain so that an observers have difficulty knowing which domains you have registered. To reveal your domains, search for them below.'
-            }
-          </div>
-          <div className="mt-4 mb-8">
-            <components.DomainReveal />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   renderPagination(numPages) {
     numPages = Math.ceil(numPages)
     const currPage = this.state.paginationIndex
@@ -179,9 +157,6 @@ class MyDomains extends React.PureComponent {
 
     return (
       <div className="mt-8">
-        {hiddenDomainCount > 0
-          ? this.renderHiddenDomainsNotice(hiddenDomainCount)
-          : null}
         {domains.map((domain, index) =>
           this.renderRevealedDomain(domain, index),
         )}

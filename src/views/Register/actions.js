@@ -194,7 +194,7 @@ const actions = {
         const preimages = await api.buildPreimages(names)
         if (isPaymentPumpkin) {
           await api.approvePumpkin(
-            ethers.utils.parseEther(Number(total.pumpkin).toString()),
+            ethers.utils.parseEther(Number(total.pumpkin + 1000).toString()),
           )
           // console.log(Number(total.pumpkin).toString())
           await api.registerWithPreimageWithToken(
