@@ -603,7 +603,7 @@ class FNSClient {
   async approvePumpkin(amount) {
     const contract = this.getPumpkinContract()
     const approveTx = await contract.approve(
-      '0xB4c8B5afe02bf1fc66CF3eE005A735Ad327d4Be0',
+      '0xb609e179e3a9Bb6a0da12A919D088F104624Cb01',
       amount,
     )
     await approveTx.wait()
