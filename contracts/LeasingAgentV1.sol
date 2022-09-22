@@ -2303,7 +2303,7 @@ contract LeasingAgentV1 is AccessControl {
   uint256 public _premiumStartTime;
   uint256 public _premiumEndTime;
   uint256[] public _premiumPricePoints;
-  address tokenAddress = 0x4637AE3c3c4675f895BC2176Abd3c871dE1ea05d;
+  address tokenAddress = 0xAD522217E64Ec347601015797Dd39050A2a69694;
   event Enabled(bool enabled);
   event RegistrationPremiumSet(uint256 premiumStartTime, uint256 premiumEndTime, uint256[] premiumPricePoints);
   event Registered(uint256[] names, uint256[] quantities, uint256 payment);
