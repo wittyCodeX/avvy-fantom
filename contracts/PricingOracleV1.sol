@@ -364,9 +364,9 @@ contract PricingOracleV1 is PricingOracleInterface {
     require(minLength >= 3, "PricingOracleV1: Length less than 3");
     uint256 namePrice = 500;
     if (minLength == 3) {
-      namePrice = 64000;
+      namePrice = 900;
     } else if (minLength == 4) {
-      namePrice = 16000;
+      namePrice = 700;
     }
     uint256 weiPerUSDCent = _getWeiPerUSDCent();
     uint256 _price = namePrice * weiPerUSDCent;
