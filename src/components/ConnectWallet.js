@@ -203,7 +203,7 @@ class ConnectWallet extends React.PureComponent {
         class: 'h-12 w-12',
       },
     ]
-    if (!this.props.hasAcceptedDisclaimers) return this.renderDisclaimers()
+    // if (!this.props.hasAcceptedDisclaimers) return this.renderDisclaimers()
 
     return (
       <>
