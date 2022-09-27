@@ -35,7 +35,7 @@ class SetResolver extends React.PureComponent {
         <>
           <div className="max-w-md m-auto">
             <components.labels.Success
-              text={'Reverse Record for EVM has been set'}
+              text={'Primary Record for EVM has been set'}
             />
           </div>
           <div className="max-w-md m-auto mt-4">
@@ -68,7 +68,7 @@ class SetResolver extends React.PureComponent {
           <div className="mt-8">
             <components.buttons.Button
               sm={true}
-              text={'Set Reverse Record'}
+              text={'Set as Primary'}
               onClick={() => this.submit()}
               loading={this.props.loading}
             />

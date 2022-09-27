@@ -545,21 +545,6 @@ class Domain extends React.PureComponent {
             </div>
             <div className="mt-4 text-sm">
               <div className="font-bold">{'Primary'}</div>
-              <div className="truncate flex items-center">
-                {'Default Primary'}
-                {this.state.connected && isOwned && !isExpired ? (
-                  <components.buttons.Transparent
-                    onClick={() => this.browserModal.toggle()}
-                  >
-                    <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
-                      Set as Primary
-                    </div>
-                  </components.buttons.Transparent>
-                ) : null}
-              </div>
-            </div>
-            <div className="mt-4 text-sm">
-              <div className="font-bold">{'Reserve Record'}</div>
               <div className="truncate flex items-center flex-wrap">
                 {this.props.reverseRecords[this.fns.RECORDS.EVM] ? (
                   <div
@@ -588,7 +573,7 @@ class Domain extends React.PureComponent {
                     }}
                   >
                     <div className="ml-2 inline-block cursor-pointer text-alert-blue underline">
-                      Set Reverse
+                      Set as Primary
                     </div>
                   </components.buttons.Transparent>
                 ) : null}
