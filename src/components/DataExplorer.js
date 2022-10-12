@@ -108,9 +108,9 @@ class DataExplorer extends React.PureComponent {
       <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
         {this.renderVendor(
           "ftmscan",
-          d => `https://fantom.foundation/staking/validator/${d}`
+          d => `https://ftmblocks.com/address/${d}`
         )}
-        {this.renderVendor("vscout", d => `https://vscout.io/validator/${d}`)}
+        {this.renderVendor("vscout", d => `https://ftmblocks.com/address/${d}`)}
       </div>
     );
   }
