@@ -305,7 +305,7 @@ class Domain extends React.PureComponent {
           <components.DataExplorer data={this.state.dataExplorer} />
         </components.Modal>
         <components.Modal
-          title={'Set C-Chain / EVM Reverse Record'}
+          title={'Set Reverse Record'}
           ref={(ref) => (this.setEVMReverseRecordModal = ref)}
         >
           <SetEVMReverseRecord
