@@ -539,7 +539,7 @@ class MyBids extends React.PureComponent {
             </div>
             <div className="mt-4 text-gray-700 dark:text-gray-400">
               {
-                'During the Bid Placement phase, you submit a sealed bid to the C-Chain and your bid details are kept on your device. After you submit the sealed bid, you are forced to download a backup file '
+                'During the Bid Placement phase, you submit a sealed bid to the and your bid details are kept on your device. After you submit the sealed bid, you are forced to download a backup file '
               }
               <span className="italic">{'fns-backup.json'}</span>
               {'. If you are able to find that file, '}
