@@ -9,8 +9,8 @@ class DataExplorer extends React.PureComponent {
     this.vendors = {
       // block explorers
       ftmscan: {
-        name: "Fantom Scan",
-        logo: services.linking.static("images/vendor/ftmscan.png"),
+        name: "FantomBlocks",
+        logo: services.linking.static("images/vendor/fantomblocks.png"),
         class: "h-12 w-12"
       },
       vscout: {
