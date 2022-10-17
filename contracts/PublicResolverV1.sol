@@ -1626,8 +1626,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
       _hasRoleForNamespace(LEASING_AGENT, namespaceId),
       "Domain: Invalid permissions"
     );
-
-    address owner;
     require(!_suspensions[name], "Domain: Cannot register suspended domain");
 
     NamespaceInterface namespace = NamespaceInterface(_contractRegistry.get('Namespace'));
