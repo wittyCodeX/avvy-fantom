@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 
 // File @chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol@v0.2.2
 
@@ -387,10 +387,10 @@ contract PricingOracleV1 is PricingOracleInterface {
       id := chainid()
     }
     address priceFeedAddress;
-    if (id == 250) {
-      priceFeedAddress = 0xf4766552D15AE4d256Ad41B6cf2933482B0680dc;
-    } else if (id == 4) {
-      priceFeedAddress = 0x8A753747A1Fa494EC906cE90E9f37563A8AF630e;
+    if (id == 1) {
+      priceFeedAddress = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419;
+    } else if (id == 5) {
+      priceFeedAddress = 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e;
     }
     priceFeed = AggregatorV3Interface(priceFeedAddress);
   }

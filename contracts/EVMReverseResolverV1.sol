@@ -1,5 +1,5 @@
 
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 
 // File @openzeppelin/contracts/access/IAccessControl.sol@v4.3.2
 
@@ -1478,14 +1478,12 @@ pragma solidity ^0.8.0;
 /*
 Casing is not enforced here. Users must be careful not to
 implement duplicates by casing errors, e.g. by adding
-FTM and fTm and ftm as namespaces.
+WETH and wEth and weth as namespaces.
 
 Casing rules are to be enforced by the MANAGER role.
 */
 
 interface NamespaceInterface {
-  function getGracePeriodLength(uint256 id) external view returns (uint256 gracePeriodLength);
-  function getRecyclePeriodLength(uint256 id) external view returns (uint256 recyclePeriodLength);
   function checkName(uint256 id, uint256 name, bytes memory constraintsData) external view;
 }
 
@@ -1497,9 +1495,8 @@ pragma solidity ^0.8.0;
 
 contract Domain is ERC721, ERC721Enumerable, AccessControl {
 
-  event Register(address agent, address indexed registrant, uint256 indexed name, uint256 leaseLength);
+  event Register(address agent, address indexed registrant, uint256 indexed name);
   event Suspend(address agent, uint256 indexed name, bool suspended);
-  event Recycle(address agent, address indexed registrant, uint256 indexed name, uint256 leaseLength);
   event Revoke(address agent, address indexed holder, uint256 indexed name);
   event TokenBaseURISet(string uri);
   event ContractURISet(string uri);
@@ -1517,9 +1514,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
   // can lease domains that are currently available or within the grace period
   bytes32 public constant LEASING_AGENT = keccak256("3");
 
-  // can lease domains that are in the recycle period
-  bytes32 public constant RECYCLING_AGENT = keccak256("4");
-
   // can transfer domains at any time
   bytes32 public constant REVOCATION_AGENT = keccak256("5");
 
@@ -1531,9 +1525,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
 
   // which namespace does the domain belong to?
   mapping(uint256 => uint256) _domainToNamespace;
-
-  // at what exact second does the lease expire? (i.e. at that second and after, the domain is no longer leased)
-  mapping(uint256 => uint256) _leaseExpiresAt;
 
   // which domains are suspended?
   // users of the system should disregard suspended domains
@@ -1571,40 +1562,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
     return _contractURI;
   }
 
-  // ==================
-  // Core functionality
-  // ==================
-
-  function _isGracePeriod(
-    uint256 leaseExpiresAt,
-    uint256 namespaceId,
-    NamespaceInterface namespace
-  ) internal view returns (bool) {
-    uint256 gracePeriodLength = namespace.getGracePeriodLength(namespaceId);
-    return block.timestamp >= leaseExpiresAt && block.timestamp < leaseExpiresAt + gracePeriodLength;
-  }
-
-  function _isRecyclePeriod(
-    uint256 leaseExpiresAt,
-    uint256 namespaceId,
-    NamespaceInterface namespace
-  ) internal view returns (bool) {
-    uint256 gracePeriodLength = namespace.getGracePeriodLength(namespaceId);
-    uint256 recyclePeriodLength = namespace.getRecyclePeriodLength(namespaceId);
-    uint256 gracePeriodEndsAt = leaseExpiresAt + gracePeriodLength;
-    return block.timestamp >= gracePeriodEndsAt && block.timestamp < gracePeriodEndsAt + recyclePeriodLength;
-  }
-  
-  function _isExpired(
-    uint256 leaseExpiresAt,
-    uint256 namespaceId,
-    NamespaceInterface namespace
-  ) internal view returns (bool) {
-    uint256 gracePeriodLength = namespace.getGracePeriodLength(namespaceId);
-    uint256 recyclePeriodLength = namespace.getRecyclePeriodLength(namespaceId);
-    return block.timestamp >= leaseExpiresAt + gracePeriodLength + recyclePeriodLength;
-  }
-
   function getRoleForNamespace(bytes32 role, uint256 namespaceId) public pure returns (bytes32) {
     bytes32 _role = keccak256(abi.encodePacked(role, namespaceId));
     return _role;
@@ -1622,12 +1579,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
     uint256 domainId
   ) external view returns (uint256) {
     return _domainToNamespace[domainId];
-  }
-
-  function getDomainExpiry(
-    uint256 name 
-  ) external view returns (uint256) {
-    return _leaseExpiresAt[name];
   }
 
   function suspend(
@@ -1652,7 +1603,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
     address registrant,
     uint256 namespaceId,
     uint256 name,
-    uint256 leaseLength,
     bytes memory constraintsData
   ) external {
 
@@ -1661,7 +1611,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
       "Domain: Invalid permissions"
     );
 
-    address owner;
     require(!_suspensions[name], "Domain: Cannot register suspended domain");
 
     NamespaceInterface namespace = NamespaceInterface(_contractRegistry.get('Namespace'));
@@ -1676,9 +1625,7 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
       );
     }
 
-    uint256 leaseExpiresAt = _leaseExpiresAt[name];
-    _leaseExpiresAt[name] = block.timestamp + leaseLength;
-    emit Register(msg.sender, registrant, name, leaseLength);
+    emit Register(msg.sender, registrant, name);
 
     // if the domain hasn't been minted already,
     // let's proceed with minting 
@@ -1686,59 +1633,8 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
       _domainToNamespace[name] = namespaceId;
       _safeMint(registrant, name);
     } 
-    
-    // if the domain has been minted, but it's
-    // available for immediate transfer
-    else if (_isExpired(leaseExpiresAt, namespaceId, namespace)) {
-      owner = ownerOf(name);
-      if (owner != registrant) {
-        _safeTransfer(owner, registrant, name, '');
-      }
-    } 
-    
-    // if the domain has been minted, expired,
-    // but is currently in the grace period
-    else if (_isGracePeriod(leaseExpiresAt, namespaceId, namespace)) {
-      owner = ownerOf(name);
-      require(owner == registrant, "Domain: Can only register to owner during grace period");
-    }
-
-    // otherwise, it's currently registered & we only allow it to be modified by
-    // the owner, for the purpose of increasing the lease period
-    else {
-      owner = ownerOf(name);
-      require(!_isRecyclePeriod(leaseExpiresAt, namespaceId, namespace), "Domain: Cannot register during recycle period");
-      require(owner == registrant, "Domain: Only owner can modify registration if leased");
-    }
   }
 
-  function recycle(
-    address to,
-    uint256 namespaceId,
-    uint256 name,
-    uint256 leaseLength
-  ) external {
-    require(
-      _hasRoleForNamespace(RECYCLING_AGENT, namespaceId),
-      "Domain: Invalid permissions"
-    );
-
-    address owner = ownerOf(name);
-    NamespaceInterface namespace = NamespaceInterface(_contractRegistry.get('Namespace'));
-
-    require(!_suspensions[name], "Domain: Cannot recycle suspended domain");
-    uint256 leaseExpiresAt = _leaseExpiresAt[name];
-
-    require(
-      _isRecyclePeriod(leaseExpiresAt, namespaceId, namespace),
-      "Domain: Not recycling period"
-    );
-
-    _checkNameMatchesNamespace(name, namespaceId);
-    _leaseExpiresAt[name] = block.timestamp + leaseLength;
-    emit Recycle(msg.sender, to, name, leaseLength);
-    _safeTransfer(owner, to, name, '');
-  }
 
   function revoke(
     address to, 
@@ -1765,14 +1661,6 @@ contract Domain is ERC721, ERC721Enumerable, AccessControl {
       return super._beforeTokenTransfer(from, to, name);
     }
     require(!_suspensions[name], "Domain: Cannot transfer suspended domain");
-    NamespaceInterface namespace = NamespaceInterface(_contractRegistry.get('Namespace'));
-    uint256 leaseExpiresAt = _leaseExpiresAt[name];
-    require(!_isGracePeriod(leaseExpiresAt, namespaceId, namespace), "Domain: Cannot transfer expired domain");
-    if (_isRecyclePeriod(leaseExpiresAt, namespaceId, namespace)) {
-      require(_hasRoleForNamespace(RECYCLING_AGENT, namespaceId), "Domain: Cannot transfer expired domain");
-    } else if (_isExpired(leaseExpiresAt, namespaceId, namespace)) {
-      require(_hasRoleForNamespace(LEASING_AGENT, namespaceId), "Domain: Cannot transfer expired domain");
-    }
     super._beforeTokenTransfer(from, to, name);
   }
 
@@ -1880,7 +1768,6 @@ contract EVMReverseResolverV1 {
     Entry memory entry = reverseLookups[target];
     require(entry.name != 0 && entry.hash != 0, "EVMReverseResolverV1: does not exist");
     require(!domain.isSuspended(entry.name), "EVMReverseResolverV1: domain suspended");
-    require(domain.getDomainExpiry(entry.name) > block.timestamp, "EVMReverseResolverV1: domain expired");
     return (entry.name, entry.hash);
   }
 
@@ -1888,7 +1775,6 @@ contract EVMReverseResolverV1 {
   function getEntry(uint256 name, uint256 hash) external view returns (address entry) {
     Domain domain = Domain(contractRegistry.get('Domain'));
     require(!domain.isSuspended(name), "EVMReverseResolverV1: domain suspended");
-    require(domain.getDomainExpiry(name) > block.timestamp, "EVMReverseResolverV1: domain expired");
     return entries[name][hash];
   }
 

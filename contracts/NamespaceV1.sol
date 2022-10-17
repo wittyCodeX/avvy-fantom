@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 
 // File @openzeppelin/contracts/access/IAccessControl.sol@v4.3.2
 
@@ -453,14 +453,12 @@ pragma solidity ^0.8.0;
 /*
 Casing is not enforced here. Users must be careful not to
 implement duplicates by casing errors, e.g. by adding
-FTM and fTm and ftm as namespaces.
+WETH and wEth and weth as namespaces.
 
 Casing rules are to be enforced by the MANAGER role.
 */
 
 interface NamespaceInterface {
-  function getGracePeriodLength(uint256 id) external view returns (uint256 gracePeriodLength);
-  function getRecyclePeriodLength(uint256 id) external view returns (uint256 recyclePeriodLength);
   function checkName(uint256 id, uint256 name, bytes memory constraintsData) external view;
 }
 
@@ -483,46 +481,19 @@ contract NamespaceV1 is NamespaceInterface, AccessControl {
   bytes32 public constant MANAGER_ROLE = keccak256("MANAGER");
 
   mapping(uint256 => bool) public _initializedNamespaces;
-  mapping(uint256 => uint256) _gracePeriodLengths;
-  mapping(uint256 => uint256) _recyclePeriodLengths;
   mapping(uint256 => ConstraintsInterface) public _constraints;
 
   event GracePeriodLengthSet(uint256 indexed namespaceId, uint256 gracePeriodLength);
-  event RecyclePeriodLengthSet(uint256 indexed namespaceId, uint256 recyclePeriodLength);
   event ConstraintsSet(uint256 indexed namespaceId, ConstraintsInterface constraints);
 
   function initNamespace(uint256 id, ConstraintsInterface constraints) external onlyRole(MANAGER_ROLE) {
     require(_initializedNamespaces[id] == false, 'ALREADY_EXISTS');
-    _gracePeriodLengths[id] = 0;
-    _recyclePeriodLengths[id] = 0;
     _initializedNamespaces[id] = true;
     _constraints[id] = constraints;
   }
 
   function _verifyNamespaceExists(uint256 id) view internal {
     require(_initializedNamespaces[id], 'DOESNT_EXIST');
-  }
-
-  function setGracePeriodLength(uint256 id, uint256 gracePeriodLength) external onlyRole(MANAGER_ROLE) {
-    _verifyNamespaceExists(id);
-    _gracePeriodLengths[id] = gracePeriodLength;
-    emit GracePeriodLengthSet(id, gracePeriodLength);
-  }
-
-  function getGracePeriodLength(uint256 id) external override view returns (uint256 gracePeriodLength) {
-    _verifyNamespaceExists(id);
-    return _gracePeriodLengths[id];
-  }
-
-  function setRecyclePeriodLength(uint256 id, uint256 recyclePeriodLength) external onlyRole(MANAGER_ROLE) {
-    _verifyNamespaceExists(id);
-    _recyclePeriodLengths[id] = recyclePeriodLength;
-    emit RecyclePeriodLengthSet(id, recyclePeriodLength);
-  }
-
-  function getRecyclePeriodLength(uint256 id) external override view returns (uint256 recyclePeriodLength) {
-    _verifyNamespaceExists(id);
-    return _recyclePeriodLengths[id];
   }
 
   function setConstraints(uint256 id, ConstraintsInterface constraints) external onlyRole(MANAGER_ROLE) {
