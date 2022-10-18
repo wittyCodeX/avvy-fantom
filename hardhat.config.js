@@ -32,7 +32,10 @@ module.exports = {
     },
     goerli: {
       url: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`,
-      accounts: [process.env.PRIVATE_KEY]
+      accounts: [process.env.PRIVATE_KEY],
+      live: false,
+      gasMultiplier: 2,
+      allowUnlimitedContractSize: true
     },
     fantom: {
       url: "https://rpc.fantom.network",
