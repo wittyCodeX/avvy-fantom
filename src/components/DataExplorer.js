@@ -9,8 +9,8 @@ class DataExplorer extends React.PureComponent {
     this.vendors = {
       // block explorers
       ftmscan: {
-        name: "FTMBlocks",
-        logo: services.linking.static("images/vendor/fantomblocks.png"),
+        name: "FTMScan",
+        logo: services.linking.static("images/vendor/ftmscan.png"),
         class: "h-12 w-12"
       },
       vscout: {
@@ -95,10 +95,7 @@ class DataExplorer extends React.PureComponent {
   renderEVM() {
     return (
       <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-        {this.renderVendor(
-          "ftmscan",
-          d => `https://ftmblocks.com/address/${d}`
-        )}
+        {this.renderVendor("ftmscan", d => `https://ftmscan.com/address/${d}`)}
       </div>
     );
   }
@@ -106,11 +103,8 @@ class DataExplorer extends React.PureComponent {
   renderValidator() {
     return (
       <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-        {this.renderVendor(
-          "ftmscan",
-          d => `https://ftmblocks.com/address/${d}`
-        )}
-        {this.renderVendor("vscout", d => `https://ftmblocks.com/address/${d}`)}
+        {this.renderVendor("ftmscan", d => `https://ftmscan.com/address/${d}`)}
+        {this.renderVendor("vscout", d => `https://ftmscan.com/address/${d}`)}
       </div>
     );
   }

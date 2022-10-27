@@ -77,11 +77,7 @@ const provider = {
   connectWalletConnect: () => {
     return new Promise(async (resolve, reject) => {
       _provider = new WalletConnectProvider({
-        rpc: {
-          31337: "http://localhost:8545",
-          43113: "https://api.ftm-test.network/ext/bc/C/rpc",
-          43114: "https://api.ftm.network/ext/bc/C/rpc"
-        }
+        infuraId: "43a5d6ed07a140288e17955ddde82ae1"
       });
       await _provider.enable().catch(reject);
       const web3Provider = new ethers.providers.Web3Provider(_provider);
